@@ -12,4 +12,6 @@ module io.project.ships {
 
     opens io.project.ships to javafx.fxml;
     exports io.project.ships;
+    exports io.project.ships.controllers;
+    opens io.project.ships.controllers to javafx.fxml;
 }
