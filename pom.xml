@@ -112,7 +112,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>io.project.ships/io.project.ships.Menu</mainClass>
+                            <mainClass>io.project.ships/io.project.ships.LoginWindow</mainClass>
                         </configuration>
                     </execution>
                 </executions>
