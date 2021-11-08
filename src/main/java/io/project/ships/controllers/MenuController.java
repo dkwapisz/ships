@@ -31,4 +31,12 @@ public class MenuController {
         stage.show();
     }
 
+    @FXML
+    void goToReplays() throws IOException {
+        Stage stage = (Stage) menuScene.getScene().getWindow();
+        Pane root = FXMLLoader.load(getClass().getResource("/fxml/replays-view.fxml"));
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
 }
