@@ -58,6 +58,8 @@ public class Ship {
                     if (shape.intersects(boardRectangle.getLayoutBounds())) {
                         shape.setX(calculateLowestDist(board).getLayoutX());
                         shape.setY(calculateLowestDist(board).getLayoutY());
+
+                        //TODO Powiązanie pól z position i SquareStatus, sprawdzenie poprawności ustawienia statków.
                     }
                 }
             }
