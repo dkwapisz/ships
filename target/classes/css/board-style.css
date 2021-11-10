@@ -3,3 +3,10 @@
     -fx-border-width: 1px;
 }
 
+#playerBoard {
+    -fx-background-color: #bbe1ee;
+}
+
+#enemyBoard {
+    -fx-background-color: #6dbce3;
+}
