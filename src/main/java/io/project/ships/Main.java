@@ -28,8 +28,9 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         Pane root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/main-view.fxml")));
-        root.getChildren().add(playerBoard);
-        root.getChildren().add(enemyBoard);
+
+        addNodesToRoot(root);
+
         Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
         stage.setTitle("Ships!");
         stage.setScene(scene);
@@ -37,6 +38,13 @@ public class Main extends Application {
 
     }
 
+    private void addNodesToRoot(Pane root) {
+        root.getChildren().add(playerBoard);
+        root.getChildren().add(enemyBoard);
+        for (int i = 0; i < playerBoard.getShips().length; i++) {
+            root.getChildren().add(playerBoard.getShips()[i].getShape());
+        }
+    }
 
     public static void main(String[] args) {
         launch();

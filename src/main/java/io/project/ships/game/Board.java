@@ -11,6 +11,7 @@ public class Board extends Pane {
     private final double WIDTH;
     private final double HEIGHT;
     private boolean isEnemyBoard;
+    private Ship[] ships = new Ship[10];
 
     public Board(int columns, int rows, double width, double height, boolean isEnemyBoard) {
         this.WIDTH = width;
@@ -22,6 +23,7 @@ public class Board extends Pane {
         playerBoard = new Square[columns][rows];
 
         generateBoard();
+        generateShips();
     }
 
     private void generateBoard() {
@@ -35,6 +37,23 @@ public class Board extends Pane {
         }
     }
 
+    private void generateShips() {
+        if (!isEnemyBoard) {
+            for (int i = 0; i < 4; i++) {
+                ships[i] = new Ship(1, i, playerBoard);
+            }
+            for (int i = 4; i < 7; i++) {
+                ships[i] = new Ship(2, i-4, playerBoard);
+            }
+            for (int i = 7; i < 9; i++) {
+                ships[i] = new Ship(3, i-7, playerBoard);
+            }
+            for (int i = 9; i < 10; i++) {
+                ships[i] = new Ship(4, i-9, playerBoard);
+            }
+        }
+    }
+
     private void addSquare(Square square, int column, int row) {
         playerBoard[column][row] = square;
 
@@ -42,7 +61,7 @@ public class Board extends Pane {
         double h = HEIGHT / ROWS;
         double x = w * column;
         double y = h * row;
-        if (isEnemyBoard) {
+        if (!isEnemyBoard) {
             square.setLayoutX(x + WIDTH/10);
 
         } else {
@@ -56,4 +75,7 @@ public class Board extends Pane {
         getChildren().add(square);
     }
 
+    public Ship[] getShips() {
+        return ships;
+    }
 }
