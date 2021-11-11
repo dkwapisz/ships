@@ -1,6 +1,6 @@
 package io.project.ships.game;
 
-import javafx.scene.layout.Pane;
+import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -8,12 +8,10 @@ public class Ship {
 
     private int size;
     private Rectangle shape;
-    private Position position;
 
     public Ship(int size, int whichShip, Square[][] board) {
         makeShape(size, whichShip);
         this.size = size;
-        position = new Position(0, 0);
         shape.setFill(Color.BLUE);
         setMouseListener(board);
     }
@@ -35,31 +33,39 @@ public class Ship {
             shape.setX(event.getSceneX() - shape.getWidth()/2);
             shape.setY(event.getSceneY() - shape.getHeight()/2);
 
-            for (int i = 0; i < board.length; i++) {
-                for (int j = 0; j < board[i].length; j++) {
 
-                    Rectangle boardRectangle = new Rectangle(board[i][j].getLayoutX(), board[i][j].getLayoutY(), board[i][j].getWidth(), board[i][j].getHeight());
+            //TODO TO DZIAŁA ŹLE
 
-                    if (shape.intersects(boardRectangle.getBoundsInParent())) {
-                        board[i][j].getStyleClass().add("cell-highlight");
-                    } else {
-                        board[i][j].getStyleClass().remove("cell-highlight");
-                        board[i][j].getStyleClass().add("cell");
-                    }
-                }
-            }
+//            for (int i = 0; i < board.length; i++) {
+//                for (int j = 0; j < board[i].length; j++) {
+//
+//                    Rectangle boardRectangle = new Rectangle(board[i][j].getLayoutX(), board[i][j].getLayoutY(), board[i][j].getWidth(), board[i][j].getHeight());
+//
+//                    if (shape.intersects(boardRectangle.getBoundsInParent())) {
+//                        board[i][j].getStyleClass().add("cell-highlight");
+//                    } else {
+//                        board[i][j].getStyleClass().remove("cell-highlight");
+//                        board[i][j].getStyleClass().add("cell");
+//                    }
+//                }
+//            }
         });
 
         shape.setOnMouseReleased(event -> {
             for (int i = 0; i < board.length; i++) {
                 for (int j = 0; j < board[i].length; j++) {
 
-                    Rectangle boardRectangle = new Rectangle(board[i][j].getLayoutX(), board[i][j].getLayoutY(), board[i][j].getWidth(), board[i][j].getHeight());
-                    if (shape.intersects(boardRectangle.getLayoutBounds())) {
+                    Rectangle squareRectangle = new Rectangle(board[i][j].getLayoutX(), board[i][j].getLayoutY(), board[i][j].getWidth(), board[i][j].getHeight());
+                    if (shape.intersects(squareRectangle.getLayoutBounds()) && verifyOutOfBoard(board)) {
+
                         shape.setX(calculateLowestDist(board).getLayoutX());
                         shape.setY(calculateLowestDist(board).getLayoutY());
 
-                        //TODO Powiązanie pól z position i SquareStatus, sprawdzenie poprawności ustawienia statków.
+                        int xPos = (int) calculateLowestDist(board).getLayoutX()/40 - 1;
+                        int yPos = (int) calculateLowestDist(board).getLayoutY()/40 - 1;
+
+                        setPositionOnBoard(board, xPos, yPos);
+
                     }
                 }
             }
@@ -70,10 +76,23 @@ public class Ship {
                 double tmp = shape.getHeight();
                 shape.setHeight(shape.getWidth());
                 shape.setWidth(tmp);
-                System.out.println(shape.getX());
-                System.out.println(shape.getY());
             }
         });
+    }
+
+    private boolean verifyOutOfBoard(Square[][] board) {
+        Rectangle boardRectangle = new Rectangle(board[0][0].getLayoutX(), board[0][0].getLayoutY(), board[0][0].getWidth()*board.length, board[0][0].getHeight()*board.length);
+        Point2D vertex1 = new Point2D(shape.getX(), shape.getY());
+        Point2D vertex2 = new Point2D(shape.getX() + shape.getWidth(), shape.getY() + shape.getHeight());
+
+        return boardRectangle.contains(vertex1) && boardRectangle.contains(vertex2);
+    }
+
+
+    //TODO Funkcja do sprawdzania, czy statki się "stykają"
+    private boolean verifyShipsTouch(Square[][] board) {
+
+        return false;
     }
 
     private Square calculateLowestDist(Square[][] board) {
@@ -83,6 +102,7 @@ public class Ship {
         int closestJ = 0;
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
+                //TODO poprawić działanie tej funkcji
                 Rectangle boardRectangle = new Rectangle(board[i][j].getLayoutX(), board[i][j].getLayoutY(), board[i][j].getWidth(), board[i][j].getHeight());
                 dist = Math.hypot(Math.abs(shape.getX() - boardRectangle.getX()), Math.abs(shape.getY() - boardRectangle.getY()));
                 if (lastDist > dist) {
@@ -93,6 +113,42 @@ public class Ship {
             }
         }
         return board[closestI][closestJ];
+    }
+
+    private void setPositionOnBoard(Square[][] board, int i, int j) {
+        if (size == 1) {
+            board[i][j].setSquareStatus(Square.SquareStatus.SHIP);
+        } else if (size == 2) {
+            if (shape.getWidth() > shape.getHeight()) {
+                board[i][j].setSquareStatus(Square.SquareStatus.SHIP);
+                board[i+1][j].setSquareStatus(Square.SquareStatus.SHIP);
+            } else if (shape.getWidth() < shape.getHeight()) {
+                board[i][j].setSquareStatus(Square.SquareStatus.SHIP);
+                board[i][j+1].setSquareStatus(Square.SquareStatus.SHIP);
+            }
+        } else if (size == 3) {
+            if (shape.getWidth() > shape.getHeight()) {
+                board[i][j].setSquareStatus(Square.SquareStatus.SHIP);
+                board[i+1][j].setSquareStatus(Square.SquareStatus.SHIP);
+                board[i+2][j].setSquareStatus(Square.SquareStatus.SHIP);
+            } else if (shape.getWidth() < shape.getHeight()) {
+                board[i][j].setSquareStatus(Square.SquareStatus.SHIP);
+                board[i][j+1].setSquareStatus(Square.SquareStatus.SHIP);
+                board[i][j+2].setSquareStatus(Square.SquareStatus.SHIP);
+            }
+        } else if (size == 4) {
+            if (shape.getWidth() > shape.getHeight()) {
+                board[i][j].setSquareStatus(Square.SquareStatus.SHIP);
+                board[i+1][j].setSquareStatus(Square.SquareStatus.SHIP);
+                board[i+2][j].setSquareStatus(Square.SquareStatus.SHIP);
+                board[i+3][j].setSquareStatus(Square.SquareStatus.SHIP);
+            } else if (shape.getWidth() < shape.getHeight()) {
+                board[i][j].setSquareStatus(Square.SquareStatus.SHIP);
+                board[i][j+1].setSquareStatus(Square.SquareStatus.SHIP);
+                board[i][j+2].setSquareStatus(Square.SquareStatus.SHIP);
+                board[i][j+3].setSquareStatus(Square.SquareStatus.SHIP);
+            }
+        }
     }
 
     public int getSize() {
@@ -107,13 +163,6 @@ public class Ship {
     }
     public void setShape(Rectangle shape) {
         this.shape = shape;
-    }
-
-    public Position getPosition() {
-        return position;
-    }
-    public void setPosition(Position position) {
-        this.position = position;
     }
 
 }

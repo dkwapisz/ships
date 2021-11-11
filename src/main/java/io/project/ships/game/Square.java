@@ -28,7 +28,7 @@ public class Square extends StackPane {
         this.squareStatus = squareStatus;
     }
 
-    private enum SquareStatus {
+    public enum SquareStatus {
         EMPTY,
         MISS,
         SHIP,

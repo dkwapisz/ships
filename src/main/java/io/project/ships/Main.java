@@ -14,16 +14,16 @@ import java.util.Objects;
 
 public class Main extends Application {
 
-    private final int BOARD_COLUMNS = 10;
-    private final int BOARD_ROWS = 10;
-    private final int BOARD_WIDTH = 400;
-    private final int BOARD_HEIGHT = 400;
+    private static final int BOARD_COLUMNS = 10;
+    private static final int BOARD_ROWS = 10;
+    private static final int BOARD_WIDTH = 400;
+    private static final int BOARD_HEIGHT = 400;
 
-    private final int WINDOW_WIDTH = 1200;
-    private final int WINDOW_HEIGHT = 800;
+    private static final int WINDOW_WIDTH = 1200;
+    private static final int WINDOW_HEIGHT = 800;
 
-    private Board playerBoard = new Board(BOARD_COLUMNS, BOARD_ROWS, BOARD_WIDTH, BOARD_HEIGHT, false);
-    private Board enemyBoard = new Board(BOARD_COLUMNS, BOARD_ROWS, BOARD_WIDTH, BOARD_HEIGHT, true);
+    private static Board playerBoard = new Board(BOARD_COLUMNS, BOARD_ROWS, BOARD_WIDTH, BOARD_HEIGHT, false);
+    private static Board enemyBoard = new Board(BOARD_COLUMNS, BOARD_ROWS, BOARD_WIDTH, BOARD_HEIGHT, true);
 
     @Override
     public void start(Stage stage) throws IOException {
