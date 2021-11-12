@@ -3,10 +3,11 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" stylesheets="@../css/board-style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.project.ships.controllers.MainController">
+<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" stylesheets="@../css/board-style.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.project.ships.controllers.MainController">
    <children>
       <Button layoutX="552.0" layoutY="726.0" mnemonicParsing="false" onAction="#backToMenu" text="Back to menu" />
       <Pane fx:id="playerBoard" layoutX="40.0" layoutY="40.0" prefHeight="400.0" prefWidth="400.0" />
       <Pane fx:id="enemyBoard" layoutX="760.0" layoutY="40.0" prefHeight="400.0" prefWidth="400.0" />
+      <Button layoutX="540.0" layoutY="668.0" mnemonicParsing="false" onAction="#printBoardStatus" text="Print board status" />
    </children>
 </Pane>

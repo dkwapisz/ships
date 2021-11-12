@@ -46,6 +46,10 @@ public class Main extends Application {
         }
     }
 
+    public static Board getPlayerBoard() {
+        return playerBoard;
+    }
+
     public static void main(String[] args) {
         launch();
     }

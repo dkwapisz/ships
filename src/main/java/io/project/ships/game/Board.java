@@ -4,7 +4,7 @@ import javafx.scene.layout.Pane;
 
 public class Board extends Pane {
 
-    private Square[][] playerBoard;
+    private Square[][] squareBoard;
 
     private final int COLUMNS;
     private final int ROWS;
@@ -20,7 +20,7 @@ public class Board extends Pane {
         this.ROWS = rows;
         this.isEnemyBoard = isEnemyBoard;
 
-        playerBoard = new Square[columns][rows];
+        squareBoard = new Square[columns][rows];
 
         generateBoard();
         generateShips();
@@ -40,22 +40,22 @@ public class Board extends Pane {
     private void generateShips() {
         if (!isEnemyBoard) {
             for (int i = 0; i < 4; i++) {
-                ships[i] = new Ship(1, i, playerBoard);
+                ships[i] = new Ship(1, i, squareBoard);
             }
             for (int i = 4; i < 7; i++) {
-                ships[i] = new Ship(2, i-4, playerBoard);
+                ships[i] = new Ship(2, i-4, squareBoard);
             }
             for (int i = 7; i < 9; i++) {
-                ships[i] = new Ship(3, i-7, playerBoard);
+                ships[i] = new Ship(3, i-7, squareBoard);
             }
             for (int i = 9; i < 10; i++) {
-                ships[i] = new Ship(4, i-9, playerBoard);
+                ships[i] = new Ship(4, i-9, squareBoard);
             }
         }
     }
 
     private void addSquare(Square square, int column, int row) {
-        playerBoard[column][row] = square;
+        squareBoard[column][row] = square;
 
         double w = WIDTH / COLUMNS;
         double h = HEIGHT / ROWS;
@@ -77,5 +77,9 @@ public class Board extends Pane {
 
     public Ship[] getShips() {
         return ships;
+    }
+
+    public Square[][] getSquareBoard() {
+        return squareBoard;
     }
 }
