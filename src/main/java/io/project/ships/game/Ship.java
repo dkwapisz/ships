@@ -1,9 +1,12 @@
 package io.project.ships.game;
 
+import io.project.ships.Main;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+
+import java.util.Random;
 
 public class Ship {
 
@@ -11,6 +14,7 @@ public class Ship {
     private Rectangle shape;
     private Square[][] board;
     private Position[] position;
+    private Random random = new Random();
 
     public Ship(int size, int whichShip, Square[][] board) {
         this.board = board;
@@ -46,7 +50,7 @@ public class Ship {
             shape.setX(event.getSceneX() - shape.getWidth()/2);
             shape.setY(event.getSceneY() - shape.getHeight()/2);
 
-            //TODO TO DZIAŁA ŹLE (DODATKOWA FUNKCJA)
+            //TODO TO DZIAŁA ŹLE (DODATKOWA FUNKCJA, NIE MUSI BYC ZAIMPLEMENTOWANA)
 //            for (int i = 0; i < board.length; i++) {
 //                for (int j = 0; j < board[i].length; j++) {
 //
@@ -64,39 +68,75 @@ public class Ship {
         });
 
         shape.setOnMouseReleased(event -> {
-            shape.toFront();
-            for (int i = 0; i < board.length; i++) {
-                for (int j = 0; j < board[i].length; j++) {
+            placeShip();
+        });
 
-                    Rectangle squareRectangle = new Rectangle(board[i][j].getLayoutX(), board[i][j].getLayoutY(), board[i][j].getWidth(), board[i][j].getHeight());
-                    if (shape.intersects(squareRectangle.getLayoutBounds()) && verifyOutOfBoard()) {
+        shape.setOnMouseClicked(event -> {
+            if (event.isPopupTrigger()) {
+                rotateShip();
+            }
+        });
+    }
 
-                        int xPos = (int) calculateLowestDist().getLayoutX()/40 - 1;
-                        int yPos = (int) calculateLowestDist().getLayoutY()/40 - 1;
+    public void placeInRandom() {
+        int maxBoundX = 10;
+        int maxBoundY = 10;
 
-                        if (position[0].getX() >= 0) {
-                            clearLastPos();
-                        }
+        if (random.nextBoolean()) {
+            rotateShip();
+        }
 
-                        if (verifyShipsTouch(xPos, yPos)) {
-                            shape.setX(calculateLowestDist().getLayoutX());
-                            shape.setY(calculateLowestDist().getLayoutY());
+        if (shape.getWidth() > shape.getHeight()) {
+            maxBoundX = 10 - size + 1;
+        } else if (shape.getWidth() < shape.getHeight()) {
+            maxBoundY = 10 - size + 1;
+        }
 
-                            setPositionOnBoard(xPos, yPos);
-                        }
+        int xPos = random.nextInt(maxBoundX);
+        int yPos = random.nextInt(maxBoundY);
+
+        while(!verifyShipsTouch(xPos, yPos)) {
+            xPos = random.nextInt(maxBoundX);
+            yPos = random.nextInt(maxBoundY);
+        }
+
+        shape.setX(40*(xPos + 1));
+        shape.setY(40*(yPos + 1));
+
+        setPositionOnBoard(xPos, yPos);
+    }
+
+    private void placeShip() {
+        shape.toFront();
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+
+                Rectangle squareRectangle = new Rectangle(board[i][j].getLayoutX(), board[i][j].getLayoutY(), board[i][j].getWidth(), board[i][j].getHeight());
+                if (shape.intersects(squareRectangle.getLayoutBounds()) && verifyOutOfBoard()) {
+
+                    int xPos = (int) calculateLowestDist().getLayoutX()/40 - 1;
+                    int yPos = (int) calculateLowestDist().getLayoutY()/40 - 1;
+
+                    if (position[0].getX() >= 0) {
+                        clearLastPos();
+                    }
+
+                    if (verifyShipsTouch(xPos, yPos)) {
+                        shape.setX(calculateLowestDist().getLayoutX());
+                        shape.setY(calculateLowestDist().getLayoutY());
+
+                        setPositionOnBoard(xPos, yPos);
                     }
                 }
             }
-        });
+        }
+    }
 
-        //TODO Zrobić, żeby nie można było obracać statków jeśli wystąpi kolizja z innym statkiem
-        shape.setOnMouseClicked(event -> {
-            if (event.isPopupTrigger()) {
-                double tmp = shape.getHeight();
-                shape.setHeight(shape.getWidth());
-                shape.setWidth(tmp);
-            }
-        });
+    //TODO POPRAWIC DZIALANIE RECZNEGO OBRACANIA STATKOW (POWIAZANIE ZE SQUARE STATUS ORAZ WALIDACJA UMIESZCZENIA)
+    private void rotateShip() {
+        double tmp = shape.getHeight();
+        shape.setHeight(shape.getWidth());
+        shape.setWidth(tmp);
     }
 
     private boolean verifyOutOfBoard() {
@@ -110,135 +150,20 @@ public class Ship {
     private boolean verifyShipsTouch(int shipPosX, int shipPosY) {
         boolean correctPlace = true;
 
-        try {
-            if (size == 1) {
-                if (board[shipPosX][shipPosY].getSquareStatus() == Square.SquareStatus.SHIP
-                        ||  board[shipPosX][shipPosY - 1].getSquareStatus() == Square.SquareStatus.SHIP
-                        ||  board[shipPosX][shipPosY + 1].getSquareStatus() == Square.SquareStatus.SHIP
-                        ||  board[shipPosX + 1][shipPosY].getSquareStatus() == Square.SquareStatus.SHIP
-                        ||  board[shipPosX + 1][shipPosY - 1].getSquareStatus() == Square.SquareStatus.SHIP
-                        ||  board[shipPosX + 1][shipPosY + 1].getSquareStatus() == Square.SquareStatus.SHIP
-                        ||  board[shipPosX - 1][shipPosY].getSquareStatus() == Square.SquareStatus.SHIP
-                        ||  board[shipPosX - 1][shipPosY - 1].getSquareStatus() == Square.SquareStatus.SHIP
-                        ||  board[shipPosX - 1][shipPosY + 1].getSquareStatus() == Square.SquareStatus.SHIP) {
-                    correctPlace = false;
-                }
-            } else if (size == 2) {
-                if (shape.getWidth() > shape.getHeight()) {
-                    if (board[shipPosX][shipPosY].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX - 1][shipPosY - 1].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX - 1][shipPosY].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX - 1][shipPosY + 1].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX][shipPosY - 1].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX][shipPosY + 1].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX + 1][shipPosY - 1].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX + 1][shipPosY].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX + 1][shipPosY + 1].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX + 2][shipPosY - 1].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX + 2][shipPosY].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX + 2][shipPosY + 1].getSquareStatus() == Square.SquareStatus.SHIP) {
-                        correctPlace = false;
-                    }
-                } else if (shape.getWidth() < shape.getHeight()) {
-                    if (board[shipPosX][shipPosY].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX - 1][shipPosY - 1].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX - 1][shipPosY].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX - 1][shipPosY + 1].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX - 1][shipPosY + 2].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX][shipPosY - 1].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX][shipPosY + 1].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX][shipPosY + 2].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX + 1][shipPosY - 1].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX + 1][shipPosY].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX + 1][shipPosY + 1].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX + 1][shipPosY + 2].getSquareStatus() == Square.SquareStatus.SHIP) {
+        for (int i = -1; i < size + 1; i++) {
+            for (int j = -1; j < 2; j++) {
+                if ((shape.getWidth() >= shape.getHeight()) && (!(shipPosX + i < 0) && !(shipPosX + i > 9) && !(shipPosY + j < 0) && !(shipPosY + j > 9))) {
+                    if (board[shipPosX + i][shipPosY + j].getSquareStatus() == Square.SquareStatus.SHIP) {
                         correctPlace = false;
                     }
                 }
-            } else if (size == 3) {
-                if (shape.getWidth() > shape.getHeight()) {
-                    if (board[shipPosX][shipPosY].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX - 1][shipPosY - 1].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX - 1][shipPosY].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX - 1][shipPosY + 1].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX][shipPosY - 1].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX][shipPosY + 1].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX + 1][shipPosY - 1].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX + 1][shipPosY].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX + 1][shipPosY + 1].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX + 2][shipPosY - 1].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX + 2][shipPosY].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX + 2][shipPosY + 1].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX + 3][shipPosY - 1].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX + 3][shipPosY].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX + 3][shipPosY + 1].getSquareStatus() == Square.SquareStatus.SHIP) {
-                        correctPlace = false;
-                    }
-                } else if (shape.getWidth() < shape.getHeight()) {
-                    if (board[shipPosX][shipPosY].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX - 1][shipPosY - 1].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX - 1][shipPosY].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX - 1][shipPosY + 1].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX - 1][shipPosY + 2].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX - 1][shipPosY + 3].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX][shipPosY - 1].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX][shipPosY + 1].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX][shipPosY + 2].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX][shipPosY + 3].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX + 1][shipPosY - 1].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX + 1][shipPosY].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX + 1][shipPosY + 1].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX + 1][shipPosY + 2].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX + 1][shipPosY + 3].getSquareStatus() == Square.SquareStatus.SHIP) {
-                        correctPlace = false;
-                    }
-                }
-            } else if (size == 4) {
-                if (shape.getWidth() > shape.getHeight()) {
-                    if (board[shipPosX][shipPosY].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX - 1][shipPosY - 1].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX - 1][shipPosY].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX - 1][shipPosY + 1].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX][shipPosY - 1].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX][shipPosY + 1].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX + 1][shipPosY - 1].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX + 1][shipPosY].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX + 1][shipPosY + 1].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX + 2][shipPosY - 1].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX + 2][shipPosY].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX + 2][shipPosY + 1].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX + 3][shipPosY - 1].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX + 3][shipPosY].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX + 3][shipPosY + 1].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX + 4][shipPosY - 1].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX + 4][shipPosY].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX + 4][shipPosY + 1].getSquareStatus() == Square.SquareStatus.SHIP) {
-                        correctPlace = false;
-                    }
-                } else if (shape.getWidth() < shape.getHeight()) {
-                    if (board[shipPosX][shipPosY].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX - 1][shipPosY - 1].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX][shipPosY - 1].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX + 1][shipPosY - 1].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX - 1][shipPosY].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX + 1][shipPosY].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX - 1][shipPosY + 1].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX][shipPosY + 1].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX + 1][shipPosY + 1].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX - 1][shipPosY + 2].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX][shipPosY + 2].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX + 1][shipPosY + 2].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX - 1][shipPosY + 3].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX][shipPosY + 3].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX + 1][shipPosY + 3].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX - 1][shipPosY + 4].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX][shipPosY + 4].getSquareStatus() == Square.SquareStatus.SHIP
-                            || board[shipPosX + 1][shipPosY + 4].getSquareStatus() == Square.SquareStatus.SHIP) {
+                else if ((shape.getWidth() < shape.getHeight()) && (!(shipPosX + j < 0) && !(shipPosX + j > 9) && !(shipPosY + i < 0) && !(shipPosY + i > 9))) {
+                    if (board[shipPosX + j][shipPosY + i].getSquareStatus() == Square.SquareStatus.SHIP) {
                         correctPlace = false;
                     }
                 }
             }
-        } catch (ArrayIndexOutOfBoundsException ignored) {}
+        }
 
         return correctPlace;
     }

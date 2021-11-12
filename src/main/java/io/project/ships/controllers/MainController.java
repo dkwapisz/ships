@@ -14,7 +14,7 @@ import java.io.IOException;
 public class MainController {
 
     @FXML
-    private Pane pane;
+    private Pane mainPane;
 
     @FXML
     private Pane playerBoard;
@@ -24,11 +24,19 @@ public class MainController {
 
     @FXML
     void backToMenu() throws IOException {
-        Stage stage = (Stage) pane.getScene().getWindow();
+        Main.getPlayerBoard().setBoardEmpty();
+        Main.getPlayerBoard().generateShips();
+        Stage stage = (Stage) mainPane.getScene().getWindow();
         Pane root = FXMLLoader.load(getClass().getResource("/fxml/menu-view.fxml"));
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+    }
+
+    @FXML
+    void placeShipsRandom() {
+        Main.getPlayerBoard().setBoardEmpty();
+        Main.getPlayerBoard().generateShipsRandom();
     }
 
     @FXML

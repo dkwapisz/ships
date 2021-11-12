@@ -37,7 +37,7 @@ public class Board extends Pane {
         }
     }
 
-    private void generateShips() {
+    public void generateShips() {
         if (!isEnemyBoard) {
             for (int i = 0; i < 4; i++) {
                 ships[i] = new Ship(1, i, squareBoard);
@@ -51,6 +51,13 @@ public class Board extends Pane {
             for (int i = 9; i < 10; i++) {
                 ships[i] = new Ship(4, i-9, squareBoard);
             }
+        }
+    }
+
+    public void generateShipsRandom() {
+        //First place the biggest ship
+        for (int i = 9; i > -1; i--) {
+            ships[i].placeInRandom();
         }
     }
 
@@ -73,6 +80,14 @@ public class Board extends Pane {
         square.setPrefWidth(w);
         square.setPrefHeight(h);
         getChildren().add(square);
+    }
+
+    public void setBoardEmpty() {
+        for (int i = 0; i < COLUMNS; i++) {
+            for (int j = 0; j < ROWS; j++) {
+                squareBoard[i][j].setSquareStatus(Square.SquareStatus.EMPTY);
+            }
+        }
     }
 
     public Ship[] getShips() {
