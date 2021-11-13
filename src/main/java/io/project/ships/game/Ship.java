@@ -117,6 +117,7 @@ public class Ship {
                     int xPos = (int) calculateLowestDist().getLayoutX()/40 - 1;
                     int yPos = (int) calculateLowestDist().getLayoutY()/40 - 1;
 
+                    // Clear position only if ship was already placed on board (position is not default -1)
                     if (position[0].getX() >= 0) {
                         clearLastPos();
                     }
@@ -132,11 +133,28 @@ public class Ship {
         }
     }
 
-    //TODO POPRAWIC DZIALANIE RECZNEGO OBRACANIA STATKOW (POWIAZANIE ZE SQUARE STATUS ORAZ WALIDACJA UMIESZCZENIA)
     private void rotateShip() {
+
+        if (size == 1) {
+            return;
+        }
+
         double tmp = shape.getHeight();
         shape.setHeight(shape.getWidth());
         shape.setWidth(tmp);
+
+        if (position[0].getX() >= 0) {
+            clearLastPos();
+        }
+
+        if (!verifyShipsTouch(position[0].getX(), position[0].getY()) || !(((shape.getWidth() > shape.getHeight()) && position[0].getX() <= 10 - size) || ((shape.getWidth() < shape.getHeight()) && position[0].getY() <= 10 - size))) {
+            tmp = shape.getHeight();
+            shape.setHeight(shape.getWidth());
+            shape.setWidth(tmp);
+        }
+
+        setPositionOnBoard(position[0].getX(), position[0].getY());
+
     }
 
     private boolean verifyOutOfBoard() {
