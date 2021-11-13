@@ -1,6 +1,7 @@
 package io.project.ships.controllers;
 
 import io.project.ships.Main;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -16,10 +17,12 @@ public class MenuController {
     private VBox menuScene;
 
     @FXML
-    void startGame() throws IOException {
-        Main main = new Main();
+    void goToGameSettings() throws IOException {
         Stage stage = (Stage) menuScene.getScene().getWindow();
-        main.start(stage);
+        Pane root = FXMLLoader.load(getClass().getResource("/fxml/gameSettings-view.fxml"));
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 
     @FXML
@@ -38,5 +41,10 @@ public class MenuController {
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+    }
+
+    @FXML
+    void quit() {
+        Platform.exit();
     }
 }
