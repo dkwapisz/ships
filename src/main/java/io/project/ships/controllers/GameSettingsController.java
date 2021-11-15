@@ -63,14 +63,15 @@ public class GameSettingsController {
     @FXML
     void goToBoard() throws IOException {
         Main main = new Main();
+        Main.setGameType(whoPlays(), getDifficulty(1), getDifficulty(2));
         Stage stage = (Stage) anchorPane.getScene().getWindow();
         main.start(stage);
     }
 
     @FXML
     void backToMenu() throws IOException {
-        Main.getPlayerBoard().setBoardEmpty();
-        Main.getPlayerBoard().generateShips();
+        Main.getPlayer1Board().setBoardEmpty();
+        Main.getPlayer1Board().generateShips();
         Stage stage = (Stage) anchorPane.getScene().getWindow();
         Pane root = FXMLLoader.load(getClass().getResource("/fxml/menu-view.fxml"));
         Scene scene = new Scene(root);
@@ -78,8 +79,53 @@ public class GameSettingsController {
         stage.show();
     }
 
-    public void initialize() {
+    private int whoPlays() {
+        if (player_VS_player_RB.isSelected()) {
+            return 2;
+        } else if (player_VS_AI_RB.isSelected()) {
+            return 1;
+        } else if (AI_VS_AI_RB.isSelected()) {
+            return 0;
+        } else {
+            System.out.println("ERROR: Players not selected");
+            return -1;
+        }
+    }
 
+    private int getDifficulty(int whichAI) {
+        if (player_VS_player_RB.isSelected() || (player_VS_AI_RB.isSelected() && whichAI == 2)) {
+            return 0;
+        }
+
+        if (whichAI == 1) {
+            if (easy1_RB.isSelected()) {
+                return 1;
+            } else if (medium1_RB.isSelected()) {
+                return 2;
+            } else if (hard1_RB.isSelected()) {
+                return 3;
+            } else {
+                System.out.println("ERROR: Difficulty 1 not set");
+                return 0;
+            }
+        } else if (whichAI == 2) {
+            if (easy2_RB.isSelected()) {
+                return 1;
+            } else if (medium2_RB.isSelected()) {
+                return 2;
+            } else if (hard2_RB.isSelected()) {
+                return 3;
+            } else {
+                System.out.println("ERROR: Difficulty 2 not set");
+                return 0;
+            }
+        } else {
+            System.out.println("ERROR: Wrong function call");
+            return 0;
+        }
+    }
+
+    public void initialize() {
         player_VS_player_RB.setOnAction(actionEvent -> {
             if (player_VS_player_RB.isSelected()) {
                 easy1_RB.setDisable(true);

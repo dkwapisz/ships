@@ -24,8 +24,8 @@ public class MainController {
 
     @FXML
     void backToMenu() throws IOException {
-        Main.getPlayerBoard().setBoardEmpty();
-        Main.getPlayerBoard().generateShips();
+        Main.getPlayer1Board().setBoardEmpty();
+        Main.getPlayer1Board().generateShips();
         Stage stage = (Stage) mainPane.getScene().getWindow();
         Pane root = FXMLLoader.load(getClass().getResource("/fxml/menu-view.fxml"));
         Scene scene = new Scene(root);
@@ -35,8 +35,8 @@ public class MainController {
 
     @FXML
     void placeShipsRandom() {
-        Main.getPlayerBoard().setBoardEmpty();
-        Main.getPlayerBoard().generateShipsRandom();
+        Main.getPlayer1Board().setBoardEmpty();
+        Main.getPlayer1Board().generateShipsRandom();
     }
 
     @FXML
@@ -45,9 +45,9 @@ public class MainController {
 
         for (int j = 0; j < 10; j++) {
             for (int i = 0; i < 10; i++) {
-                if (Main.getPlayerBoard().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.EMPTY) {
+                if (Main.getPlayer1Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.EMPTY) {
                     line += "0 ";
-                } else if (Main.getPlayerBoard().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.SHIP) {
+                } else if (Main.getPlayer1Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.SHIP) {
                     line += "S ";
                 }
             }
