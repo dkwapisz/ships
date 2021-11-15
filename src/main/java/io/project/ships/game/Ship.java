@@ -73,7 +73,7 @@ public class Ship {
 
         shape.setOnMouseClicked(event -> {
             if (event.isPopupTrigger()) {
-                rotateShip();
+                rotateShip(false);
             }
         });
     }
@@ -83,7 +83,7 @@ public class Ship {
         int maxBoundY = 10;
 
         if (random.nextBoolean()) {
-            rotateShip();
+            rotateShip(true);
         }
 
         if (shape.getWidth() > shape.getHeight()) {
@@ -133,27 +133,33 @@ public class Ship {
         }
     }
 
-    private void rotateShip() {
+    private void rotateShip(boolean isRandom) {
 
-        if (size == 1) {
-            return;
-        }
-
-        double tmp = shape.getHeight();
-        shape.setHeight(shape.getWidth());
-        shape.setWidth(tmp);
-
-        if (position[0].getX() >= 0) {
-            clearLastPos();
-        }
-
-        if (!verifyShipsTouch(position[0].getX(), position[0].getY()) || !(((shape.getWidth() > shape.getHeight()) && position[0].getX() <= 10 - size) || ((shape.getWidth() < shape.getHeight()) && position[0].getY() <= 10 - size))) {
-            tmp = shape.getHeight();
+        if (isRandom) {
+            double tmp = shape.getHeight();
             shape.setHeight(shape.getWidth());
             shape.setWidth(tmp);
-        }
+        } else {
+            if (size == 1) {
+                return;
+            }
 
-        setPositionOnBoard(position[0].getX(), position[0].getY());
+            double tmp = shape.getHeight();
+            shape.setHeight(shape.getWidth());
+            shape.setWidth(tmp);
+
+            if (position[0].getX() >= 0) {
+                clearLastPos();
+            }
+
+            if (!verifyShipsTouch(position[0].getX(), position[0].getY()) || !(((shape.getWidth() > shape.getHeight()) && position[0].getX() <= 10 - size) || ((shape.getWidth() < shape.getHeight()) && position[0].getY() <= 10 - size))) {
+                tmp = shape.getHeight();
+                shape.setHeight(shape.getWidth());
+                shape.setWidth(tmp);
+            }
+
+            setPositionOnBoard(position[0].getX(), position[0].getY());
+        }
 
     }
 
