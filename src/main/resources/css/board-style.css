@@ -9,6 +9,42 @@
     -fx-border-width: 1px;
 }
 
+.miss {
+    -fx-border-color: black;
+    -fx-background-color: red;
+    -fx-border-width: 1px;
+}
+
+.damaged {
+    -fx-border-color: black;
+    -fx-background-color: #63ff63;
+    -fx-border-width: 1px;
+}
+
+.destroyed {
+    -fx-border-color: black;
+    -fx-background-color: #006900;
+    -fx-border-width: 1px;
+}
+
+.missMyBoard {
+    -fx-border-color: black;
+    -fx-background-color: #ff8282;
+    -fx-border-width: 1px;
+}
+
+.damagedMyBoard {
+    -fx-border-color: black;
+    -fx-background-color: #e10000;
+    -fx-border-width: 1px;
+}
+
+.destroyedMyBoard {
+    -fx-border-color: black;
+    -fx-background-color: #000000;
+    -fx-border-width: 1px;
+}
+
 #playerBoard {
     -fx-background-color: #bbe1ee;
 }

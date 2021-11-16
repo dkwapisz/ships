@@ -15,6 +15,7 @@ public class Ship {
     private Square[][] board;
     private Position[] position;
     private Random random = new Random();
+    private int dmgCount;
 
     public Ship(int size, int whichShip, Square[][] board) {
         this.board = board;
@@ -23,7 +24,7 @@ public class Ship {
         setStartPositions();
         makeShape(size, whichShip);
         shape.setFill(Color.BLUE);
-        shape.setOpacity(0.6);
+        shape.setOpacity(0.4);
         setMouseListener();
     }
 
@@ -46,34 +47,25 @@ public class Ship {
     }
 
     private void setMouseListener() {
+
         shape.setOnMouseDragged(event -> {
-            shape.setX(event.getSceneX() - shape.getWidth()/2);
-            shape.setY(event.getSceneY() - shape.getHeight()/2);
-
-            //TODO TO DZIAŁA ŹLE (DODATKOWA FUNKCJA, NIE MUSI BYC ZAIMPLEMENTOWANA)
-//            for (int i = 0; i < board.length; i++) {
-//                for (int j = 0; j < board[i].length; j++) {
-//
-//                    Rectangle boardRectangle = new Rectangle(board[i][j].getLayoutX(), board[i][j].getLayoutY(), board[i][j].getWidth(), board[i][j].getHeight());
-//
-//                    if (shape.intersects(boardRectangle.getBoundsInParent())) {
-//                        board[i][j].getStyleClass().add("cell-highlight");
-//                    } else {
-//                        board[i][j].getStyleClass().remove("cell-highlight");
-//                        board[i][j].getStyleClass().add("cell");
-//                    }
-//                }
-//            }
-
+            if (!Main.isGameStarted()) {
+                shape.setX(event.getSceneX() - shape.getWidth() / 2);
+                shape.setY(event.getSceneY() - shape.getHeight() / 2);
+            }
         });
 
         shape.setOnMouseReleased(event -> {
-            placeShip();
+            if (!Main.isGameStarted()) {
+                placeShip();
+            }
         });
 
         shape.setOnMouseClicked(event -> {
-            if (event.isPopupTrigger()) {
-                rotateShip(false);
+            if (!Main.isGameStarted()) {
+                if (event.isPopupTrigger()) {
+                    rotateShip(false);
+                }
             }
         });
     }
@@ -305,4 +297,14 @@ public class Ship {
         this.shape = shape;
     }
 
+    public int getDmgCount() {
+        return dmgCount;
+    }
+    public void addDmgCount() {
+        this.dmgCount += 1;
+    }
+
+    public Position[] getPosition() {
+        return position;
+    }
 }

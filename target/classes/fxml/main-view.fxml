@@ -9,7 +9,7 @@
       <Pane fx:id="playerBoard" layoutX="40.0" layoutY="40.0" prefHeight="400.0" prefWidth="400.0" />
       <Pane fx:id="enemyBoard" layoutX="760.0" layoutY="40.0" prefHeight="400.0" prefWidth="400.0" />
       <Button layoutX="540.0" layoutY="668.0" mnemonicParsing="false" onAction="#printBoardStatus" text="Print board status" />
-      <Button layoutX="567.0" layoutY="613.0" mnemonicParsing="false" onAction="#placeShipsRandom" text="Random" />
-      <Button layoutX="565.0" layoutY="556.0" mnemonicParsing="false" onAction="#setShip" text="Im ready!" />
+      <Button fx:id="randomButton" layoutX="567.0" layoutY="613.0" mnemonicParsing="false" onAction="#placeShipsRandom" text="Random" />
+      <Button fx:id="imReadyButton" layoutX="565.0" layoutY="556.0" mnemonicParsing="false" onAction="#setShip" text="Im ready!" />
    </children>
 </Pane>

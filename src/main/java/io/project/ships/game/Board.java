@@ -90,11 +90,26 @@ public class Board extends Pane {
         }
     }
 
+    public void setEnemyBoardStatus(Board enemyBoard) {
+        for (int i = 0; i < COLUMNS; i++) {
+            for (int j = 0; j < ROWS; j++) {
+                squareBoard[i][j].setSquareStatus(enemyBoard.getSquareBoard()[i][j].getSquareStatus());
+            }
+        }
+        setShips(enemyBoard.getShips());
+    }
+
     public Ship[] getShips() {
         return ships;
+    }
+
+    public void setShips(Ship[] ships) {
+        this.ships = ships;
     }
 
     public Square[][] getSquareBoard() {
         return squareBoard;
     }
+
+
 }

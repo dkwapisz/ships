@@ -70,6 +70,7 @@ public class GameSettingsController {
 
     @FXML
     void backToMenu() throws IOException {
+        //TODO Naprawić działanie tego
         Main.getPlayer1Board().setBoardEmpty();
         Main.getPlayer1Board().generateShips();
         Stage stage = (Stage) anchorPane.getScene().getWindow();

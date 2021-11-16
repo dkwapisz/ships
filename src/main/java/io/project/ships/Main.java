@@ -1,6 +1,7 @@
 package io.project.ships;
 
 import io.project.ships.game.Board;
+import io.project.ships.game.Square;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -40,6 +41,7 @@ public class Main extends Application {
     private static boolean player1SetShips;
     private static boolean player2SetShips;
     private static boolean gameStarted;
+    private static boolean boardSet;
 
     private static int lastPlayer;
 
@@ -67,6 +69,12 @@ public class Main extends Application {
         Main.difficulty2 = difficulty2;
     }
 
+    private static void setEnemyBoards() {
+        boardSet = true;
+        enemy1Board.setEnemyBoardStatus(player2Board);
+        enemy2Board.setEnemyBoardStatus(player1Board);
+    }
+
     private void gameLoop() {
         if (humanPlayers == 2) {
             if (!gameStarted) {
@@ -79,9 +87,73 @@ public class Main extends Application {
                     gameStarted = true;
                 }
             } else {
-                System.out.println("GAME BEGINS");
+                if (!boardSet) {
+                    setEnemyBoards();
+                }
+
+                if (player1Turn) {
+                    addNodesToRoot(1);
+                } else {
+                    addNodesToRoot(2);
+                }
+                changeStyle();
+
                 // TODO Mouselistener i cała rozgrywka player vs player
             }
+        }
+
+        checkEndGame();
+    }
+
+    private void changeStyle() {
+        for (int i = 0; i < BOARD_ROWS; i++) {
+            for (int j = 0; j < BOARD_COLUMNS; j++) {
+                if (player1Turn) {
+                    if (enemy1Board.getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.DAMAGED) {
+                        enemy1Board.getSquareBoard()[i][j].getStyleClass().add("damaged");
+                        player2Board.getSquareBoard()[i][j].getStyleClass().add("damagedMyBoard");
+                    } else if (enemy1Board.getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.DESTROYED) {
+                        enemy1Board.getSquareBoard()[i][j].getStyleClass().add("destroyed");
+                        player2Board.getSquareBoard()[i][j].getStyleClass().add("destroyedMyBoard");
+                    } else if (enemy1Board.getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.MISS) {
+                        enemy1Board.getSquareBoard()[i][j].getStyleClass().add("miss");
+                        player2Board.getSquareBoard()[i][j].getStyleClass().add("missMyBoard");
+                    }
+                } else {
+                    if (enemy2Board.getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.DAMAGED) {
+                        enemy2Board.getSquareBoard()[i][j].getStyleClass().add("damaged");
+                        player1Board.getSquareBoard()[i][j].getStyleClass().add("damagedMyBoard");
+                    } else if (enemy2Board.getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.DESTROYED) {
+                        enemy2Board.getSquareBoard()[i][j].getStyleClass().add("destroyed");
+                        player1Board.getSquareBoard()[i][j].getStyleClass().add("destroyedMyBoard");
+                    } else if (enemy2Board.getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.MISS) {
+                        enemy2Board.getSquareBoard()[i][j].getStyleClass().add("miss");
+                        player1Board.getSquareBoard()[i][j].getStyleClass().add("missMyBoard");
+                    }
+                }
+            }
+        }
+    }
+
+    private void checkEndGame() {
+        int count1 = 0;
+        int count2 = 0;
+        for (int i = 0; i < BOARD_ROWS; i++) {
+            for (int j = 0; j < BOARD_COLUMNS; j++) {
+                if (enemy1Board.getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.DESTROYED) {
+                    count1++;
+                }
+                if (enemy2Board.getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.DESTROYED) {
+                    count2++;
+                }
+            }
+        }
+        if (count1 == 20) {
+            mainTimeline.stop();
+            System.out.println("PLAYER 1 WINS");
+        } else if (count2 == 20){
+            mainTimeline.stop();
+            System.out.println("PLAYER 2 WINS");
         }
     }
 
@@ -114,6 +186,14 @@ public class Main extends Application {
             lastPlayer = whichPlayer;
         }
 
+    }
+
+    public static Timeline getMainTimeline() {
+        return mainTimeline;
+    }
+
+    public static boolean isGameStarted() {
+        return gameStarted;
     }
 
     public static void setPlayer1Turn(boolean player1Turn) {
