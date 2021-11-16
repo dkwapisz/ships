@@ -150,6 +150,7 @@ public class Ship {
                 shape.setWidth(tmp);
             }
 
+            //TODO Błąd przy obracaniu statków gdy są poza planszą
             setPositionOnBoard(position[0].getX(), position[0].getY());
         }
 
