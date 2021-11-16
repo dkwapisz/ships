@@ -108,6 +108,8 @@ public class MainController {
                 }
                 line += "\n";
             }
+            System.out.println(line);
+            line = "";
             System.out.println("- - - - - - - - - -");
             System.out.println("ENEMY1 BOARD:");
             for (int j = 0; j < 10; j++) {
@@ -124,6 +126,8 @@ public class MainController {
                 }
                 line += "\n";
             }
+            System.out.println(line);
+            line = "";
         } else {
             System.out.println("- - - - - - - - - -");
             System.out.println("PLAYER2 BOARD:");
@@ -141,6 +145,8 @@ public class MainController {
                 }
                 line += "\n";
             }
+            System.out.println(line);
+            line = "";
             System.out.println("- - - - - - - - - -");
             System.out.println("ENEMY2 BOARD:");
             for (int j = 0; j < 10; j++) {
@@ -157,10 +163,9 @@ public class MainController {
                 }
                 line += "\n";
             }
+            System.out.println(line);
+            line = "";
         }
-
-
-        System.out.println(line);
     }
 
 }
