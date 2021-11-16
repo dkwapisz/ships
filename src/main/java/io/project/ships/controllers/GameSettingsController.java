@@ -69,10 +69,8 @@ public class GameSettingsController {
     }
 
     @FXML
-    void backToMenu() throws IOException {
-        //TODO Naprawić działanie tego
-        Main.getPlayer1Board().setBoardEmpty();
-        Main.getPlayer1Board().generateShips();
+    void backToMenu() throws Exception {
+        //TODO Naprawić działanie tego - rozgrywka musi się całkowicie zrestartować po naciśnięciu tego przycisku
         Stage stage = (Stage) anchorPane.getScene().getWindow();
         Pane root = FXMLLoader.load(getClass().getResource("/fxml/menu-view.fxml"));
         Scene scene = new Scene(root);

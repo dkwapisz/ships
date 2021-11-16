@@ -104,6 +104,8 @@ public class MainController {
                         line += "X ";
                     } else if (Main.getPlayer1Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.DESTROYED) {
                         line += "D ";
+                    } else if (Main.getPlayer1Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.MISS) {
+                        line += "M ";
                     }
                 }
                 line += "\n";
@@ -122,6 +124,8 @@ public class MainController {
                         line += "X ";
                     }  else if (Main.getEnemy1Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.DESTROYED) {
                         line += "D ";
+                    } else if (Main.getEnemy1Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.MISS) {
+                        line += "M ";
                     }
                 }
                 line += "\n";
@@ -141,6 +145,8 @@ public class MainController {
                         line += "X ";
                     } else if (Main.getPlayer2Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.DESTROYED) {
                         line += "D ";
+                    } else if (Main.getPlayer2Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.MISS) {
+                        line += "M ";
                     }
                 }
                 line += "\n";
@@ -159,6 +165,8 @@ public class MainController {
                         line += "X ";
                     } else if (Main.getEnemy2Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.DESTROYED) {
                         line += "D ";
+                    } else if (Main.getEnemy2Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.MISS) {
+                        line += "M ";
                     }
                 }
                 line += "\n";

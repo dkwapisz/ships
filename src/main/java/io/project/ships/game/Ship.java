@@ -121,6 +121,15 @@ public class Ship {
                         setPositionOnBoard(xPos, yPos);
                     }
                 }
+                if (!verifyOutOfBoard()) {
+                    if (position[0].getX() >= 0) {
+                        clearLastPos();
+                        for (int k = 0; k < size; k++) {
+                            position[k].setX(-1);
+                            position[k].setY(-1);
+                        }
+                    }
+                }
             }
         }
     }
@@ -150,8 +159,9 @@ public class Ship {
                 shape.setWidth(tmp);
             }
 
-            //TODO Błąd przy obracaniu statków gdy są poza planszą
-            setPositionOnBoard(position[0].getX(), position[0].getY());
+            if (position[0].getX() >= 0) {
+                setPositionOnBoard(position[0].getX(), position[0].getY());
+            }
         }
 
     }
@@ -160,6 +170,8 @@ public class Ship {
         Rectangle boardRectangle = new Rectangle(board[0][0].getLayoutX(), board[0][0].getLayoutY(), board[0][0].getWidth()*board.length, board[0][0].getHeight()*board.length);
         Point2D vertex1 = new Point2D(shape.getX(), shape.getY());
         Point2D vertex2 = new Point2D(shape.getX() + shape.getWidth(), shape.getY() + shape.getHeight());
+
+        //TODO Ewentualna poprawa działania tej funkcji, aby przy ustawianiu statków nie trzeba było ich "upuszczać" idealnie wewnątrz planszy
 
         return boardRectangle.contains(vertex1) && boardRectangle.contains(vertex2);
     }

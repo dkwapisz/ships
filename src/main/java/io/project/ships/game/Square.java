@@ -26,28 +26,25 @@ public class Square extends StackPane {
             if (squareStatus == SquareStatus.SHIP) {
                 squareStatus = SquareStatus.DAMAGED;
                 if (Main.isPlayer1Turn()) {
-                    for (int i = 0; i < Main.getEnemy1Board().getShips().length; i++) {
-                        for (int j = 0; j < Main.getEnemy1Board().getShips()[i].getSize(); j++) {
-                            if (Main.getEnemy1Board().getShips()[i].getPosition()[j].getX() == position.getX() && Main.getEnemy1Board().getShips()[i].getPosition()[j].getY() == position.getY()) {
-                                Main.getEnemy1Board().getShips()[i].addDmgCount();
-                                if (Main.getEnemy1Board().getShips()[i].getDmgCount() == Main.getEnemy1Board().getShips()[i].getSize()) {
-                                    for (int k = 0; k < Main.getEnemy1Board().getShips()[i].getSize(); k++) {
-                                        Main.getEnemy1Board().getSquareBoard()[Main.getEnemy1Board().getShips()[i].getPosition()[k].getX()][Main.getEnemy1Board().getShips()[i].getPosition()[k].getY()].setSquareStatus(SquareStatus.DESTROYED);
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    hitShip(Main.getEnemy1Board().getShips(), true);
                 } else {
-                    for (int i = 0; i < Main.getEnemy2Board().getShips().length; i++) {
-                        for (int j = 0; j < Main.getEnemy2Board().getShips()[i].getSize(); j++) {
-                            if (Main.getEnemy2Board().getShips()[i].getPosition()[j].getX() == position.getX() && Main.getEnemy2Board().getShips()[i].getPosition()[j].getY() == position.getY()) {
-                                Main.getEnemy2Board().getShips()[i].addDmgCount();
-                                if (Main.getEnemy2Board().getShips()[i].getDmgCount() == Main.getEnemy2Board().getShips()[i].getSize()) {
-                                    for (int k = 0; k < Main.getEnemy2Board().getShips()[i].getSize(); k++) {
-                                        Main.getEnemy2Board().getSquareBoard()[Main.getEnemy2Board().getShips()[i].getPosition()[k].getX()][Main.getEnemy2Board().getShips()[i].getPosition()[k].getY()].setSquareStatus(SquareStatus.DESTROYED);
-                                    }
-                                }
+                    hitShip(Main.getEnemy2Board().getShips(), false);
+                }
+            }
+        }
+    }
+
+    private void hitShip(Ship[] ships, boolean enemy1Board) {
+        for (int i = 0; i < ships.length; i++) {
+            for (int j = 0; j < ships[i].getSize(); j++) {
+                if (ships[i].getPosition()[j].getX() == position.getX() && ships[i].getPosition()[j].getY() == position.getY()) {
+                    ships[i].addDmgCount();
+                    if (ships[i].getDmgCount() == ships[i].getSize()) {
+                        for (int k = 0; k < ships[i].getSize(); k++) {
+                            if (enemy1Board) {
+                                Main.getEnemy1Board().getSquareBoard()[ships[i].getPosition()[k].getX()][ships[i].getPosition()[k].getY()].setSquareStatus(SquareStatus.DESTROYED);
+                            } else {
+                                Main.getEnemy2Board().getSquareBoard()[ships[i].getPosition()[k].getX()][ships[i].getPosition()[k].getY()].setSquareStatus(SquareStatus.DESTROYED);
                             }
                         }
                     }

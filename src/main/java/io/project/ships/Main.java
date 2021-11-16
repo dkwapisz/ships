@@ -28,6 +28,9 @@ public class Main extends Application {
 
     private static Timeline mainTimeline;
 
+    // playerBoard przechowuje tylko informacje, gdzie znajdują się statki danego gracza
+    // enemyBoard przechowuje informacje o wszystkich uszkodzonych, nieuszkodzonych, zatopionych statkach oraz o pudłach
+    // enemy1Board przedstawia plansze gracza nr 2, enemy2Board przedstawia plansze gracza nr 1
     private static Board player1Board = new Board(BOARD_COLUMNS, BOARD_ROWS, BOARD_WIDTH, BOARD_HEIGHT, false);
     private static Board enemy1Board = new Board(BOARD_COLUMNS, BOARD_ROWS, BOARD_WIDTH, BOARD_HEIGHT, true);
     private static Board player2Board = new Board(BOARD_COLUMNS, BOARD_ROWS, BOARD_WIDTH, BOARD_HEIGHT, false);
@@ -97,9 +100,11 @@ public class Main extends Application {
                     addNodesToRoot(2);
                 }
                 changeStyle();
-
-                // TODO Mouselistener i cała rozgrywka player vs player
             }
+        } else if (humanPlayers == 1) {
+            //TODO Rozgrywka Player vs AI
+        } else if (humanPlayers == 0) {
+            //TODO Rozgrywka AI vs AI
         }
 
         checkEndGame();
