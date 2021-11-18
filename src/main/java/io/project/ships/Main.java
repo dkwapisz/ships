@@ -102,9 +102,9 @@ public class Main extends Application {
                 changeStyle();
             }
         } else if (humanPlayers == 1) {
-            //TODO Rozgrywka Player vs AI
+            //TODO Rozgrywka Player vs AI.
         } else if (humanPlayers == 0) {
-            //TODO Rozgrywka AI vs AI
+            //TODO Rozgrywka AI vs AI.
         }
 
         checkEndGame();
