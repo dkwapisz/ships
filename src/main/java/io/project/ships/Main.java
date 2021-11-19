@@ -17,6 +17,7 @@ import java.util.Objects;
 public class Main extends Application {
 
     private static Pane root;
+    private static Scene scene;
 
     private static final int BOARD_COLUMNS = 10;
     private static final int BOARD_ROWS = 10;
@@ -54,12 +55,18 @@ public class Main extends Application {
 
         addNodesToRoot(1);
 
-        Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+        scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
         stage.setTitle("Ships!");
         stage.setScene(scene);
         stage.show();
 
-        mainTimeline = new Timeline(new KeyFrame(Duration.millis(25), e -> gameLoop()));
+        mainTimeline = new Timeline(new KeyFrame(Duration.millis(25), e -> {
+            try {
+                gameLoop();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }));
         mainTimeline.setCycleCount(Timeline.INDEFINITE);
         mainTimeline.play();
     }
@@ -78,7 +85,7 @@ public class Main extends Application {
         enemy2Board.setEnemyBoardStatus(player1Board);
     }
 
-    private void gameLoop() {
+    private void gameLoop() throws IOException {
         if (humanPlayers == 2) {
             if (!gameStarted) {
                 if (player1SetShips && !player2SetShips) {
@@ -162,9 +169,10 @@ public class Main extends Application {
         }
     }
 
-    private void addNodesToRoot(int whichPlayer) {
+    public static void addNodesToRoot(int whichPlayer) {
 
         if (lastPlayer != whichPlayer) {
+            System.out.println('x');
             if (whichPlayer == 1) {
                 root.getChildren().remove(player2Board);
                 root.getChildren().remove(enemy2Board);
@@ -191,6 +199,16 @@ public class Main extends Application {
             lastPlayer = whichPlayer;
         }
 
+    }
+
+    public static void hideBoard() throws IOException {
+        if (isGameStarted()) {
+            Stage stage = (Stage) root.getScene().getWindow();
+            Pane root = FXMLLoader.load(Main.class.getResource("/fxml/hidingBoard-view.fxml"));
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
     }
 
     public static Timeline getMainTimeline() {
@@ -231,6 +249,10 @@ public class Main extends Application {
 
     public static Board getEnemy2Board() {
         return enemy2Board;
+    }
+
+    public static Scene getScene() {
+        return scene;
     }
 
     public static void main(String[] args) {

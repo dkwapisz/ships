@@ -4,6 +4,8 @@ import io.project.ships.Main;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 
+import java.io.IOException;
+
 public class Square extends StackPane {
 
     private Position position;
@@ -14,14 +16,21 @@ public class Square extends StackPane {
         squareStatus = SquareStatus.EMPTY;
         getStyleClass().add("cell");
         setOpacity(1);
-        addEventFilter(MouseEvent.MOUSE_CLICKED, e -> mouseClick());
+        addEventFilter(MouseEvent.MOUSE_CLICKED, e -> {
+            try {
+                mouseClick();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        });
     }
 
-    private void mouseClick() {
+    private void mouseClick() throws IOException {
         if (Main.isGameStarted()) {
             if (squareStatus == SquareStatus.EMPTY) {
                 squareStatus = SquareStatus.MISS;
                 Main.setPlayer1Turn(!Main.isPlayer1Turn());
+                Main.hideBoard();
             }
             if (squareStatus == SquareStatus.SHIP) {
                 squareStatus = SquareStatus.DAMAGED;
