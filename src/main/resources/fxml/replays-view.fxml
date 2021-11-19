@@ -4,8 +4,8 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 
-<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.project.ships.controllers.ReplaysController">
-   <children>
-      <Button layoutX="246.0" layoutY="318.0" mnemonicParsing="false" onAction="#backToMenu" text="Back to menu" />
-   </children>
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="io.project.ships.controllers.ReplaysController">
+   <Button layoutX="246.0" layoutY="318.0" mnemonicParsing="false" onAction="#backToMenu" text="Back to menu"/>
 </AnchorPane>

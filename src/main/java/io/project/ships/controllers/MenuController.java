@@ -1,6 +1,5 @@
 package io.project.ships.controllers;
 
-import io.project.ships.Main;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

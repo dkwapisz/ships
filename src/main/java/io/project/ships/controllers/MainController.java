@@ -1,6 +1,5 @@
 package io.project.ships.controllers;
 
-
 import io.project.ships.Main;
 import io.project.ships.game.Square;
 import javafx.fxml.FXML;
