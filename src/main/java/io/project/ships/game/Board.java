@@ -2,6 +2,8 @@ package io.project.ships.game;
 
 import javafx.scene.layout.Pane;
 
+import java.util.ArrayList;
+
 public class Board extends Pane {
 
     private Square[][] squareBoard;
@@ -59,6 +61,36 @@ public class Board extends Pane {
         for (int i = 9; i > -1; i--) {
             ships[i].placeInRandom();
         }
+    }
+
+    public void markAsMiss(Ship ship, boolean AI, ArrayList<Position> notTakenPos) {
+        int x = ship.getPosition()[0].getX();
+        int y = ship.getPosition()[0].getY();
+
+        for (int i = -1; i < ship.getSize() + 1; i++) {
+            for (int j = -1; j < 2; j++) {
+                if ((ship.getShape().getWidth() >= ship.getShape().getHeight()) && (!(x + i < 0) && !(x + i > 9) && !(y + j < 0) && !(y + j > 9))) {
+                    if (squareBoard[x + i][y + j].getSquareStatus() == Square.SquareStatus.EMPTY) {
+                        squareBoard[x + i][y + j].setSquareStatus(Square.SquareStatus.MISS);
+                        if (AI) {
+                            removePosition(x + i, y + j, notTakenPos);
+                        }
+                    }
+                }
+                else if ((ship.getShape().getWidth() < ship.getShape().getHeight()) && (!(x + j < 0) && !(x + j > 9) && !(y + i < 0) && !(y + i > 9))) {
+                    if (squareBoard[x + j][y + i].getSquareStatus() == Square.SquareStatus.EMPTY) {
+                        squareBoard[x + j][y + i].setSquareStatus(Square.SquareStatus.MISS);
+                        if (AI) {
+                            removePosition(x + i, y + j, notTakenPos);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void removePosition(int x, int y,  ArrayList<Position> notTakenPos) {
+        notTakenPos.removeIf(pos -> pos.getX() == x && pos.getY() == y);
     }
 
     private void addSquare(Square square, int column, int row) {

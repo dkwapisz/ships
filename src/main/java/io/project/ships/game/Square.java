@@ -60,6 +60,11 @@ public class Square extends StackPane {
                                 Main.getEnemy2Board().getSquareBoard()[ships[i].getPosition()[k].getX()][ships[i].getPosition()[k].getY()].setSquareStatus(SquareStatus.DESTROYED);
                             }
                         }
+                        if (enemy1Board) {
+                            Main.getEnemy1Board().markAsMiss(ships[i], false, null);
+                        } else {
+                            Main.getEnemy2Board().markAsMiss(ships[i], false, null);
+                        }
                     }
                 }
             }

@@ -39,6 +39,9 @@ public class Main extends Application {
     private static Board player2Board = new Board(BOARD_COLUMNS, BOARD_ROWS, BOARD_WIDTH, BOARD_HEIGHT, false);
     private static Board enemy2Board = new Board(BOARD_COLUMNS, BOARD_ROWS, BOARD_WIDTH, BOARD_HEIGHT, true);
 
+    private static AI AI_1;
+    private static AI AI_2;
+
     private static int humanPlayers;
     private static int difficulty1;
     private static int difficulty2;
@@ -79,6 +82,13 @@ public class Main extends Application {
         Main.humanPlayers = humanPlayers;
         Main.difficulty1 = difficulty1;
         Main.difficulty2 = difficulty2;
+
+        if (difficulty1 > 0) {
+            AI_1 = new AI();
+        }
+        if (difficulty2 > 0) {
+            AI_2 = new AI();
+        }
     }
 
     private static void setEnemyBoards() {
@@ -111,25 +121,22 @@ public class Main extends Application {
                 changeStyle();
             }
         } else if (humanPlayers == 1) {
-            if (difficulty1 == 1) {
-                if (!gameStarted) {
-                    if (player1SetShips) {
-                        player2Board.generateShipsRandom();
-                        player2SetShips = true;
-                        player1Turn = true;
-                        gameStarted = true;
-                    }
-                } else {
-                    if (!boardSet) {
-                        setEnemyBoards();
-                    }
+            if (!gameStarted) {
+                if (player1SetShips) {
+                    player2Board.generateShipsRandom();
+                    player2SetShips = true;
+                    player1Turn = true;
+                    gameStarted = true;
+                }
+            } else {
+                if (!boardSet) {
+                    setEnemyBoards();
+                }
 
-                    changeStyle();
+                changeStyle();
 
-                    if (!player1Turn) {
-                        hitAISquare(1);
-                    }
-
+                while (!player1Turn) {
+                    AI_1.hitAISquare(difficulty1, enemy2Board, enemy2Board.getShips());
                 }
             }
         } else if (humanPlayers == 0) {
@@ -139,38 +146,6 @@ public class Main extends Application {
         checkEndGame();
     }
 
-    private void hitAISquare(int difficulty) {
-        Position position = null;
-
-        if (difficulty == 1) {
-            position = AI.getShotEasy();
-        }
-
-        if (enemy2Board.getSquareBoard()[position.getX()][position.getY()].getSquareStatus() == Square.SquareStatus.EMPTY) {
-            enemy2Board.getSquareBoard()[position.getX()][position.getY()].setSquareStatus(Square.SquareStatus.MISS);
-        } else if (enemy2Board.getSquareBoard()[position.getX()][position.getY()].getSquareStatus() == Square.SquareStatus.SHIP) {
-            enemy2Board.getSquareBoard()[position.getX()][position.getY()].setSquareStatus(Square.SquareStatus.DAMAGED);
-            for (int i = 0; i < enemy2Board.getShips().length; i++) {
-                for (int j = 0; j < enemy2Board.getShips()[i].getSize(); j++) {
-                    if (position.getX() == enemy2Board.getShips()[i].getPosition()[j].getX() && position.getY() == enemy2Board.getShips()[i].getPosition()[j].getY()) {
-                        enemy2Board.getShips()[i].addDmgCount();
-                        break;
-                    }
-                }
-            }
-            for (int i = 0; i < enemy2Board.getShips().length; i++) {
-                if (enemy2Board.getShips()[i].getDmgCount() == enemy2Board.getShips()[i].getSize()) {
-                        for (int j = 0; j < enemy2Board.getShips()[i].getSize(); j++) {
-                            enemy2Board.getSquareBoard()[enemy2Board.getShips()[i].getPosition()[j].getX()][enemy2Board.getShips()[i].getPosition()[j].getY()].setSquareStatus(Square.SquareStatus.DESTROYED);
-                        }
-                    break;
-                }
-            }
-
-        }
-
-        player1Turn = true;
-    }
 
     private void changeStyle() {
         for (int i = 0; i < BOARD_ROWS; i++) {

@@ -16,6 +16,7 @@ public class Ship {
     private Position[] position;
     private Random random = new Random();
     private int dmgCount;
+    private boolean destroyed;
 
     public Ship(int size, int whichShip, Square[][] board) {
         this.board = board;
@@ -317,7 +318,18 @@ public class Ship {
         this.dmgCount += 1;
     }
 
+    public Square[][] getBoard() {
+        return board;
+    }
+
     public Position[] getPosition() {
         return position;
+    }
+
+    public boolean isDestroyed() {
+        return destroyed;
+    }
+    public void setDestroyed(boolean destroyed) {
+        this.destroyed = destroyed;
     }
 }
