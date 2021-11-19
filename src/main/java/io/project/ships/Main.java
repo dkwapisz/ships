@@ -211,6 +211,27 @@ public class Main extends Application {
         }
     }
 
+    public static void restartGame() {
+        mainTimeline.stop();
+
+        player1Board = new Board(BOARD_COLUMNS, BOARD_ROWS, BOARD_WIDTH, BOARD_HEIGHT, false);
+        enemy1Board = new Board(BOARD_COLUMNS, BOARD_ROWS, BOARD_WIDTH, BOARD_HEIGHT, true);
+        player2Board = new Board(BOARD_COLUMNS, BOARD_ROWS, BOARD_WIDTH, BOARD_HEIGHT, false);
+        enemy2Board = new Board(BOARD_COLUMNS, BOARD_ROWS, BOARD_WIDTH, BOARD_HEIGHT, true);
+
+        humanPlayers = 0;
+        difficulty1 = 0;
+        difficulty2 = 0;
+
+        player1Turn = true;
+        player1SetShips = false;
+        player2SetShips = false;
+        gameStarted = false;
+        boardSet = false;
+
+        lastPlayer = 0;
+    }
+
     public static Timeline getMainTimeline() {
         return mainTimeline;
     }
