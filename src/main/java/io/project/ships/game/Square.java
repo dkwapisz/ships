@@ -30,7 +30,11 @@ public class Square extends StackPane {
             if (squareStatus == SquareStatus.EMPTY) {
                 squareStatus = SquareStatus.MISS;
                 Main.setPlayer1Turn(!Main.isPlayer1Turn());
-                Main.hideBoard();
+
+                //Jeśli nie gramy z AI to trzeba przysłaniać plansze -> wtedy difficulty1 jest ustawione na 0
+                if (Main.getDifficulty1() == 0) {
+                    Main.hideBoard();
+                }
             }
             if (squareStatus == SquareStatus.SHIP) {
                 squareStatus = SquareStatus.DAMAGED;

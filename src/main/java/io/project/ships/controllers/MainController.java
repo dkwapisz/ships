@@ -62,6 +62,11 @@ public class MainController {
                 System.out.println("Put all ships");
             }
         }
+
+        if (Main.isPlayer1SetShips() && Main.getDifficulty1() > 0) {
+            randomButton.setDisable(true);
+            imReadyButton.setDisable(true);
+        }
     }
 
     @FXML

@@ -1,6 +1,8 @@
 package io.project.ships;
 
+import io.project.ships.game.AI;
 import io.project.ships.game.Board;
+import io.project.ships.game.Position;
 import io.project.ships.game.Square;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -109,7 +111,27 @@ public class Main extends Application {
                 changeStyle();
             }
         } else if (humanPlayers == 1) {
-            //TODO Rozgrywka Player vs AI.
+            if (difficulty1 == 1) {
+                if (!gameStarted) {
+                    if (player1SetShips) {
+                        player2Board.generateShipsRandom();
+                        player2SetShips = true;
+                        player1Turn = true;
+                        gameStarted = true;
+                    }
+                } else {
+                    if (!boardSet) {
+                        setEnemyBoards();
+                    }
+
+                    changeStyle();
+
+                    if (!player1Turn) {
+                        hitAISquare(1);
+                    }
+
+                }
+            }
         } else if (humanPlayers == 0) {
             //TODO Rozgrywka AI vs AI.
         }
@@ -117,31 +139,61 @@ public class Main extends Application {
         checkEndGame();
     }
 
+    private void hitAISquare(int difficulty) {
+        Position position = null;
+
+        if (difficulty == 1) {
+            position = AI.getShotEasy();
+        }
+
+        if (enemy2Board.getSquareBoard()[position.getX()][position.getY()].getSquareStatus() == Square.SquareStatus.EMPTY) {
+            enemy2Board.getSquareBoard()[position.getX()][position.getY()].setSquareStatus(Square.SquareStatus.MISS);
+        } else if (enemy2Board.getSquareBoard()[position.getX()][position.getY()].getSquareStatus() == Square.SquareStatus.SHIP) {
+            enemy2Board.getSquareBoard()[position.getX()][position.getY()].setSquareStatus(Square.SquareStatus.DAMAGED);
+            for (int i = 0; i < enemy2Board.getShips().length; i++) {
+                for (int j = 0; j < enemy2Board.getShips()[i].getSize(); j++) {
+                    if (position.getX() == enemy2Board.getShips()[i].getPosition()[j].getX() && position.getY() == enemy2Board.getShips()[i].getPosition()[j].getY()) {
+                        enemy2Board.getShips()[i].addDmgCount();
+                        break;
+                    }
+                }
+            }
+            for (int i = 0; i < enemy2Board.getShips().length; i++) {
+                if (enemy2Board.getShips()[i].getDmgCount() == enemy2Board.getShips()[i].getSize()) {
+                        for (int j = 0; j < enemy2Board.getShips()[i].getSize(); j++) {
+                            enemy2Board.getSquareBoard()[enemy2Board.getShips()[i].getPosition()[j].getX()][enemy2Board.getShips()[i].getPosition()[j].getY()].setSquareStatus(Square.SquareStatus.DESTROYED);
+                        }
+                    break;
+                }
+            }
+
+        }
+
+        player1Turn = true;
+    }
+
     private void changeStyle() {
         for (int i = 0; i < BOARD_ROWS; i++) {
             for (int j = 0; j < BOARD_COLUMNS; j++) {
-                if (player1Turn) {
-                    if (enemy1Board.getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.DAMAGED) {
-                        enemy1Board.getSquareBoard()[i][j].getStyleClass().add("damaged");
-                        player2Board.getSquareBoard()[i][j].getStyleClass().add("damagedMyBoard");
-                    } else if (enemy1Board.getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.DESTROYED) {
-                        enemy1Board.getSquareBoard()[i][j].getStyleClass().add("destroyed");
-                        player2Board.getSquareBoard()[i][j].getStyleClass().add("destroyedMyBoard");
-                    } else if (enemy1Board.getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.MISS) {
-                        enemy1Board.getSquareBoard()[i][j].getStyleClass().add("miss");
-                        player2Board.getSquareBoard()[i][j].getStyleClass().add("missMyBoard");
-                    }
-                } else {
-                    if (enemy2Board.getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.DAMAGED) {
-                        enemy2Board.getSquareBoard()[i][j].getStyleClass().add("damaged");
-                        player1Board.getSquareBoard()[i][j].getStyleClass().add("damagedMyBoard");
-                    } else if (enemy2Board.getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.DESTROYED) {
-                        enemy2Board.getSquareBoard()[i][j].getStyleClass().add("destroyed");
-                        player1Board.getSquareBoard()[i][j].getStyleClass().add("destroyedMyBoard");
-                    } else if (enemy2Board.getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.MISS) {
-                        enemy2Board.getSquareBoard()[i][j].getStyleClass().add("miss");
-                        player1Board.getSquareBoard()[i][j].getStyleClass().add("missMyBoard");
-                    }
+                if (enemy1Board.getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.DAMAGED) {
+                    enemy1Board.getSquareBoard()[i][j].getStyleClass().add("damaged");
+                    player2Board.getSquareBoard()[i][j].getStyleClass().add("damagedMyBoard");
+                } else if (enemy1Board.getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.DESTROYED) {
+                    enemy1Board.getSquareBoard()[i][j].getStyleClass().add("destroyed");
+                    player2Board.getSquareBoard()[i][j].getStyleClass().add("destroyedMyBoard");
+                } else if (enemy1Board.getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.MISS) {
+                    enemy1Board.getSquareBoard()[i][j].getStyleClass().add("miss");
+                    player2Board.getSquareBoard()[i][j].getStyleClass().add("missMyBoard");
+                }
+                if (enemy2Board.getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.DAMAGED) {
+                    enemy2Board.getSquareBoard()[i][j].getStyleClass().add("damaged");
+                    player1Board.getSquareBoard()[i][j].getStyleClass().add("damagedMyBoard");
+                } else if (enemy2Board.getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.DESTROYED) {
+                    enemy2Board.getSquareBoard()[i][j].getStyleClass().add("destroyed");
+                    player1Board.getSquareBoard()[i][j].getStyleClass().add("destroyedMyBoard");
+                } else if (enemy2Board.getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.MISS) {
+                    enemy2Board.getSquareBoard()[i][j].getStyleClass().add("miss");
+                    player1Board.getSquareBoard()[i][j].getStyleClass().add("missMyBoard");
                 }
             }
         }
@@ -172,7 +224,6 @@ public class Main extends Application {
     public static void addNodesToRoot(int whichPlayer) {
 
         if (lastPlayer != whichPlayer) {
-            System.out.println('x');
             if (whichPlayer == 1) {
                 root.getChildren().remove(player2Board);
                 root.getChildren().remove(enemy2Board);
@@ -272,8 +323,20 @@ public class Main extends Application {
         return enemy2Board;
     }
 
+    public static int getDifficulty1() {
+        return difficulty1;
+    }
+
     public static Scene getScene() {
         return scene;
+    }
+
+    public static boolean isPlayer1SetShips() {
+        return player1SetShips;
+    }
+
+    public static boolean isPlayer2SetShips() {
+        return player2SetShips;
     }
 
     public static void main(String[] args) {
