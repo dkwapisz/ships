@@ -130,12 +130,13 @@ public class AI {
         if (difficulty == 1) {
             position = getShotEasy();
         } else if (difficulty == 2) {
+
             position = getShotMedium();
         }
 
         if (board.getSquareBoard()[position.getX()][position.getY()].getSquareStatus() == Square.SquareStatus.EMPTY) {
             board.getSquareBoard()[position.getX()][position.getY()].setSquareStatus(Square.SquareStatus.MISS);
-            Main.setPlayer1Turn(true);
+            Main.setPlayer1Turn(!Main.isPlayer1Turn());
         } else if (board.getSquareBoard()[position.getX()][position.getY()].getSquareStatus() == Square.SquareStatus.SHIP) {
             board.getSquareBoard()[position.getX()][position.getY()].setSquareStatus(Square.SquareStatus.DAMAGED);
             lastShipPos.add(position);

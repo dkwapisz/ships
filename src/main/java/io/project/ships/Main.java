@@ -4,6 +4,7 @@ import io.project.ships.game.AI;
 import io.project.ships.game.Board;
 import io.project.ships.game.Position;
 import io.project.ships.game.Square;
+import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -51,6 +52,8 @@ public class Main extends Application {
     private static boolean player2SetShips;
     private static boolean gameStarted;
     private static boolean boardSet;
+    private static boolean timer1Started;
+    private static boolean timer2Started;
 
     private static int lastPlayer;
 
@@ -131,6 +134,7 @@ public class Main extends Application {
             } else {
                 if (!boardSet) {
                     setEnemyBoards();
+                    boardSet = true;
                 }
 
                 changeStyle();
@@ -140,7 +144,62 @@ public class Main extends Application {
                 }
             }
         } else if (humanPlayers == 0) {
-            //TODO Rozgrywka AI vs AI.
+            if (!gameStarted) {
+                player1Board.generateShipsRandom();
+                player2Board.generateShipsRandom();
+                player1SetShips = true;
+                player2SetShips = true;
+                player1Turn = true;
+                gameStarted = true;
+            } else {
+                if (!boardSet) {
+                    setEnemyBoards();
+                    boardSet = true;
+                }
+
+                changeStyle();
+
+                long time = System.nanoTime();
+
+                AnimationTimer timer1 = new AnimationTimer() {
+                    @Override
+                    public void handle(long l) {
+                        if (l - 2_000_000_000 > time) {
+                            AI_1.hitAISquare(difficulty1, enemy2Board, enemy2Board.getShips());
+                        }
+                        if (player1Turn) {
+                            timer1Started = false;
+                            super.stop();
+                        }
+                    }
+                };
+
+                AnimationTimer timer2 = new AnimationTimer() {
+                    @Override
+                    public void handle(long l) {
+                        if (l - 2_000_000_000 > time) {
+                            AI_2.hitAISquare(difficulty2, enemy1Board, enemy1Board.getShips());
+                        }
+                        if (!player1Turn) {
+                            timer2Started = false;
+                            super.stop();
+                        }
+                    }
+                };
+
+
+                if (!player1Turn && !timer1Started) {
+                    timer1Started = true;
+                    addNodesToRoot(2);
+                    timer1.start();
+                }
+
+                if (player1Turn && !timer1Started) {
+                    timer2Started = true;
+                    addNodesToRoot(1);
+                    timer2.start();
+                }
+            }
         }
 
         checkEndGame();
