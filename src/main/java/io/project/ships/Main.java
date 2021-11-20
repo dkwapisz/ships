@@ -1,5 +1,6 @@
 package io.project.ships;
 
+import io.project.ships.controllers.MainController;
 import io.project.ships.game.AI;
 import io.project.ships.game.Board;
 import io.project.ships.game.Position;
@@ -155,19 +156,19 @@ public class Main extends Application {
                 if (!boardSet) {
                     setEnemyBoards();
                     boardSet = true;
+
                 }
 
                 changeStyle();
 
                 long time = System.nanoTime();
+                long moveInterval = 1_000_000_000; // move after 1 second
 
                 AnimationTimer timer1 = new AnimationTimer() {
                     @Override
                     public void handle(long l) {
-                        if (l - 500_000_000 > time) {
+                        if (l - moveInterval > time) {
                             AI_1.hitAISquare(difficulty1, enemy2Board, enemy2Board.getShips());
-                        }
-                        if (player1Turn) {
                             timer1Started = false;
                             super.stop();
                         }
@@ -177,10 +178,8 @@ public class Main extends Application {
                 AnimationTimer timer2 = new AnimationTimer() {
                     @Override
                     public void handle(long l) {
-                        if (l - 500_000_000 > time) {
+                        if (l - moveInterval > time) {
                             AI_2.hitAISquare(difficulty2, enemy1Board, enemy1Board.getShips());
-                        }
-                        if (!player1Turn) {
                             timer2Started = false;
                             super.stop();
                         }
@@ -194,7 +193,7 @@ public class Main extends Application {
                     timer1.start();
                 }
 
-                if (player1Turn && !timer1Started) {
+                if (player1Turn && !timer2Started) {
                     timer2Started = true;
                     addNodesToRoot(1);
                     timer2.start();

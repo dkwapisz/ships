@@ -2,12 +2,16 @@ package io.project.ships.controllers;
 
 import io.project.ships.Main;
 import io.project.ships.game.Square;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 
@@ -27,6 +31,15 @@ public class MainController {
 
     @FXML
     private Button imReadyButton;
+
+    @FXML
+    private Label playerLabel;
+
+    @FXML
+    private Label enemyLabel;
+
+    private boolean timelineCreated;
+    private Timeline updateTimeline;
 
     @FXML
     void setShip() {
@@ -180,4 +193,76 @@ public class MainController {
         }
     }
 
+    public void initialize() {
+        if (!timelineCreated) {
+            updateTimeline = new Timeline(new KeyFrame(Duration.millis(25), e -> {updateLabels();}));
+            updateTimeline.setCycleCount(Timeline.INDEFINITE);
+            updateTimeline.play();
+            timelineCreated = true;
+        }
+
+    }
+
+    private void updateLabels() {
+        if (Main.getDifficulty1() == 0) {
+            if (Main.isPlayer1Turn()) {
+                playerLabel.setText("PLAYER 1 BOARD");
+            } else {
+                playerLabel.setText("PLAYER 2 BOARD");
+            }
+        }
+        else if (Main.getDifficulty1() > 0 && Main.getDifficulty2() == 0) {
+            playerLabel.setText("PLAYER 1 BOARD");
+            if (Main.getDifficulty1() == 1) {
+                enemyLabel.setText("AI BOARD ☆");
+            }
+            else if (Main.getDifficulty1() == 2) {
+                enemyLabel.setText("AI BOARD ☆☆");
+            }
+            else if (Main.getDifficulty1() == 3) {
+                enemyLabel.setText("AI BOARD ☆☆☆");
+            }
+        }
+        else if (Main.getDifficulty2() > 0) {
+            if (Main.isPlayer1Turn()) {
+                if (Main.getDifficulty1() == 1) {
+                    playerLabel.setText("AI 1 BOARD ☆");
+                }
+                else if (Main.getDifficulty1() == 2) {
+                    playerLabel.setText("AI 1 BOARD ☆☆");
+                }
+                else if (Main.getDifficulty1() == 3) {
+                    playerLabel.setText("AI 1 BOARD ☆☆☆");
+                }
+                if (Main.getDifficulty2() == 1) {
+                    enemyLabel.setText("AI 2 BOARD ☆");
+                }
+                else if (Main.getDifficulty2() == 2) {
+                    enemyLabel.setText("AI 2 BOARD ☆☆");
+                }
+                else if (Main.getDifficulty2() == 3) {
+                    enemyLabel.setText("AI 2 BOARD ☆☆☆");
+                }
+            } else {
+                if (Main.getDifficulty1() == 1) {
+                    enemyLabel.setText("AI 1 BOARD ☆");
+                }
+                else if (Main.getDifficulty1() == 2) {
+                    enemyLabel.setText("AI 1 BOARD ☆☆");
+                }
+                else if (Main.getDifficulty1() == 3) {
+                    enemyLabel.setText("AI 1 BOARD ☆☆☆");
+                }
+                if (Main.getDifficulty2() == 1) {
+                    playerLabel.setText("AI 2 BOARD ☆");
+                }
+                else if (Main.getDifficulty2() == 2) {
+                    playerLabel.setText("AI 2 BOARD ☆☆");
+                }
+                else if (Main.getDifficulty2() == 3) {
+                    playerLabel.setText("AI 2 BOARD ☆☆☆");
+                }
+            }
+        }
+    }
 }

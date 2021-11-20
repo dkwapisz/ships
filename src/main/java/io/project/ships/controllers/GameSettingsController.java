@@ -142,6 +142,8 @@ public class GameSettingsController {
             easy2_RB.setDisable(true);
             medium2_RB.setDisable(true);
             hard2_RB.setDisable(true);
+
+            medium1_RB.setSelected(true);
         });
 
         AI_VS_AI_RB.setOnAction(actionEvent -> {
@@ -151,6 +153,9 @@ public class GameSettingsController {
             easy2_RB.setDisable(false);
             medium2_RB.setDisable(false);
             hard2_RB.setDisable(false);
+
+            medium1_RB.setSelected(true);
+            medium2_RB.setSelected(true);
         });
     }
 }

@@ -2,6 +2,7 @@ package io.project.ships.game;
 
 import io.project.ships.Main;
 import javafx.geometry.Point2D;
+import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
@@ -37,13 +38,13 @@ public class Ship {
 
     private void makeShape(int size, int whichShip) {
         if (size == 1) {
-            shape = new Rectangle(40 + whichShip*80, 460, 40, 40);
+            shape = new Rectangle(40 + whichShip*80, 500, 40, 40);
         } else if (size == 2) {
-            shape = new Rectangle(40 + whichShip*120, 540, 80, 40);
+            shape = new Rectangle(40 + whichShip*120, 580, 80, 40);
         } else if (size == 3) {
-            shape = new Rectangle(40 + whichShip*160, 620, 120, 40);
+            shape = new Rectangle(40 + whichShip*160, 660, 120, 40);
         } else if (size == 4) {
-            shape = new Rectangle(40 + whichShip*200, 700, 160, 40);
+            shape = new Rectangle(40 + whichShip*200, 740, 160, 40);
         }
     }
 
@@ -57,7 +58,7 @@ public class Ship {
         });
 
         shape.setOnMouseReleased(event -> {
-            if (!Main.isGameStarted()) {
+            if (!Main.isGameStarted() && event.getButton() == MouseButton.PRIMARY) {
                 placeShip();
             }
         });
@@ -118,8 +119,8 @@ public class Ship {
                     if (verifyShipsTouch(xPos, yPos)) {
                         shape.setX(calculateLowestDist().getLayoutX());
                         shape.setY(calculateLowestDist().getLayoutY());
-
                         setPositionOnBoard(xPos, yPos);
+                        return;
                     }
                 }
                 if (!verifyOutOfBoard()) {
@@ -160,7 +161,7 @@ public class Ship {
                 shape.setWidth(tmp);
             }
 
-            if (position[0].getX() >= 0) {
+            if (position[0].getX() > 0) {
                 setPositionOnBoard(position[0].getX(), position[0].getY());
             }
         }
