@@ -63,7 +63,7 @@ public class MainController {
             }
         }
 
-        if (Main.isPlayer1SetShips() && Main.getDifficulty1() > 0) {
+        if (Main.isPlayer1SetShips() && Main.getDifficulty1() > 0 || (Main.getDifficulty1() > 0 && Main.getDifficulty2() > 0)) {
             randomButton.setDisable(true);
             imReadyButton.setDisable(true);
         }

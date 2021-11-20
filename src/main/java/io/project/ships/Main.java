@@ -164,7 +164,7 @@ public class Main extends Application {
                 AnimationTimer timer1 = new AnimationTimer() {
                     @Override
                     public void handle(long l) {
-                        if (l - 2_000_000_000 > time) {
+                        if (l - 500_000_000 > time) {
                             AI_1.hitAISquare(difficulty1, enemy2Board, enemy2Board.getShips());
                         }
                         if (player1Turn) {
@@ -177,7 +177,7 @@ public class Main extends Application {
                 AnimationTimer timer2 = new AnimationTimer() {
                     @Override
                     public void handle(long l) {
-                        if (l - 2_000_000_000 > time) {
+                        if (l - 500_000_000 > time) {
                             AI_2.hitAISquare(difficulty2, enemy1Board, enemy1Board.getShips());
                         }
                         if (!player1Turn) {
@@ -247,9 +247,11 @@ public class Main extends Application {
             }
         }
         if (count1 == 20) {
+            changeStyle();
             mainTimeline.stop();
             System.out.println("PLAYER 1 WINS");
         } else if (count2 == 20){
+            changeStyle();
             mainTimeline.stop();
             System.out.println("PLAYER 2 WINS");
         }
@@ -359,6 +361,10 @@ public class Main extends Application {
 
     public static int getDifficulty1() {
         return difficulty1;
+    }
+
+    public static int getDifficulty2() {
+        return difficulty2;
     }
 
     public static Scene getScene() {

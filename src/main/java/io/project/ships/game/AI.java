@@ -33,7 +33,7 @@ public class AI {
     private Position getShotMedium() {
 
         int x = 0, y = 0;
-        Position shot;
+        Position shot = null;
 
         if (lastShipPos.size() > 0) {
             if (lastShipPos.size() == 1) {
@@ -107,7 +107,9 @@ public class AI {
             }
             shot = new Position(x, y);
         } else {
-            shot = notTakenPos.get(random.nextInt(notTakenPos.size()));
+            if (notTakenPos.size() > 0) {
+                shot = notTakenPos.get(random.nextInt(notTakenPos.size()));
+            }
         }
 
         removePosition(shot.getX(), shot.getY());
@@ -130,7 +132,6 @@ public class AI {
         if (difficulty == 1) {
             position = getShotEasy();
         } else if (difficulty == 2) {
-
             position = getShotMedium();
         }
 
