@@ -40,6 +40,7 @@ public class MainController {
 
     private boolean timelineCreated;
     private Timeline updateTimeline;
+    private boolean buttonsBlocked;
 
     @FXML
     void setShip() {
@@ -76,7 +77,7 @@ public class MainController {
             }
         }
 
-        if (Main.isPlayer1SetShips() && Main.getDifficulty1() > 0 || (Main.getDifficulty1() > 0 && Main.getDifficulty2() > 0)) {
+        if (Main.isPlayer1SetShips() && Main.getDifficulty1() > 0) {
             randomButton.setDisable(true);
             imReadyButton.setDisable(true);
         }
@@ -201,6 +202,12 @@ public class MainController {
             timelineCreated = true;
         }
 
+        //AI vs AI -> blocking buttons "Im ready" and "Random"
+        if (Main.getDifficulty2() > 0 && !buttonsBlocked) {
+            randomButton.setDisable(true);
+            imReadyButton.setDisable(true);
+            buttonsBlocked = true;
+        }
     }
 
     private void updateLabels() {
@@ -224,6 +231,7 @@ public class MainController {
             }
         }
         else if (Main.getDifficulty2() > 0) {
+
             if (Main.isPlayer1Turn()) {
                 if (Main.getDifficulty1() == 1) {
                     playerLabel.setText("AI 1 BOARD ☆");
