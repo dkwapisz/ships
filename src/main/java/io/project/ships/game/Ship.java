@@ -38,13 +38,13 @@ public class Ship {
 
     private void makeShape(int size, int whichShip) {
         if (size == 1) {
-            shape = new Rectangle(40 + whichShip*80, 500, 40, 40);
+            shape = new Rectangle(100 + whichShip*60, 520, 40, 40);
         } else if (size == 2) {
-            shape = new Rectangle(40 + whichShip*120, 580, 80, 40);
+            shape = new Rectangle(100 + whichShip*100, 580, 80, 40);
         } else if (size == 3) {
-            shape = new Rectangle(40 + whichShip*160, 660, 120, 40);
+            shape = new Rectangle(100 + whichShip*140, 640, 120, 40);
         } else if (size == 4) {
-            shape = new Rectangle(40 + whichShip*200, 740, 160, 40);
+            shape = new Rectangle(100 + whichShip*180, 700, 160, 40);
         }
     }
 
