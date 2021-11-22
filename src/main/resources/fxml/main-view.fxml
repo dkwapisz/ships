@@ -222,4 +222,6 @@
          <Font name="Bodoni MT" size="30.0" />
       </font>
    </Label>
+   <Button fx:id="pauseButton" layoutX="832.0" layoutY="613.0" mnemonicParsing="false" onAction="#playPause" text="Pause" />
+   <Button layoutX="972.0" layoutY="613.0" mnemonicParsing="false" onAction="#nextMove" text="Next move" />
 </Pane>

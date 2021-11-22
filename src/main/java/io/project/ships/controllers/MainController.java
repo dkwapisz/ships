@@ -38,6 +38,9 @@ public class MainController {
     @FXML
     private Label enemyLabel;
 
+    @FXML
+    private Button pauseButton;
+
     private boolean timelineCreated;
     private Timeline updateTimeline;
     private boolean buttonsBlocked;
@@ -102,6 +105,35 @@ public class MainController {
         } else {
             Main.getPlayer2Board().setBoardEmpty();
             Main.getPlayer2Board().generateShipsRandom();
+        }
+    }
+
+    @FXML
+    void playPause() {
+        if (Main.getDifficulty1() > 0 && Main.getDifficulty2() > 0) {
+            if (!Main.isPause()) {
+                Main.setPause(true);
+                updateTimeline.pause();
+                pauseButton.setText("Play");
+            } else {
+                Main.setPause(false);
+                updateTimeline.play();
+                pauseButton.setText("Pause");
+            }
+        }
+    }
+
+    @FXML
+    void nextMove() {
+        if (Main.getDifficulty1() > 0 && Main.getDifficulty2() > 0) {
+            boolean player1Turn = Main.isPlayer1Turn();
+
+            if (!Main.isPause()) {
+                Main.setPause(true);
+                updateTimeline.pause();
+            }
+            System.out.println(player1Turn);
+            Main.stepByStep(player1Turn);
         }
     }
 
