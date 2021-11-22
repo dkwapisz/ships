@@ -7,12 +7,22 @@ import java.util.Random;
 
 public class AI {
 
-    private Random random = new Random();
-    private ArrayList<Position> notTakenPos = new ArrayList<>();
-    private ArrayList<Position> lastShipPos = new ArrayList<>();
+    // Easy AI - shots randomly
+    // Medium AI - plays like human
+    // Hard AI - plays like human, have 25% chance to double shot, if he doesn't double shot, chance increace by 25%
+    // Hard AI - after double shot, another chance to double shot is reset to 25%
+
+    private final Random random = new Random();
+    private final ArrayList<Position> notTakenPos = new ArrayList<>();
+    private final ArrayList<Position> lastShipPos = new ArrayList<>();
+    private int secondShotProb;
+    private boolean isShot1Missed;
+    private boolean isShot2Missed;
+    private boolean doubleShot;
 
     public AI() {
         addNotTakenPos();
+        secondShotProb = 25;
     }
 
     private void addNotTakenPos() {
@@ -23,14 +33,14 @@ public class AI {
         }
     }
 
-    private Position getShotEasy() {
+    private Position getRandomShot() {
         Position shot = notTakenPos.get(random.nextInt(notTakenPos.size()));
         removePosition(shot.getX(), shot.getY());
 
         return shot;
     }
 
-    private Position getShotMedium() {
+    private Position getSmartShot() {
 
         int x = 0, y = 0;
         Position shot = null;
@@ -126,47 +136,101 @@ public class AI {
         return true;
     }
 
-    public void hitAISquare(int difficulty, Board board, Ship[] ships) {
+    public void hitAISquare(int difficulty, Board board, Ship[] ships, boolean firstShot) {
         Position position = null;
 
         if (difficulty == 1) {
-            position = getShotEasy();
-        } else if (difficulty == 2) {
-            position = getShotMedium();
+            position = getRandomShot();
+        } else if (difficulty == 2 || difficulty == 3) {
+            position = getSmartShot();
         }
 
         if (board.getSquareBoard()[position.getX()][position.getY()].getSquareStatus() == Square.SquareStatus.EMPTY) {
             board.getSquareBoard()[position.getX()][position.getY()].setSquareStatus(Square.SquareStatus.MISS);
-            Main.setPlayer1Turn(!Main.isPlayer1Turn());
+
+            if (difficulty != 3) {
+                Main.setPlayer1Turn(!Main.isPlayer1Turn());
+            }
+            if (difficulty == 3) {
+                if (doubleShot) {
+                    if (firstShot) {
+                        isShot1Missed = true;
+                    } else {
+                        isShot2Missed = true;
+                    }
+
+                    if (isShot1Missed && isShot2Missed) {
+                        Main.setPlayer1Turn(!Main.isPlayer1Turn());
+                    }
+                } else {
+                    Main.setPlayer1Turn(!Main.isPlayer1Turn());
+                }
+            }
+
         } else if (board.getSquareBoard()[position.getX()][position.getY()].getSquareStatus() == Square.SquareStatus.SHIP) {
             board.getSquareBoard()[position.getX()][position.getY()].setSquareStatus(Square.SquareStatus.DAMAGED);
             lastShipPos.add(position);
-            for (int i = 0; i < ships.length; i++) {
-                for (int j = 0; j < ships[i].getSize(); j++) {
-                    if (position.getX() == ships[i].getPosition()[j].getX() && position.getY() == ships[i].getPosition()[j].getY()) {
-                        ships[i].addDmgCount();
+
+            if (difficulty == 3) {
+                if (doubleShot) {
+                    if (firstShot) {
+                        isShot1Missed = false;
+                    } else {
+                        isShot2Missed = false;
+                    }
+                }
+            }
+
+            for (Ship ship : ships) {
+                for (int j = 0; j < ship.getSize(); j++) {
+                    if (position.getX() == ship.getPosition()[j].getX() && position.getY() == ship.getPosition()[j].getY()) {
+                        ship.addDmgCount();
                         break;
                     }
                 }
             }
-            for (int i = 0; i < ships.length; i++) {
-                if (ships[i].getDmgCount() == ships[i].getSize() && !ships[i].isDestroyed()) {
+            for (Ship ship : ships) {
+                if (ship.getDmgCount() == ship.getSize() && !ship.isDestroyed()) {
 
-                    for (int j = 0; j < ships[i].getSize(); j++) {
-                        board.getSquareBoard()[ships[i].getPosition()[j].getX()][ships[i].getPosition()[j].getY()].setSquareStatus(Square.SquareStatus.DESTROYED);
+                    for (int j = 0; j < ship.getSize(); j++) {
+                        board.getSquareBoard()[ship.getPosition()[j].getX()][ship.getPosition()[j].getY()].setSquareStatus(Square.SquareStatus.DESTROYED);
                     }
-                    ships[i].setDestroyed(true);
+                    ship.setDestroyed(true);
                     lastShipPos.clear();
-                    board.markAsMiss(ships[i], true, notTakenPos);
+                    board.markAsMiss(ship, true, notTakenPos);
                     break;
                 }
             }
         }
     }
 
+    public boolean calculateDoubleShot() {
+        return random.nextInt(100) < secondShotProb;
+    }
+
     public void removePosition(int x, int y) {
         notTakenPos.removeIf(pos -> pos.getX() == x && pos.getY() == y);
     }
 
+    public int getSecondShotProb() {
+        return secondShotProb;
+    }
 
+    public void addSecondShotProb() {
+        if (secondShotProb < 100) {
+            this.secondShotProb += 25;
+        }
+    }
+
+    public void resetSecondShotProb() {
+        this.secondShotProb = 25;
+    }
+
+    public boolean isDoubleShot() {
+        return doubleShot;
+    }
+
+    public void setDoubleShot(boolean doubleShot) {
+        this.doubleShot = doubleShot;
+    }
 }

@@ -1,9 +1,7 @@
 package io.project.ships;
 
-import io.project.ships.controllers.MainController;
 import io.project.ships.game.AI;
 import io.project.ships.game.Board;
-import io.project.ships.game.Position;
 import io.project.ships.game.Square;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
@@ -32,6 +30,9 @@ public class Main extends Application {
     private static final int WINDOW_HEIGHT = 800;
 
     private static Timeline mainTimeline;
+    private static AnimationTimer timerAI1;
+    private static AnimationTimer timerAI2;
+    private static final long moveInterval = 1_000_000_000; // in nanoseconds
 
     // playerBoard przechowuje tylko informacje, gdzie znajdują się statki danego gracza
     // enemyBoard przechowuje informacje o wszystkich uszkodzonych, nieuszkodzonych, zatopionych statkach oraz o pudłach
@@ -139,9 +140,36 @@ public class Main extends Application {
                 }
 
                 changeStyle();
+                long time = System.nanoTime();
 
-                while (!player1Turn) {
-                    AI_1.hitAISquare(difficulty1, enemy2Board, enemy2Board.getShips());
+                timerAI1 = new AnimationTimer() {
+                    @Override
+                    public void handle(long l) {
+                        if (l - (moveInterval/2) > time) {
+
+                            AI_1.setDoubleShot(AI_1.calculateDoubleShot());
+                            AI_1.hitAISquare(difficulty1, enemy2Board, enemy2Board.getShips(), true);
+
+                            if (difficulty1 == 3) {
+                                if (AI_1.isDoubleShot()) {
+                                    AI_1.resetSecondShotProb();
+                                    AI_1.hitAISquare(difficulty1, enemy2Board, enemy2Board.getShips(), false);
+                                } else {
+                                    AI_1.addSecondShotProb();
+                                }
+                                timer1Started = false;
+                                super.stop();
+                            }
+
+                            timer1Started = false;
+                            super.stop();
+                        }
+                    }
+                };
+
+                if (!player1Turn && !timer1Started) {
+                    timer1Started = true;
+                    timerAI1.start();
                 }
             }
         } else if (humanPlayers == 0) {
@@ -164,22 +192,50 @@ public class Main extends Application {
                 long time = System.nanoTime();
                 long moveInterval = 1_000_000_000; // move after 1 second
 
-                AnimationTimer timer1 = new AnimationTimer() {
+                timerAI1 = new AnimationTimer() {
                     @Override
                     public void handle(long l) {
                         if (l - moveInterval > time) {
-                            AI_1.hitAISquare(difficulty1, enemy2Board, enemy2Board.getShips());
+
+                            AI_1.setDoubleShot(AI_1.calculateDoubleShot());
+                            AI_1.hitAISquare(difficulty1, enemy2Board, enemy2Board.getShips(), true);
+                            checkEndGame();
+                            if (difficulty1 == 3) {
+                                if (AI_1.isDoubleShot()) {
+                                    AI_1.resetSecondShotProb();
+                                    AI_1.hitAISquare(difficulty1, enemy2Board, enemy2Board.getShips(), false);
+                                } else {
+                                    AI_1.addSecondShotProb();
+                                }
+                                timer1Started = false;
+                                super.stop();
+                            }
+
                             timer1Started = false;
                             super.stop();
                         }
                     }
                 };
 
-                AnimationTimer timer2 = new AnimationTimer() {
+                timerAI2 = new AnimationTimer() {
                     @Override
                     public void handle(long l) {
                         if (l - moveInterval > time) {
-                            AI_2.hitAISquare(difficulty2, enemy1Board, enemy1Board.getShips());
+
+                            AI_2.setDoubleShot(AI_2.calculateDoubleShot());
+                            AI_2.hitAISquare(difficulty2, enemy1Board, enemy1Board.getShips(), true);
+                            checkEndGame();
+                            if (difficulty2 == 3) {
+                                if (AI_2.isDoubleShot()) {
+                                    AI_2.resetSecondShotProb();
+                                    AI_2.hitAISquare(difficulty2, enemy1Board, enemy1Board.getShips(), false);
+                                } else {
+                                    AI_2.addSecondShotProb();
+                                }
+                                timer2Started = false;
+                                super.stop();
+                            }
+
                             timer2Started = false;
                             super.stop();
                         }
@@ -190,13 +246,13 @@ public class Main extends Application {
                 if (!player1Turn && !timer1Started) {
                     timer1Started = true;
                     addNodesToRoot(2);
-                    timer1.start();
+                    timerAI1.start();
                 }
 
                 if (player1Turn && !timer2Started) {
                     timer2Started = true;
                     addNodesToRoot(1);
-                    timer2.start();
+                    timerAI2.start();
                 }
             }
         }
@@ -300,6 +356,13 @@ public class Main extends Application {
     public static void restartGame() {
         mainTimeline.stop();
 
+        if (timerAI1 != null) {
+            timerAI1.stop();
+        }
+        if (timerAI2 != null) {
+            timerAI2.stop();
+        }
+
         player1Board = new Board(BOARD_COLUMNS, BOARD_ROWS, BOARD_WIDTH, BOARD_HEIGHT, false);
         enemy1Board = new Board(BOARD_COLUMNS, BOARD_ROWS, BOARD_WIDTH, BOARD_HEIGHT, true);
         player2Board = new Board(BOARD_COLUMNS, BOARD_ROWS, BOARD_WIDTH, BOARD_HEIGHT, false);
@@ -376,6 +439,10 @@ public class Main extends Application {
 
     public static boolean isPlayer2SetShips() {
         return player2SetShips;
+    }
+
+    public static boolean isTimer1Started() {
+        return timer1Started;
     }
 
     public static void main(String[] args) {

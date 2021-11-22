@@ -85,6 +85,7 @@ public class MainController {
 
     @FXML
     void backToMenu() throws IOException {
+        updateTimeline.stop();
         Main.restartGame();
         Stage stage = (Stage) mainPane.getScene().getWindow();
         Pane root = FXMLLoader.load(getClass().getResource("/fxml/menu-view.fxml"));
