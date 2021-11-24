@@ -114,7 +114,7 @@ public class MainController {
     @FXML
     void playPause() {
         if (Main.getDifficulty1() > 0 && Main.getDifficulty2() > 0) {
-            if (!Main.isPause()) {
+            if (Main.isNotPaused()) {
                 Main.setPause(true);
                 //updateTimeline.pause();
                 pauseButton.setText("Play");
@@ -131,10 +131,15 @@ public class MainController {
         if (Main.getDifficulty1() > 0 && Main.getDifficulty2() > 0) {
             boolean player1Turn = Main.isPlayer1Turn();
 
-            if (!Main.isPause()) {
+            if (Main.isNotPaused()) {
                 Main.setPause(true);
+
+                //TODO Poprawne wyświetlanie podpisów plansz podczas odtwarzania rozgrywki Step By Step
+                //Chwilowo updateTimeline będzie pauzowany podczas przewijania rozgrywki Step By Step
                 updateTimeline.pause();
+                pauseButton.setText("Play");
             }
+
             Main.stepByStep(player1Turn);
         }
     }

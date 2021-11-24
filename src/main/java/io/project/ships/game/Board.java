@@ -81,7 +81,7 @@ public class Board extends Pane {
                     if (squareBoard[x + j][y + i].getSquareStatus() == Square.SquareStatus.EMPTY) {
                         squareBoard[x + j][y + i].setSquareStatus(Square.SquareStatus.MISS);
                         if (AI) {
-                            removePosition(x + i, y + j, notTakenPos);
+                            removePosition(x + j, y + i, notTakenPos);
                         }
                     }
                 }

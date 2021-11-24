@@ -105,7 +105,6 @@ public class Main extends Application {
     }
 
     private void gameLoop() throws IOException {
-        //TODO BUGI Z HARD AI
         if (humanPlayers == 2) {
             if (!gameStarted) {
                 if (player1SetShips && !player2SetShips) {
@@ -149,24 +148,11 @@ public class Main extends Application {
                     @Override
                     public void handle(long l) {
                         if (l - (moveInterval/2) > time) {
-
                             if (difficulty1 == 3) {
                                 AI_1.setDoubleShot(AI_1.calculateDoubleShot());
                             }
-
-                            AI_1.hitAISquare(difficulty1, enemy2Board, enemy2Board.getShips(), true);
+                            AI_1.hitAISquare(difficulty1, enemy2Board, enemy2Board.getShips());
                             checkEndGame();
-                            if (difficulty1 == 3) {
-                                if (AI_1.isDoubleShot()) {
-                                    AI_1.resetSecondShotProb();
-                                    AI_1.hitAISquare(difficulty1, enemy2Board, enemy2Board.getShips(), false);
-                                } else {
-                                    AI_1.addSecondShotProb();
-                                }
-                                timer1Started = false;
-                                super.stop();
-                            }
-
                             timer1Started = false;
                             super.stop();
                         }
@@ -194,27 +180,14 @@ public class Main extends Application {
                     }
                     changeStyle();
                     long time = System.nanoTime();
-                    long moveInterval = 1_000_000_000; // move after 1 second
 
                     timerAI1 = new AnimationTimer() {
                         @Override
                         public void handle(long l) {
                             if (l - moveInterval > time) {
-
                                 AI_1.setDoubleShot(AI_1.calculateDoubleShot());
-                                AI_1.hitAISquare(difficulty1, enemy2Board, enemy2Board.getShips(), true);
+                                AI_1.hitAISquare(difficulty1, enemy2Board, enemy2Board.getShips());
                                 checkEndGame();
-                                if (difficulty1 == 3) {
-                                    if (AI_1.isDoubleShot()) {
-                                        AI_1.resetSecondShotProb();
-                                        AI_1.hitAISquare(difficulty1, enemy2Board, enemy2Board.getShips(), false);
-                                    } else {
-                                        AI_1.addSecondShotProb();
-                                    }
-                                    timer1Started = false;
-                                    super.stop();
-                                }
-
                                 timer1Started = false;
                                 super.stop();
                             }
@@ -225,21 +198,9 @@ public class Main extends Application {
                         @Override
                         public void handle(long l) {
                             if (l - moveInterval > time) {
-
                                 AI_2.setDoubleShot(AI_2.calculateDoubleShot());
-                                AI_2.hitAISquare(difficulty2, enemy1Board, enemy1Board.getShips(), true);
+                                AI_2.hitAISquare(difficulty2, enemy1Board, enemy1Board.getShips());
                                 checkEndGame();
-                                if (difficulty2 == 3) {
-                                    if (AI_2.isDoubleShot()) {
-                                        AI_2.resetSecondShotProb();
-                                        AI_2.hitAISquare(difficulty2, enemy1Board, enemy1Board.getShips(), false);
-                                    } else {
-                                        AI_2.addSecondShotProb();
-                                    }
-                                    timer2Started = false;
-                                    super.stop();
-                                }
-
                                 timer2Started = false;
                                 super.stop();
                             }
@@ -265,7 +226,6 @@ public class Main extends Application {
     }
 
     public static void stepByStep(boolean player1Turn) {
-        //TODO BUGI Z HARD AI
         if (!gameEnded) {
             if (!gameStarted) {
                 player1Board.generateShipsRandom();
@@ -286,31 +246,14 @@ public class Main extends Application {
                     if (difficulty1 == 3) {
                         AI_1.setDoubleShot(AI_1.calculateDoubleShot());
                     }
-                    AI_1.hitAISquare(difficulty1, enemy2Board, enemy2Board.getShips(), true);
-                    checkEndGame();
-                    if (difficulty1 == 3) {
-                        if (AI_1.isDoubleShot()) {
-                            AI_1.resetSecondShotProb();
-                            AI_1.hitAISquare(difficulty1, enemy2Board, enemy2Board.getShips(), false);
-                        } else {
-                            AI_1.addSecondShotProb();
-                        }
-                    }
+                    AI_1.hitAISquare(difficulty1, enemy2Board, enemy2Board.getShips());
                 } else {
                     if (difficulty2 == 3) {
                         AI_2.setDoubleShot(AI_2.calculateDoubleShot());
                     }
-                    AI_2.hitAISquare(difficulty2, enemy1Board, enemy1Board.getShips(), true);
-                    checkEndGame();
-                    if (difficulty2 == 3) {
-                        if (AI_2.isDoubleShot()) {
-                            AI_2.resetSecondShotProb();
-                            AI_2.hitAISquare(difficulty2, enemy1Board, enemy1Board.getShips(), false);
-                        } else {
-                            AI_2.addSecondShotProb();
-                        }
-                    }
+                    AI_2.hitAISquare(difficulty2, enemy1Board, enemy1Board.getShips());
                 }
+                checkEndGame();
 
                 if (!player1Turn) {
                     addNodesToRoot(2);
@@ -505,8 +448,8 @@ public class Main extends Application {
         return player2SetShips;
     }
 
-    public static boolean isPause() {
-        return pause;
+    public static boolean isNotPaused() {
+        return !pause;
     }
 
     public static void setPause(boolean pause) {

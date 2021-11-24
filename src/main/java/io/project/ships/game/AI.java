@@ -9,8 +9,8 @@ public class AI {
 
     // Easy AI - shots randomly
     // Medium AI - plays like human
-    // Hard AI - plays like human, have 25% chance to double shot, if he doesn't double shot, chance increace by 25%
-    // Hard AI - after double shot, another chance to double shot is reset to 25%
+    // Hard AI - plays like human, start with 20% chance to double shot if he miss, if he doesn't double shot, chance increace by 20%
+    // Hard AI - after double shot, another chance to double shot is reset to 20%
 
     private final Random random = new Random();
     private final ArrayList<Position> notTakenPos = new ArrayList<>();
@@ -22,7 +22,7 @@ public class AI {
 
     public AI() {
         addNotTakenPos();
-        secondShotProb = 25;
+        secondShotProb = 20;
     }
 
     private void addNotTakenPos() {
@@ -61,8 +61,6 @@ public class AI {
                         }
                     }
                 }
-                System.out.println("x: " + x);
-                System.out.println("y: " + y);
             } else {
                 int i = lastShipPos.size() - 2;
                 boolean isPositive;
@@ -123,12 +121,9 @@ public class AI {
                 shot = notTakenPos.get(random.nextInt(notTakenPos.size()));
             }
         }
-
-        if (notTakenPos.size() > 0 && notTakenPos.size() < 3 && shot == null) {
+        if (shot == null) {
             shot = notTakenPos.get(random.nextInt(notTakenPos.size()));
         }
-
-        removePosition(shot.getX(), shot.getY());
 
         return shot;
     }
@@ -142,7 +137,7 @@ public class AI {
         return true;
     }
 
-    public void hitAISquare(int difficulty, Board board, Ship[] ships, boolean firstShot) {
+    public void hitAISquare(int difficulty, Board board, Ship[] ships) {
         Position position = null;
 
         if (difficulty == 1) {
@@ -150,6 +145,7 @@ public class AI {
         } else if (difficulty == 2 || difficulty == 3) {
             position = getSmartShot();
         }
+        removePosition(position.getX(), position.getY());
 
         if (board.getSquareBoard()[position.getX()][position.getY()].getSquareStatus() == Square.SquareStatus.EMPTY) {
             board.getSquareBoard()[position.getX()][position.getY()].setSquareStatus(Square.SquareStatus.MISS);
@@ -158,34 +154,15 @@ public class AI {
             }
             if (difficulty == 3) {
                 if (doubleShot) {
-                    if (firstShot) {
-                        isShot1Missed = true;
-                    } else {
-                        isShot2Missed = true;
-                    }
-
-                    if (isShot1Missed && isShot2Missed) {
-                        Main.setPlayer1Turn(!Main.isPlayer1Turn());
-                        isShot1Missed = false;
-                        isShot2Missed = false;
-                    }
+                    resetSecondShotProb();
                 } else {
                     Main.setPlayer1Turn(!Main.isPlayer1Turn());
+                    increaseSecondShotProb();
                 }
             }
         } else if (board.getSquareBoard()[position.getX()][position.getY()].getSquareStatus() == Square.SquareStatus.SHIP) {
             board.getSquareBoard()[position.getX()][position.getY()].setSquareStatus(Square.SquareStatus.DAMAGED);
             lastShipPos.add(position);
-
-            if (difficulty == 3) {
-                if (doubleShot) {
-                    if (firstShot) {
-                        isShot1Missed = false;
-                    } else {
-                        isShot2Missed = false;
-                    }
-                }
-            }
 
             for (Ship ship : ships) {
                 for (int j = 0; j < ship.getSize(); j++) {
@@ -218,18 +195,14 @@ public class AI {
         notTakenPos.removeIf(pos -> pos.getX() == x && pos.getY() == y);
     }
 
-    public int getSecondShotProb() {
-        return secondShotProb;
-    }
-
-    public void addSecondShotProb() {
+    public void increaseSecondShotProb() {
         if (secondShotProb < 100) {
-            this.secondShotProb += 25;
+            this.secondShotProb += 20;
         }
     }
 
     public void resetSecondShotProb() {
-        this.secondShotProb = 25;
+        this.secondShotProb = 0;
     }
 
     public boolean isDoubleShot() {
