@@ -61,6 +61,8 @@ public class AI {
                         }
                     }
                 }
+                System.out.println("x: " + x);
+                System.out.println("y: " + y);
             } else {
                 int i = lastShipPos.size() - 2;
                 boolean isPositive;
@@ -122,6 +124,10 @@ public class AI {
             }
         }
 
+        if (notTakenPos.size() > 0 && notTakenPos.size() < 3 && shot == null) {
+            shot = notTakenPos.get(random.nextInt(notTakenPos.size()));
+        }
+
         removePosition(shot.getX(), shot.getY());
 
         return shot;
@@ -147,7 +153,6 @@ public class AI {
 
         if (board.getSquareBoard()[position.getX()][position.getY()].getSquareStatus() == Square.SquareStatus.EMPTY) {
             board.getSquareBoard()[position.getX()][position.getY()].setSquareStatus(Square.SquareStatus.MISS);
-
             if (difficulty != 3) {
                 Main.setPlayer1Turn(!Main.isPlayer1Turn());
             }
@@ -161,12 +166,13 @@ public class AI {
 
                     if (isShot1Missed && isShot2Missed) {
                         Main.setPlayer1Turn(!Main.isPlayer1Turn());
+                        isShot1Missed = false;
+                        isShot2Missed = false;
                     }
                 } else {
                     Main.setPlayer1Turn(!Main.isPlayer1Turn());
                 }
             }
-
         } else if (board.getSquareBoard()[position.getX()][position.getY()].getSquareStatus() == Square.SquareStatus.SHIP) {
             board.getSquareBoard()[position.getX()][position.getY()].setSquareStatus(Square.SquareStatus.DAMAGED);
             lastShipPos.add(position);
@@ -205,7 +211,7 @@ public class AI {
     }
 
     public boolean calculateDoubleShot() {
-        return random.nextInt(100) < secondShotProb;
+        return (random.nextInt(100) < secondShotProb && notTakenPos.size() >= 2);
     }
 
     public void removePosition(int x, int y) {

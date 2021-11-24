@@ -150,9 +150,12 @@ public class Main extends Application {
                     public void handle(long l) {
                         if (l - (moveInterval/2) > time) {
 
-                            AI_1.setDoubleShot(AI_1.calculateDoubleShot());
-                            AI_1.hitAISquare(difficulty1, enemy2Board, enemy2Board.getShips(), true);
+                            if (difficulty1 == 3) {
+                                AI_1.setDoubleShot(AI_1.calculateDoubleShot());
+                            }
 
+                            AI_1.hitAISquare(difficulty1, enemy2Board, enemy2Board.getShips(), true);
+                            checkEndGame();
                             if (difficulty1 == 3) {
                                 if (AI_1.isDoubleShot()) {
                                     AI_1.resetSecondShotProb();
@@ -280,7 +283,9 @@ public class Main extends Application {
                 changeStyle();
 
                 if (!player1Turn) {
-                    AI_1.setDoubleShot(AI_1.calculateDoubleShot());
+                    if (difficulty1 == 3) {
+                        AI_1.setDoubleShot(AI_1.calculateDoubleShot());
+                    }
                     AI_1.hitAISquare(difficulty1, enemy2Board, enemy2Board.getShips(), true);
                     checkEndGame();
                     if (difficulty1 == 3) {
@@ -292,7 +297,9 @@ public class Main extends Application {
                         }
                     }
                 } else {
-                    AI_2.setDoubleShot(AI_2.calculateDoubleShot());
+                    if (difficulty2 == 3) {
+                        AI_2.setDoubleShot(AI_2.calculateDoubleShot());
+                    }
                     AI_2.hitAISquare(difficulty2, enemy1Board, enemy1Board.getShips(), true);
                     checkEndGame();
                     if (difficulty2 == 3) {

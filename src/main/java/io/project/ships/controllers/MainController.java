@@ -41,6 +41,9 @@ public class MainController {
     @FXML
     private Button pauseButton;
 
+    @FXML
+    private Button nextMoveButton;
+
     private boolean timelineCreated;
     private Timeline updateTimeline;
     private boolean buttonsBlocked;
@@ -73,16 +76,16 @@ public class MainController {
             //All ships -> 20 squares
             if (countShips == 20) {
                 Main.setPlayer2SetShips(true);
-                randomButton.setDisable(true);
-                imReadyButton.setDisable(true);
+                randomButton.setVisible(false);
+                imReadyButton.setVisible(false);
             } else {
                 System.out.println("Put all ships");
             }
         }
 
         if (Main.isPlayer1SetShips() && Main.getDifficulty1() > 0) {
-            randomButton.setDisable(true);
-            imReadyButton.setDisable(true);
+            randomButton.setVisible(false);
+            imReadyButton.setVisible(false);
         }
     }
 
@@ -113,11 +116,11 @@ public class MainController {
         if (Main.getDifficulty1() > 0 && Main.getDifficulty2() > 0) {
             if (!Main.isPause()) {
                 Main.setPause(true);
-                updateTimeline.pause();
+                //updateTimeline.pause();
                 pauseButton.setText("Play");
             } else {
                 Main.setPause(false);
-                updateTimeline.play();
+                //updateTimeline.play();
                 pauseButton.setText("Pause");
             }
         }
@@ -132,7 +135,6 @@ public class MainController {
                 Main.setPause(true);
                 updateTimeline.pause();
             }
-            System.out.println(player1Turn);
             Main.stepByStep(player1Turn);
         }
     }
@@ -237,9 +239,14 @@ public class MainController {
 
         //AI vs AI -> blocking buttons "Im ready" and "Random"
         if (Main.getDifficulty2() > 0 && !buttonsBlocked) {
-            randomButton.setDisable(true);
-            imReadyButton.setDisable(true);
+            randomButton.setVisible(false);
+            imReadyButton.setVisible(false);
             buttonsBlocked = true;
+        }
+
+        if (Main.getDifficulty2() == 0 && !buttonsBlocked) {
+            pauseButton.setVisible(false);
+            nextMoveButton.setVisible(false);
         }
     }
 
@@ -265,7 +272,7 @@ public class MainController {
         }
         else if (Main.getDifficulty2() > 0) {
 
-            if (Main.isPlayer1Turn()) {
+            if (!Main.isPlayer1Turn()) {
                 if (Main.getDifficulty1() == 1) {
                     playerLabel.setText("AI 1 BOARD ☆");
                 }
