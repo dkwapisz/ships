@@ -1,0 +1,31 @@
+#anchorPane {
+    -fx-background-image: url("../image/login.png");
+    -fx-background-size: 100% 100%;
+}
+
+#titleLabel {
+    -fx-font-color: #001754;
+    -fx-family: arkana;
+}
+
+#loginButton {
+    -fx-background-color: #001754;
+    -fx-text-fill: #ffffff;
+}
+
+#registerButton {
+    -fx-background-color: #001754;
+    -fx-text-fill: #ffffff;
+}
+
+#passwordTextField {
+    -fx-background-color: #006b80;
+    -fx-prompt-text-fill: #ffffff;
+    -fx-text-fill: #000000;
+}
+
+#loginTextField {
+    -fx-background-color: #b0c4de;
+    -fx-prompt-text-fill: #ffffff;
+    -fx-text-fill: #000000;
+}
