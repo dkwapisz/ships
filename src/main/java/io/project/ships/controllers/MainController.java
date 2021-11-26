@@ -78,6 +78,8 @@ public class MainController {
                 Main.setPlayer2SetShips(true);
                 randomButton.setVisible(false);
                 imReadyButton.setVisible(false);
+                randomButton.setDisable(true);
+                imReadyButton.setDisable(true);
             } else {
                 System.out.println("Put all ships");
             }
@@ -86,6 +88,8 @@ public class MainController {
         if (Main.isPlayer1SetShips() && Main.getDifficulty1() > 0) {
             randomButton.setVisible(false);
             imReadyButton.setVisible(false);
+            randomButton.setDisable(true);
+            imReadyButton.setDisable(true);
         }
     }
 
@@ -246,12 +250,16 @@ public class MainController {
         if (Main.getDifficulty2() > 0 && !buttonsBlocked) {
             randomButton.setVisible(false);
             imReadyButton.setVisible(false);
+            randomButton.setDisable(true);
+            imReadyButton.setDisable(true);
             buttonsBlocked = true;
         }
 
         if (Main.getDifficulty2() == 0 && !buttonsBlocked) {
             pauseButton.setVisible(false);
             nextMoveButton.setVisible(false);
+            pauseButton.setDisable(true);
+            nextMoveButton.setDisable(true);
         }
     }
 
