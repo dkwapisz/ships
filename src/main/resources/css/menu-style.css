@@ -1,0 +1,36 @@
+#anchorPane {
+    -fx-background-image: url("../image/menu.png");
+    -fx-background-size: 100% 100%;
+}
+
+#userLabel {
+    -fx-text-fill: #000000;
+}
+
+#gameSettingsButton {
+    -fx-text-fill: #ffffff;
+    -fx-background-color:
+            linear-gradient(#a5b1b8 0%, #bcc4ca 20%, #d3d3d7 100%),
+            radial-gradient(center 50% 0%, radius 100%, #a5b1b8, #bcc4ca);
+}
+
+#statisticsButton {
+    -fx-text-fill: #ffffff;
+    -fx-background-color:
+            linear-gradient(#444f56 0%, #798994 20%, #8f8f91 100%),
+            radial-gradient(center 50% 0%, radius 100%, #444f56, #798994);
+}
+
+#replaysButton {
+    -fx-text-fill: #ffffff;
+    -fx-background-color:
+            linear-gradient(#798994 0%, #8f9da6 20%, #8f8f91 100%),
+            radial-gradient(center 50% 0%, radius 100%, #798994, #8f9da6);
+}
+
+#quitButton {
+    -fx-text-fill: #ffffff;
+    -fx-background-color:
+            linear-gradient(#354f5f 0%, #5c6c7c 20%, #66666c 100%),
+            radial-gradient(center 50% 0%, radius 100%, #354f5f, #5c6c7c);
+}
