@@ -1,5 +1,6 @@
 package io.project.ships.controllers;
 
+import io.project.ships.menu.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,10 +12,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import io.project.ships.menu.Database;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class LoginWindowController {
+
+    private User user;
 
     @FXML
     private AnchorPane anchorPane;
@@ -39,8 +44,30 @@ public class LoginWindowController {
         Stage stage = (Stage) loginTextField.getScene().getWindow();
         Pane root = FXMLLoader.load(getClass().getResource("/fxml/menu-view.fxml"));
         Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        if (checkCredentials()){
+            stage.setScene(scene);
+            stage.show();
+        }
+    }
+
+    @FXML
+    boolean checkCredentials() {
+        Database db = new Database();
+        ArrayList<User> users;
+        users=db.selectUsers();
+        for (User user : users) {
+            if (user.getUsername().equals(loginTextField.getText())) {
+                if (user.getPasswordHash().equals(db.generateHash(passwordTextField.getText(), user.getSalt())[0])) {
+                    System.out.println("signed in successfully!");
+                    this.user=user;
+                    db.closeConnection();
+                    return true;
+                } else {
+                    System.out.println("password incorrect!");
+                }
+            }
+        }
+        return false;
     }
 
     @FXML
@@ -48,4 +75,7 @@ public class LoginWindowController {
 
     }
 
+    public User getUser() {
+        return user;
+    }
 }
