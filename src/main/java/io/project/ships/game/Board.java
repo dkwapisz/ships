@@ -131,6 +131,30 @@ public class Board extends Pane {
         setShips(enemyBoard.getShips());
     }
 
+    public String boardToString(){
+        StringBuilder string = new StringBuilder("");
+        for (int i = 0; i < COLUMNS; i++) {
+            for (int j = 0; j < ROWS; j++) {
+                if (squareBoard[i][j].getSquareStatus() == Square.SquareStatus.EMPTY) {
+                    string.append("e");
+                }
+                else if (squareBoard[i][j].getSquareStatus() == Square.SquareStatus.SHIP) {
+                    string.append("s");
+                }
+                else if (squareBoard[i][j].getSquareStatus() == Square.SquareStatus.MISS) {
+                    string.append("m");
+                }
+                else if (squareBoard[i][j].getSquareStatus() == Square.SquareStatus.DAMAGED) {
+                    string.append("d");
+                }
+                else if (squareBoard[i][j].getSquareStatus() == Square.SquareStatus.DESTROYED) {
+                    string.append("x");
+                }
+            }
+        }
+        return string.toString();
+    }
+
     public Ship[] getShips() {
         return ships;
     }
