@@ -79,8 +79,20 @@ public class Database {
         return true;
     }
 
-    public boolean dropTables(){
+    public boolean dropUsersTable(){
         String drop = "DROP TABLE IF EXISTS users_list;";
+        try {
+            stat.execute(drop);
+        }catch (SQLException e) {
+            System.err.println("drop failed");
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public boolean dropGamesTable(){
+        String drop = "DROP TABLE IF EXISTS game_history;";
         try {
             stat.execute(drop);
         }catch (SQLException e) {
