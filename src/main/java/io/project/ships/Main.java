@@ -3,6 +3,7 @@ package io.project.ships;
 import io.project.ships.game.AI;
 import io.project.ships.game.Board;
 import io.project.ships.game.Square;
+import io.project.ships.menu.User;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -60,6 +61,9 @@ public class Main extends Application {
     private static boolean gameEnded;
 
     private static int lastPlayer;
+
+    private static User user1;
+    private static User user2;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -462,5 +466,21 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         launch();
+    }
+
+    public static User getUser1() {
+        return user1;
+    }
+
+    public static User getUser2() {
+        return user2;
+    }
+
+    public static void setUser1(User user) {
+        user1 = user;
+    }
+
+    public static void setUser2(User user) {
+        user2 = user;
     }
 }

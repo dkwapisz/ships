@@ -16,5 +16,5 @@
          <Font name="Abyssinica SIL" size="57.0" />
       </font>
    </Label>
-   <Button fx:id="registerButton" layoutX="426.0" layoutY="356.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="160.0" text="Register" />
+   <Button fx:id="registerButton" layoutX="426.0" layoutY="356.0" mnemonicParsing="false" onAction="#goToRegisterWindow" prefHeight="30.0" prefWidth="160.0" text="Register" />
 </AnchorPane>

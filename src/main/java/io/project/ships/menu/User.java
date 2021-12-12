@@ -9,12 +9,14 @@ public class User {
     private String username;
     private String passwordHash;
     private String salt;
+    private  String path;
 
-    public User(int uid, String username, String passwordHash, String salt) {
+    public User(int uid, String username, String passwordHash, String salt, String path) {
         this.uid=uid;
         this.username=username;
         this.passwordHash=passwordHash;
         this.salt=salt;
+        this.path = path;
     }
 
     public int getUid() {
@@ -31,5 +33,9 @@ public class User {
 
     public String getSalt() {
         return salt;
+    }
+
+    public String getPath() {
+        return path;
     }
 }

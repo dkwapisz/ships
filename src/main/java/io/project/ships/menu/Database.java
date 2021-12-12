@@ -1,9 +1,12 @@
 package io.project.ships.menu;
+import io.project.ships.controllers.LoginWindowController;
 import org.controlsfx.control.tableview2.filter.filtereditor.SouthFilter;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.xml.transform.Source;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
@@ -14,6 +17,11 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.ResourceBundle;
 import java.nio.charset.StandardCharsets;
+
+import java.util.Base64;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+
 
 public class Database {
     public static final String DRIVER = "org.sqlite.JDBC";
@@ -47,7 +55,8 @@ public class Database {
                 "    username STRING  UNIQUE ON CONFLICT ABORT\n" +
                 "                     NOT NULL,\n" +
                 "    password STRING  NOT NULL,\n" +
-                "    salt     STRING \n" +
+                "    salt     STRING  NOT NULL, \n" +
+                "    path     STRING  DEFAULT '..\\..\\..\\..\\image.jpg'\n" +
                 ");";
         try {
             stat.execute(createUserList);
@@ -137,9 +146,19 @@ public class Database {
         }catch (SQLException e) {
             System.err.println("insert failed");
             e.printStackTrace();
-            if (e.getErrorCode() == 19){
-                System.out.println("user already exists!");
-            }
+            return false;
+        }
+        return true;
+    }
+    public boolean updateImages(int uid, String path){
+        try {
+            PreparedStatement prepStmt = conn.prepareStatement("UPDATE users_list SET path=? WHERE uid=?");
+            prepStmt.setString(1, path);
+            prepStmt.setInt(2, uid);
+            prepStmt.execute();
+        }catch (SQLException e) {
+            System.err.println("insert failed");
+            e.printStackTrace();
             return false;
         }
         return true;
@@ -150,13 +169,14 @@ public class Database {
         try {
             ResultSet result = stat.executeQuery("SELECT * from users_list");
             int uid;
-            String username, password, salt;
+            String username, password, salt, path;
             while (result.next()) {
                 uid = result.getInt("uid");
                 username = result.getString("username");
                 password = result.getString("password");
                 salt = result.getString("salt");
-                users.add(new User(uid, username, password, salt));
+                path = result.getString("path");
+                users.add(new User(uid, username, password, salt, path));
             }
         }catch (SQLException e) {
             System.err.println("select failed");
@@ -237,9 +257,11 @@ public class Database {
         }
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws FileNotFoundException {
 ////        just for testing sakes
-//        Database db = new Database();
+        Database db = new Database();
+        db.dropUsersTable();
+        db.createUserListTable();
 ////        db.dropTables();
 //        db.createUserListTable();
 //        db.createGameHistoryTable();
@@ -248,6 +270,6 @@ public class Database {
 //        users=db.selectUsers();
 //        ArrayList<GameHistory> games = new ArrayList<GameHistory>();
 //        games=db.selectGames(2);
-//        db.closeConnection();
+        db.closeConnection();
     }
 }
