@@ -2,6 +2,7 @@ package io.project.ships.controllers;
 
 import io.project.ships.menu.Database;
 import javafx.application.Platform;
+import javafx.beans.property.ObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -43,9 +44,17 @@ public class MenuController {
     private ImageView imageField;
 
     @FXML
-    public void initialize() {
-//        Image img = new Image("../../../resources/image/image.jpg");
-//        imageField.setImage(img);
+    public void initialize() throws IOException {
+        Image img = new Image(Main.getUser1().getPath());
+        File tempFile = new File(Main.getUser1().getPath().substring(6).replace("%20", " "));
+        boolean exists = tempFile.exists();
+        if (exists) {
+            imageField.setImage(img);
+        } else {
+            String path = getClass().getResource("/image/image.jpg").toString();
+            Image image = new Image(path);
+            imageField.setImage(image);
+        }
     }
 
     @FXML
@@ -90,6 +99,7 @@ public class MenuController {
             Database db = new Database();
             db.updateImages(Main.getUser1().getUid(), file.toURI().toString());
             db.closeConnection();
+            Main.getUser1().setPath(file.toURI().toString());
         }
     }
 

@@ -48,6 +48,7 @@ public class Database {
     }
 
     public boolean createUserListTable() {
+        String path = getClass().getResource("/image/image.jpg").toString();
         String createUserList = "CREATE TABLE IF NOT EXISTS users_list (\n" +
                 "    uid      INTEGER PRIMARY KEY AUTOINCREMENT\n" +
                 "                     UNIQUE\n" +
@@ -56,7 +57,7 @@ public class Database {
                 "                     NOT NULL,\n" +
                 "    password STRING  NOT NULL,\n" +
                 "    salt     STRING  NOT NULL, \n" +
-                "    path     STRING  DEFAULT '..\\..\\..\\..\\image.jpg'\n" +
+                "    path     STRING  \n" +
                 ");";
         try {
             stat.execute(createUserList);
@@ -114,11 +115,12 @@ public class Database {
 
     public boolean insertIntoUserList(String username, String password){
         try {
-            PreparedStatement prepStmt = conn.prepareStatement("INSERT INTO users_list (username, password, salt) VALUES (?, ?, ?);");
+            PreparedStatement prepStmt = conn.prepareStatement("INSERT INTO users_list (username, password, salt, path) VALUES (?, ?, ?, ?);");
             prepStmt.setString(1, username);
             String[] credentials = this.generateHash(password);
             prepStmt.setString(2, credentials[0]);
             prepStmt.setString(3, credentials[1]);
+            prepStmt.setString(4, getClass().getResource("/image/image.jpg").toString());
             prepStmt.execute();
         }catch (SQLException e) {
             System.err.println("insert failed");
