@@ -1,17 +1,18 @@
 package io.project.ships.controllers;
 
 import io.project.ships.Main;
+import io.project.ships.menu.Database;
+import io.project.ships.menu.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class GameSettingsController {
 
@@ -61,11 +62,26 @@ public class GameSettingsController {
     private RadioButton hard2_RB;
 
     @FXML
+    private PasswordField passwordField;
+
+    @FXML
+    private TextField usernameField;
+
+    @FXML
+    private Label guestField;
+
+    @FXML
     void goToBoard() throws IOException {
         Main main = new Main();
-        Main.setGameType(whoPlays(), getDifficulty(1), getDifficulty(2));
-        Stage stage = (Stage) anchorPane.getScene().getWindow();
-        main.start(stage);
+        if (player_VS_player_RB.isSelected() && checkCredentials()) {
+            Main.setGameType(whoPlays(), getDifficulty(1), getDifficulty(2));
+            Stage stage = (Stage) anchorPane.getScene().getWindow();
+            main.start(stage);
+        } else if (player_VS_AI_RB.isSelected() || AI_VS_AI_RB.isSelected()) {
+            Main.setGameType(whoPlays(), getDifficulty(1), getDifficulty(2));
+            Stage stage = (Stage) anchorPane.getScene().getWindow();
+            main.start(stage);
+        }
     }
 
     @FXML
@@ -123,6 +139,25 @@ public class GameSettingsController {
         }
     }
 
+    boolean checkCredentials() {
+        Database db = new Database();
+        ArrayList<User> users;
+        users=db.selectUsers();
+        for (User user : users) {
+            if (user.getUsername().equals(usernameField.getText()) && !Main.getUser1().getUsername().equals(usernameField.getText())) {
+                if (user.getPasswordHash().equals(db.generateHash(passwordField.getText(), user.getSalt())[0])) {
+                    System.out.println("signed in successfully!");
+                    Main.setUser2(user);
+                    db.closeConnection();
+                    return true;
+                } else {
+                    System.out.println("password incorrect!");
+                }
+            }
+        }
+        return false;
+    }
+
     public void initialize() {
         player_VS_player_RB.setOnAction(actionEvent -> {
             if (player_VS_player_RB.isSelected()) {
@@ -132,6 +167,12 @@ public class GameSettingsController {
                 easy2_RB.setDisable(true);
                 medium2_RB.setDisable(true);
                 hard2_RB.setDisable(true);
+
+                guestField.setDisable(false);
+                usernameField.setDisable(false);
+                usernameField.setText("");
+                passwordField.setDisable(false);
+                passwordField.setText("");
             }
         });
 
@@ -143,6 +184,12 @@ public class GameSettingsController {
             medium2_RB.setDisable(true);
             hard2_RB.setDisable(true);
 
+            guestField.setDisable(true);
+            usernameField.setDisable(true);
+            usernameField.setText("");
+            passwordField.setDisable(true);
+            passwordField.setText("");
+
             medium1_RB.setSelected(true);
         });
 
@@ -153,6 +200,12 @@ public class GameSettingsController {
             easy2_RB.setDisable(false);
             medium2_RB.setDisable(false);
             hard2_RB.setDisable(false);
+
+            guestField.setDisable(true);
+            usernameField.setDisable(true);
+            usernameField.setText("");
+            passwordField.setDisable(true);
+            passwordField.setText("");
 
             medium1_RB.setSelected(true);
             medium2_RB.setSelected(true);

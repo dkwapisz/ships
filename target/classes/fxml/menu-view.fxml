@@ -13,7 +13,7 @@
       <Button fx:id="replaysButton" layoutX="210.0" layoutY="123.0" mnemonicParsing="false" onAction="#goToReplays" prefHeight="40.0" prefWidth="180.0" text="REPLAYS" />
       <Button fx:id="statisticsButton" layoutX="210.0" layoutY="187.0" mnemonicParsing="false" onAction="#goToStatistics" prefHeight="40.0" prefWidth="180.0" text="STATISTICS" />
       <Button fx:id="quitButton" layoutX="270.0" layoutY="343.0" mnemonicParsing="false" onAction="#quit" prefHeight="30.0" prefWidth="60.0" text="QUIT" />
-      <Label fx:id="userLabel" layoutX="496.0" layoutY="14.0" prefHeight="20.0" prefWidth="60.0" text="user123" />
+      <Label fx:id="userLabel" alignment="CENTER" layoutX="442.0" layoutY="14.0" prefHeight="20.0" prefWidth="149.0" text="siema" textAlignment="CENTER" />
       <ImageView fx:id="imageField" fitHeight="60.0" fitWidth="60.0" layoutX="486.0" layoutY="35.0" onMouseClicked="#changeImage" pickOnBounds="true" AnchorPane.bottomAnchor="305.0" AnchorPane.leftAnchor="486.0" AnchorPane.rightAnchor="54.0" AnchorPane.topAnchor="35.0">
          <viewport>
             <Rectangle2D />
