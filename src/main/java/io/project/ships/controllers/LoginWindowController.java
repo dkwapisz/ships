@@ -15,13 +15,14 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import io.project.ships.menu.Database;
-
+import io.project.ships.Main;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class LoginWindowController {
 
+    @FXML
     private User user;
 
     @FXML
@@ -44,13 +45,22 @@ public class LoginWindowController {
 
     @FXML
     void login() throws IOException {
-        Stage stage = (Stage) loginTextField.getScene().getWindow();
-        Pane root = FXMLLoader.load(getClass().getResource("/fxml/menu-view.fxml"));
-        Scene scene = new Scene(root);
         if (checkCredentials()){
+            Stage stage = (Stage) loginButton.getScene().getWindow();
+            Pane root = FXMLLoader.load(getClass().getResource("/fxml/menu-view.fxml"));
+            Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
         }
+    }
+
+    @FXML
+    void goToRegisterWindow() throws IOException {
+        Stage stage = (Stage) registerButton.getScene().getWindow();
+        Pane root = FXMLLoader.load(getClass().getResource("/fxml/register-view.fxml"));
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 
     @FXML
@@ -62,12 +72,12 @@ public class LoginWindowController {
             if (user.getUsername().equals(loginTextField.getText())) {
                 if (user.getPasswordHash().equals(db.generateHash(passwordTextField.getText(), user.getSalt())[0])) {
                     System.out.println("signed in successfully!");
-                    this.user=user;
+                    Main.setUser1(user);
                     db.closeConnection();
-                    String bip = "bitwa.mp3";
-                    Media hit = new Media(new File(bip).toURI().toString());
-                    MediaPlayer mediaPlayer = new MediaPlayer(hit);
-                    mediaPlayer.play();
+//                    String bip = "bitwa.mp3";
+//                    Media hit = new Media(new File(bip).toURI().toString());
+//                    MediaPlayer mediaPlayer = new MediaPlayer(hit);
+//                    mediaPlayer.play(); //no copyright infringement has been detected
                     return true;
                 } else {
                     System.out.println("password incorrect!");
