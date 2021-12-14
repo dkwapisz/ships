@@ -44,8 +44,11 @@ public class LoginWindowController {
     private Label titleLabel;
 
     @FXML
+    private Label loginPrompt;
+
+    @FXML
     void login() throws IOException {
-        if (checkCredentials()){
+        if (checkCredentials()) {
             Stage stage = (Stage) loginButton.getScene().getWindow();
             Pane root = FXMLLoader.load(getClass().getResource("/fxml/menu-view.fxml"));
             Scene scene = new Scene(root);
@@ -56,6 +59,9 @@ public class LoginWindowController {
 
     @FXML
     void goToRegisterWindow() throws IOException {
+        loginPrompt.setText("");
+        loginTextField.clear();
+        passwordTextField.clear();
         Stage stage = (Stage) registerButton.getScene().getWindow();
         Pane root = FXMLLoader.load(getClass().getResource("/fxml/register-view.fxml"));
         Scene scene = new Scene(root);
@@ -65,31 +71,38 @@ public class LoginWindowController {
 
     @FXML
     boolean checkCredentials() {
+        boolean loginSuccess = false;
+        boolean userExist = false;
         Database db = new Database();
         ArrayList<User> users;
-        users=db.selectUsers();
+        users = db.selectUsers();
         for (User user : users) {
             if (user.getUsername().equals(loginTextField.getText())) {
                 if (user.getPasswordHash().equals(db.generateHash(passwordTextField.getText(), user.getSalt())[0])) {
-                    System.out.println("signed in successfully!");
+                    System.out.println("Signed in successfully!");
                     Main.setUser1(user);
                     db.closeConnection();
 //                    String bip = "bitwa.mp3";
 //                    Media hit = new Media(new File(bip).toURI().toString());
 //                    MediaPlayer mediaPlayer = new MediaPlayer(hit);
 //                    mediaPlayer.play(); //no copyright infringement has been detected
-                    return true;
+                    loginSuccess = true;
                 } else {
-                    System.out.println("password incorrect!");
+                    loginPrompt.setText("Password incorrect!");
+                    passwordTextField.clear();
                 }
+                userExist = true;
             }
         }
-        return false;
-    }
 
-    @FXML
-    void register() {
+        if (!userExist) {
+            loginPrompt.setText("User " + loginTextField.getText() + " doesn't exist.");
+            loginTextField.clear();
+            passwordTextField.clear();
 
+        }
+
+        return loginSuccess;
     }
 
     public User getUser() {

@@ -133,11 +133,11 @@ public class MainController {
             if (Main.isNotPaused()) {
                 Main.setPause(true);
                 //updateTimeline.pause();
-                pauseButton.setText("Play");
+                pauseButton.setText("▶");
             } else {
                 Main.setPause(false);
                 //updateTimeline.play();
-                pauseButton.setText("Pause");
+                pauseButton.setText("⏸");
             }
         }
     }
@@ -153,7 +153,7 @@ public class MainController {
                 //TODO Poprawne wyświetlanie podpisów plansz podczas odtwarzania rozgrywki Step By Step
                 //Chwilowo updateTimeline będzie pauzowany podczas przewijania rozgrywki Step By Step
                 updateTimeline.pause();
-                pauseButton.setText("Play");
+                pauseButton.setText("▶");
             }
 
             Main.stepByStep(player1Turn);

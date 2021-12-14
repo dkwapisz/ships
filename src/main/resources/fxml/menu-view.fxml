@@ -6,15 +6,19 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../css/menu-style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.project.ships.controllers.MenuController">
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../css/menu-style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.project.ships.controllers.MenuController">
    <children>
       <Button fx:id="gameSettingsButton" layoutX="210.0" layoutY="65.0" mnemonicParsing="false" onAction="#goToGameSettings" prefHeight="40.0" prefWidth="180.0" text="NEW GAME" />
       <Button fx:id="replaysButton" layoutX="210.0" layoutY="123.0" mnemonicParsing="false" onAction="#goToReplays" prefHeight="40.0" prefWidth="180.0" text="REPLAYS" />
       <Button fx:id="statisticsButton" layoutX="210.0" layoutY="187.0" mnemonicParsing="false" onAction="#goToStatistics" prefHeight="40.0" prefWidth="180.0" text="STATISTICS" />
       <Button fx:id="quitButton" layoutX="270.0" layoutY="343.0" mnemonicParsing="false" onAction="#quit" prefHeight="30.0" prefWidth="60.0" text="QUIT" />
-      <Label fx:id="userLabel" alignment="CENTER" layoutX="442.0" layoutY="14.0" prefHeight="20.0" prefWidth="149.0" text="siema" textAlignment="CENTER" />
-      <ImageView fx:id="imageField" fitHeight="60.0" fitWidth="60.0" layoutX="486.0" layoutY="35.0" onMouseClicked="#changeImage" pickOnBounds="true" AnchorPane.bottomAnchor="305.0" AnchorPane.leftAnchor="486.0" AnchorPane.rightAnchor="54.0" AnchorPane.topAnchor="35.0">
+      <Label fx:id="userLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="166.0" layoutY="14.0" prefHeight="23.0" prefWidth="268.0" text="Welcome" textAlignment="CENTER" textFill="#2f00ff">
+         <font>
+            <Font name="Lucida Fax Demibold Italic" size="18.0" />
+         </font></Label>
+      <ImageView fx:id="imageField" fitHeight="60.0" fitWidth="60.0" layoutX="520.0" layoutY="20.0" onMouseClicked="#changeImage" pickOnBounds="true" AnchorPane.bottomAnchor="326.0" AnchorPane.leftAnchor="518.0" AnchorPane.rightAnchor="22.0" AnchorPane.topAnchor="14.0">
          <viewport>
             <Rectangle2D />
          </viewport>

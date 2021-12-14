@@ -44,12 +44,6 @@ public class GameSettingsController {
     private RadioButton AI_VS_AI_RB;
 
     @FXML
-    private TextField difficulty1TextField;
-
-    @FXML
-    private TextField difficulty2TextField;
-
-    @FXML
     private RadioButton easy2_RB;
 
     @FXML
@@ -69,6 +63,9 @@ public class GameSettingsController {
 
     @FXML
     private Label guestField;
+
+    @FXML
+    private Label loginPrompt;
 
     @FXML
     void goToBoard() throws IOException {
@@ -146,12 +143,12 @@ public class GameSettingsController {
         for (User user : users) {
             if (user.getUsername().equals(usernameField.getText()) && !Main.getUser1().getUsername().equals(usernameField.getText())) {
                 if (user.getPasswordHash().equals(db.generateHash(passwordField.getText(), user.getSalt())[0])) {
-                    System.out.println("signed in successfully!");
+                    System.out.println("Signed in successfully!");
                     Main.setUser2(user);
                     db.closeConnection();
                     return true;
                 } else {
-                    System.out.println("password incorrect!");
+                    loginPrompt.setText("Password Incorrect");
                 }
             }
         }

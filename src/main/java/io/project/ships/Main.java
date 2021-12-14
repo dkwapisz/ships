@@ -189,7 +189,9 @@ public class Main extends Application {
                         @Override
                         public void handle(long l) {
                             if (l - moveInterval > time) {
-                                AI_1.setDoubleShot(AI_1.calculateDoubleShot());
+                                if (difficulty1 == 3) {
+                                    AI_1.setDoubleShot(AI_1.calculateDoubleShot());
+                                }
                                 AI_1.hitAISquare(difficulty1, enemy2Board, enemy2Board.getShips());
                                 checkEndGame();
                                 timer1Started = false;
@@ -202,7 +204,9 @@ public class Main extends Application {
                         @Override
                         public void handle(long l) {
                             if (l - moveInterval > time) {
-                                AI_2.setDoubleShot(AI_2.calculateDoubleShot());
+                                if (difficulty2 == 3) {
+                                    AI_2.setDoubleShot(AI_2.calculateDoubleShot());
+                                }
                                 AI_2.hitAISquare(difficulty2, enemy1Board, enemy1Board.getShips());
                                 checkEndGame();
                                 timer2Started = false;
@@ -365,7 +369,6 @@ public class Main extends Application {
     }
 
     public static void restartGame() {
-        mainTimeline.stop();
 
         if (timerAI1 != null) {
             timerAI1.stop();
@@ -373,6 +376,8 @@ public class Main extends Application {
         if (timerAI2 != null) {
             timerAI2.stop();
         }
+
+        mainTimeline.stop();
 
         player1Board = new Board(BOARD_COLUMNS, BOARD_ROWS, BOARD_WIDTH, BOARD_HEIGHT, false);
         enemy1Board = new Board(BOARD_COLUMNS, BOARD_ROWS, BOARD_WIDTH, BOARD_HEIGHT, true);

@@ -44,8 +44,8 @@ public class MenuController {
     private ImageView imageField;
 
     @FXML
-    public void initialize() throws IOException {
-        userLabel.setText(Main.getUser1().getUsername());
+    public void initialize() {
+        userLabel.setText("Welcome " + Main.getUser1().getUsername() + "!");
         Image img = new Image(Main.getUser1().getPath());
         File tempFile = new File(Main.getUser1().getPath().substring(6).replace("%20", " "));
         boolean exists = tempFile.exists();
@@ -86,7 +86,7 @@ public class MenuController {
     }
 
     @FXML
-    void changeImage(MouseEvent event) throws IOException {
+    void changeImage() {
         System.out.println("siema");
         String path = new String();
         FileChooser fc = new FileChooser();

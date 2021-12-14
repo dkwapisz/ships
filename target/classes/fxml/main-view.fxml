@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" stylesheets="@../css/board-style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.project.ships.controllers.MainController">
+<Pane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" stylesheets="@../css/board-style.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.project.ships.controllers.MainController">
    <Button layoutX="552.0" layoutY="726.0" mnemonicParsing="false" onAction="#backToMenu" text="Back to menu" />
    <Pane fx:id="playerBoard" layoutX="40.0" layoutY="40.0" prefHeight="400.0" prefWidth="400.0" />
    <Pane fx:id="enemyBoard" layoutX="760.0" layoutY="40.0" prefHeight="400.0" prefWidth="400.0" />
@@ -225,9 +225,15 @@
          <Font name="Bodoni MT" size="30.0" />
       </font>
    </Label>
-   <Button fx:id="pauseButton" layoutX="832.0" layoutY="613.0" mnemonicParsing="false" onAction="#playPause" text="Pause" />
-   <Button fx:id="nextMoveButton" layoutX="972.0" layoutY="613.0" mnemonicParsing="false" onAction="#nextMove" text="Next move" />
-   <ImageView fx:id="imageField1" fitHeight="60.0" fitWidth="60.0" layoutX="440.0" layoutY="450.0" pickOnBounds="true">
+   <Button fx:id="pauseButton" alignment="CENTER" layoutX="525.0" layoutY="465.0" maxHeight="50.0" maxWidth="50.0" minHeight="50.0" minWidth="50.0" mnemonicParsing="false" onAction="#playPause" prefHeight="50.0" prefWidth="50.0" text="⏸">
+      <font>
+         <Font size="20.0" />
+      </font></Button>
+   <Button fx:id="nextMoveButton" layoutX="622.0" layoutY="465.0" maxHeight="50.0" maxWidth="50.0" minHeight="50.0" minWidth="50.0" mnemonicParsing="false" onAction="#nextMove" prefHeight="50.0" prefWidth="50.0" text="⏩">
+      <font>
+         <Font size="20.0" />
+      </font></Button>
+   <ImageView fx:id="imageField1" fitHeight="60.0" fitWidth="60.0" layoutX="210.0" layoutY="500.0" pickOnBounds="true">
       <viewport>
          <Rectangle2D />
       </viewport>
@@ -235,7 +241,7 @@
          <Image url="@../image/image.jpg" />
       </image>
    </ImageView>
-   <ImageView fx:id="imageField2" fitHeight="60.0" fitWidth="60.0" layoutX="700.0" layoutY="450.0" pickOnBounds="true">
+   <ImageView fx:id="imageField2" fitHeight="60.0" fitWidth="60.0" layoutX="940.0" layoutY="500.0" pickOnBounds="true">
       <viewport>
          <Rectangle2D />
       </viewport>

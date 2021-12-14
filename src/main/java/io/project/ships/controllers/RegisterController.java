@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
@@ -31,6 +32,9 @@ public class RegisterController {
     private TextField username;
 
     @FXML
+    private Label registerPrompt;
+
+    @FXML
     void goBack() throws IOException {
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         Pane root = FXMLLoader.load(getClass().getResource("/fxml/login-view.fxml"));
@@ -43,8 +47,8 @@ public class RegisterController {
     void register() throws IOException {
         Database db = new Database();
         if (password.getText().equals(confirmPassword.getText())) {
-            if (4 < username.getText().length() && username.getText().length() < 16) {
-                if ((4 < password.getText().length() && password.getText().length() < 32)) {
+            if (4 <= username.getText().length() && username.getText().length() <= 16) {
+                if ((4 <= password.getText().length() && password.getText().length() <= 32)) {
                     db.insertIntoUserList(username.getText(), password.getText());
                     Stage stage = (Stage) registerButton.getScene().getWindow();
                     Pane root = FXMLLoader.load(getClass().getResource("/fxml/login-view.fxml"));
@@ -52,13 +56,13 @@ public class RegisterController {
                     stage.setScene(scene);
                     stage.show();
                 } else {
-                    System.out.println("Password length incorrect (4-32)");
+                    registerPrompt.setText("Password too short (4-32 characters required)");
                 }
             } else {
-                System.out.println("Username length incorrect (4-16)");
+                registerPrompt.setText("Username too short (4-16 characters required)");
             }
         } else {
-            System.out.println("Confirmed password incorrct");
+            registerPrompt.setText("Passwords are not the same");
         }
     }
 }
