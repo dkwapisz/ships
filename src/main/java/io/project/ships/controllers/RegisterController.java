@@ -43,12 +43,22 @@ public class RegisterController {
     void register() throws IOException {
         Database db = new Database();
         if (password.getText().equals(confirmPassword.getText())) {
-            db.insertIntoUserList(username.getText(), password.getText());
-            Stage stage = (Stage) registerButton.getScene().getWindow();
-            Pane root = FXMLLoader.load(getClass().getResource("/fxml/login-view.fxml"));
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
+            if (4 < username.getText().length() && username.getText().length() < 16) {
+                if ((4 < password.getText().length() && password.getText().length() < 32)) {
+                    db.insertIntoUserList(username.getText(), password.getText());
+                    Stage stage = (Stage) registerButton.getScene().getWindow();
+                    Pane root = FXMLLoader.load(getClass().getResource("/fxml/login-view.fxml"));
+                    Scene scene = new Scene(root);
+                    stage.setScene(scene);
+                    stage.show();
+                } else {
+                    System.out.println("Password length incorrect (4-32)");
+                }
+            } else {
+                System.out.println("Username length incorrect (4-16)");
+            }
+        } else {
+            System.out.println("Confirmed password incorrct");
         }
     }
 }

@@ -45,6 +45,7 @@ public class MenuController {
 
     @FXML
     public void initialize() throws IOException {
+        userLabel.setText(Main.getUser1().getUsername());
         Image img = new Image(Main.getUser1().getPath());
         File tempFile = new File(Main.getUser1().getPath().substring(6).replace("%20", " "));
         boolean exists = tempFile.exists();
