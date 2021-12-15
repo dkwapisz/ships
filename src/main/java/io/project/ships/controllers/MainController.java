@@ -18,6 +18,7 @@ import javafx.util.Duration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 
 public class MainController {
 
@@ -267,7 +268,8 @@ public class MainController {
             randomButton.setDisable(true);
             imReadyButton.setDisable(true);
             buttonsBlocked = true;
-            image1 = validateImage(imageField1, Main.getUser1());
+            image1 = validateImage(imageField1, null);
+            image2 = validateImage(imageField2, null);
         }
 
         if (Main.getDifficulty2() == 0 && !buttonsBlocked) {
@@ -275,8 +277,13 @@ public class MainController {
             nextMoveButton.setVisible(false);
             pauseButton.setDisable(true);
             nextMoveButton.setDisable(true);
-            image1 = validateImage(imageField1, Main.getUser1());
-            image2 = validateImage(imageField2, Main.getUser2());
+            if (Main.getDifficulty1() == 0) {
+                image1 = validateImage(imageField1, Main.getUser1());
+                image2 = validateImage(imageField2, Main.getUser2());
+            } else {
+                image1 = validateImage(imageField1, Main.getUser1());
+                image2 = validateImage(imageField2, null);
+            }
         }
     }
 
@@ -287,7 +294,9 @@ public class MainController {
 
     private Image validateImage(ImageView imageView, User user) {
         if (user == null) {
-            String path = getClass().getResource("/image/image.jpg").toString();
+            Random rand = new Random();
+            int randInt = rand.nextInt(10) +1;
+            String path = getClass().getResource("/image/image"+randInt+".jpg").toString();
             Image defaultImg = new Image(path);
             imageView.setImage(defaultImg);
             return defaultImg;
@@ -333,8 +342,8 @@ public class MainController {
             }
         }
         else if (Main.getDifficulty2() > 0) {
-
             if (!Main.isPlayer1Turn()) {
+                updateImages(image1, image2);
                 if (Main.getDifficulty1() == 1) {
                     playerLabel.setText("AI 1 BOARD ☆");
                 }
@@ -354,6 +363,7 @@ public class MainController {
                     enemyLabel.setText("AI 2 BOARD ☆☆☆");
                 }
             } else {
+                updateImages(image2, image1);
                 if (Main.getDifficulty1() == 1) {
                     enemyLabel.setText("AI 1 BOARD ☆");
                 }

@@ -49,12 +49,16 @@ public class RegisterController {
         if (password.getText().equals(confirmPassword.getText())) {
             if (4 <= username.getText().length() && username.getText().length() <= 16) {
                 if ((4 <= password.getText().length() && password.getText().length() <= 32)) {
-                    db.insertIntoUserList(username.getText(), password.getText());
-                    Stage stage = (Stage) registerButton.getScene().getWindow();
-                    Pane root = FXMLLoader.load(getClass().getResource("/fxml/login-view.fxml"));
-                    Scene scene = new Scene(root);
-                    stage.setScene(scene);
-                    stage.show();
+                    Boolean executed = db.insertIntoUserList(username.getText(), password.getText());
+                    if (executed) {
+                        Stage stage = (Stage) registerButton.getScene().getWindow();
+                        Pane root = FXMLLoader.load(getClass().getResource("/fxml/login-view.fxml"));
+                        Scene scene = new Scene(root);
+                        stage.setScene(scene);
+                        stage.show();
+                    } else {
+                        registerPrompt.setText("User already exists!");
+                    }
                 } else {
                     registerPrompt.setText("Password too short (4-32 characters required)");
                 }

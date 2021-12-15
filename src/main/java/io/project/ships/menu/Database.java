@@ -124,7 +124,6 @@ public class Database {
             prepStmt.execute();
         }catch (SQLException e) {
             System.err.println("insert failed");
-            e.printStackTrace();
             if (e.getErrorCode() == 19){
                 System.out.println("user already exists!");
             }
