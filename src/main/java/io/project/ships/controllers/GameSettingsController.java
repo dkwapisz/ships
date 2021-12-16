@@ -148,8 +148,10 @@ public class GameSettingsController {
                     db.closeConnection();
                     return true;
                 } else {
-                    loginPrompt.setText("Password Incorrect");
+                    loginPrompt.setText("Incorrect credentials");
                 }
+            } else {
+                loginPrompt.setText("Incorrect credentials");
             }
         }
         return false;

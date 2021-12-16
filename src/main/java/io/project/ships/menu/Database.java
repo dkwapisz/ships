@@ -89,11 +89,11 @@ public class Database {
         return true;
     }
 
-    public boolean dropUsersTable(){
+    public boolean dropUsersTable() {
         String drop = "DROP TABLE IF EXISTS users_list;";
         try {
             stat.execute(drop);
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             System.err.println("drop failed");
             e.printStackTrace();
             return false;
@@ -101,11 +101,11 @@ public class Database {
         return true;
     }
 
-    public boolean dropGamesTable(){
+    public boolean dropGamesTable() {
         String drop = "DROP TABLE IF EXISTS game_history;";
         try {
             stat.execute(drop);
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             System.err.println("drop failed");
             e.printStackTrace();
             return false;
@@ -113,7 +113,7 @@ public class Database {
         return true;
     }
 
-    public boolean insertIntoUserList(String username, String password){
+    public boolean insertIntoUserList(String username, String password) {
         try {
             PreparedStatement prepStmt = conn.prepareStatement("INSERT INTO users_list (username, password, salt, path) VALUES (?, ?, ?, ?);");
             prepStmt.setString(1, username);
@@ -122,10 +122,9 @@ public class Database {
             prepStmt.setString(3, credentials[1]);
             prepStmt.setString(4, getClass().getResource("/image/image.jpg").toString());
             prepStmt.execute();
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             System.err.println("insert failed");
-            e.printStackTrace();
-            if (e.getErrorCode() == 19){
+            if (e.getErrorCode() == 19) {
                 System.out.println("user already exists!");
             }
             return false;
@@ -133,7 +132,7 @@ public class Database {
         return true;
     }
 
-    public boolean insertIntoGameHistory(int gid, int uid1, int uid2, int moveNumber, String board1, String board2, int isAiVsAi){
+    public boolean insertIntoGameHistory(int gid, int uid1, int uid2, int moveNumber, String board1, String board2, int isAiVsAi) {
         try {
             PreparedStatement prepStmt = conn.prepareStatement("INSERT INTO game_history " +
                     "(gid, uid1, uid2, move_number, board1, board2, is_aivsai) VALUES (?, ?, ?, ?, ?, ?, ?);");
@@ -145,20 +144,7 @@ public class Database {
             prepStmt.setString(6, board2);
             prepStmt.setInt(7, isAiVsAi);
             prepStmt.execute();
-        }catch (SQLException e) {
-            System.err.println("insert failed");
-            e.printStackTrace();
-            return false;
-        }
-        return true;
-    }
-    public boolean updateImages(int uid, String path){
-        try {
-            PreparedStatement prepStmt = conn.prepareStatement("UPDATE users_list SET path=? WHERE uid=?");
-            prepStmt.setString(1, path);
-            prepStmt.setInt(2, uid);
-            prepStmt.execute();
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             System.err.println("insert failed");
             e.printStackTrace();
             return false;
@@ -166,8 +152,22 @@ public class Database {
         return true;
     }
 
-    public ArrayList<User> selectUsers(){
-        ArrayList<User> users= new ArrayList<User>();
+    public boolean updateImages(int uid, String path) {
+        try {
+            PreparedStatement prepStmt = conn.prepareStatement("UPDATE users_list SET path=? WHERE uid=?");
+            prepStmt.setString(1, path);
+            prepStmt.setInt(2, uid);
+            prepStmt.execute();
+        } catch (SQLException e) {
+            System.err.println("insert failed");
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public ArrayList<User> selectUsers() {
+        ArrayList<User> users = new ArrayList<User>();
         try {
             ResultSet result = stat.executeQuery("SELECT * from users_list");
             int uid;
@@ -180,7 +180,7 @@ public class Database {
                 path = result.getString("path");
                 users.add(new User(uid, username, password, salt, path));
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             System.err.println("select failed");
             e.printStackTrace();
             return null;
@@ -188,32 +188,32 @@ public class Database {
         return users;
     }
 
-    public ArrayList<GameHistory> selectGames(int uid){
-        ArrayList<GameHistory> games= new ArrayList<GameHistory>();
-        try {
-            PreparedStatement prepStmt = conn.prepareStatement("SELECT * from game_history where uid1=? or uid2=?;");
-            prepStmt.setInt(1, uid);
-            prepStmt.setInt(2, uid);
-            ResultSet result = prepStmt.executeQuery();
-            int gid, uid1, uid2, moveNumber, isAiVsAi;
-            String board1, board2;
-            while (result.next()) {
-                gid = result.getInt("gid");
-                uid1 = result.getInt("uid1");
-                uid2 = result.getInt("uid2");
-                moveNumber = result.getInt("move_number");
-                board1 = result.getString("board1");
-                board2 = result.getString("board2");
-                isAiVsAi = result.getInt("is_aivsai");
-                games.add(new GameHistory(gid, uid1, uid2, moveNumber, board1, board2, isAiVsAi));
-            }
-        }catch (SQLException e) {
-            System.err.println("select failed");
-            e.printStackTrace();
-            return null;
-        }
-        return games;
-    }
+//    public ArrayList<GameHistory> selectGames(int uid){
+//        ArrayList<GameHistory> games= new ArrayList<GameHistory>();
+//        try {
+//            PreparedStatement prepStmt = conn.prepareStatement("SELECT * from game_history where uid1=? or uid2=?;");
+//            prepStmt.setInt(1, uid);
+//            prepStmt.setInt(2, uid);
+//            ResultSet result = prepStmt.executeQuery();
+//            int gid, uid1, uid2, moveNumber, isAiVsAi;
+//            String board1, board2;
+//            while (result.next()) {
+//                gid = result.getInt("gid");
+//                uid1 = result.getInt("uid1");
+//                uid2 = result.getInt("uid2");
+//                moveNumber = result.getInt("move_number");
+//                board1 = result.getString("board1");
+//                board2 = result.getString("board2");
+//                isAiVsAi = result.getInt("is_aivsai");
+//                games.add(new GameHistory(gid, uid1, uid2, moveNumber, board1, board2, isAiVsAi));
+//            }
+//        }catch (SQLException e) {
+//            System.err.println("select failed");
+//            e.printStackTrace();
+//            return null;
+//        }
+//        return games;
+//    }
 
     public String[] generateHash(String password, String... salt) {
         Base64.Decoder decoder = Base64.getUrlDecoder();
@@ -261,9 +261,9 @@ public class Database {
 
     public static void main(String[] args) throws FileNotFoundException {
 ////        just for testing sakes
-        Database db = new Database();
-        db.dropUsersTable();
-        db.createUserListTable();
+//        Database db = new Database();
+//        db.dropUsersTable();
+//        db.createUserListTable();
 ////        db.dropTables();
 //        db.createUserListTable();
 //        db.createGameHistoryTable();
@@ -272,6 +272,6 @@ public class Database {
 //        users=db.selectUsers();
 //        ArrayList<GameHistory> games = new ArrayList<GameHistory>();
 //        games=db.selectGames(2);
-        db.closeConnection();
+//        db.closeConnection();
     }
 }
