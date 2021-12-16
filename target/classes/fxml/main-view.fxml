@@ -227,13 +227,13 @@
    </Label>
    <Button fx:id="pauseButton" alignment="CENTER" layoutX="525.0" layoutY="465.0" maxHeight="50.0" maxWidth="50.0" minHeight="50.0" minWidth="50.0" mnemonicParsing="false" onAction="#playPause" prefHeight="50.0" prefWidth="50.0" text="⏸">
       <font>
-         <Font size="20.0" />
+         <Font name="System Bold" size="20.0" />
       </font></Button>
    <Button fx:id="nextMoveButton" layoutX="622.0" layoutY="465.0" maxHeight="50.0" maxWidth="50.0" minHeight="50.0" minWidth="50.0" mnemonicParsing="false" onAction="#nextMove" prefHeight="50.0" prefWidth="50.0" text="⏩">
       <font>
-         <Font size="20.0" />
+         <Font name="System Bold" size="20.0" />
       </font></Button>
-   <ImageView fx:id="imageField1" fitHeight="60.0" fitWidth="60.0" layoutX="210.0" layoutY="500.0" pickOnBounds="true">
+   <ImageView fx:id="imageField1" fitHeight="60.0" fitWidth="60.0" layoutX="480.0" layoutY="40.0" pickOnBounds="true">
       <viewport>
          <Rectangle2D />
       </viewport>
@@ -241,7 +241,7 @@
          <Image url="@../image/image.jpg" />
       </image>
    </ImageView>
-   <ImageView fx:id="imageField2" fitHeight="60.0" fitWidth="60.0" layoutX="940.0" layoutY="500.0" pickOnBounds="true">
+   <ImageView fx:id="imageField2" fitHeight="60.0" fitWidth="60.0" layoutX="660.0" layoutY="40.0" pickOnBounds="true">
       <viewport>
          <Rectangle2D />
       </viewport>
@@ -249,4 +249,9 @@
          <Image url="@../image/image.jpg" />
       </image>
    </ImageView>
+   <Label alignment="CENTER" layoutX="571.0" layoutY="70.0" prefHeight="18.0" prefWidth="60.0" text="VS" textAlignment="CENTER">
+      <font>
+         <Font name="System Bold Italic" size="18.0" />
+      </font>
+   </Label>
 </Pane>

@@ -45,6 +45,42 @@
     -fx-border-width: 1px;
 }
 
+#nextMoveButton {
+    -fx-background-color: transparent;
+    -fx-border-color: blue;
+    -fx-text-fill: black;
+}
+
+#pauseButton {
+    -fx-background-color: transparent;
+    -fx-border-color: blue;
+    -fx-text-fill: black;
+}
+
+#nextMoveButton:hover {
+    -fx-background-color: rgba(128, 148, 255, 1);
+    -fx-border-color: blue;
+    -fx-text-fill: black;
+}
+
+#pauseButton:hover {
+    -fx-background-color: rgba(128, 148, 255, 1);
+    -fx-border-color: blue;
+    -fx-text-fill: black;
+}
+
+#nextMoveButton:pressed {
+    -fx-background-color: rgb(255, 105, 105);
+    -fx-border-color: blue;
+    -fx-text-fill: black;
+}
+
+#pauseButton:pressed {
+    -fx-background-color: rgb(255, 105, 105);
+    -fx-border-color: blue;
+    -fx-text-fill: black;
+}
+
 #playerBoard {
     -fx-background-color: #bbe1ee;
 }
