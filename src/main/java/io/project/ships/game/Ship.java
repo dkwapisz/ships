@@ -25,8 +25,8 @@ public class Ship {
         position = new Position[size];
         setStartPositions();
         makeShape(size, whichShip);
-        shape.setFill(Color.BLUE);
-        shape.setOpacity(0.4);
+        shape.setFill(Color.rgb(0, 0, 60));
+        shape.setOpacity(0.6);
         setMouseListener();
     }
 

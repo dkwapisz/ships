@@ -1,3 +1,7 @@
+.root {
+    -fx-background-image:  url("../image/gameBackround.jpg");
+}
+
 .cell {
     -fx-border-color: black;
     -fx-border-width: 1px;
@@ -45,40 +49,34 @@
     -fx-border-width: 1px;
 }
 
-#nextMoveButton {
-    -fx-background-color: transparent;
-    -fx-border-color: blue;
+.button {
+    -fx-border-radius: 3px;
+    /*-fx-background-color: transparent;*/
+    -fx-background-color:
+        radial-gradient(center 50% 50%, radius 100%, #4343ff, #2121ff);
+    -fx-border-color: #5757ff;
+    -fx-text-fill: #c7faf4;
+}
+
+.button:hover {
+    -fx-background-color:
+            radial-gradient(center 50% 50%, radius 100%, #5757ff, rgba(128, 148, 255, 1));
+    -fx-border-color: #5757ff;
+    -fx-text-fill: #c7faf4;
+}
+
+.button:pressed {
+    -fx-background-color:
+            radial-gradient(center 50% 50%, radius 100%, rgb(255, 105, 105), rgb(255, 171, 171));
+    -fx-border-color: #5757ff;
     -fx-text-fill: black;
 }
 
-#pauseButton {
-    -fx-background-color: transparent;
-    -fx-border-color: blue;
-    -fx-text-fill: black;
-}
-
-#nextMoveButton:hover {
-    -fx-background-color: rgba(128, 148, 255, 1);
-    -fx-border-color: blue;
-    -fx-text-fill: black;
-}
-
-#pauseButton:hover {
-    -fx-background-color: rgba(128, 148, 255, 1);
-    -fx-border-color: blue;
-    -fx-text-fill: black;
-}
-
-#nextMoveButton:pressed {
-    -fx-background-color: rgb(255, 105, 105);
-    -fx-border-color: blue;
-    -fx-text-fill: black;
-}
-
-#pauseButton:pressed {
-    -fx-background-color: rgb(255, 105, 105);
-    -fx-border-color: blue;
-    -fx-text-fill: black;
+#shipsPane {
+    -fx-background-color: #a1b3ff;
+    -fx-border-color: #00003f;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
 }
 
 #playerBoard {

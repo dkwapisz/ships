@@ -55,6 +55,12 @@ public class MainController {
     @FXML
     private ImageView imageField2;
 
+    @FXML
+    private Pane shipsPane;
+
+    @FXML
+    private Label shipsLabel;
+
     private boolean timelineCreated;
     private Timeline updateTimeline;
     private boolean buttonsBlocked;
@@ -89,6 +95,8 @@ public class MainController {
             //All ships -> 20 squares
             if (countShips == 20) {
                 Main.setPlayer2SetShips(true);
+                shipsLabel.setVisible(false);
+                shipsPane.setVisible(false);
                 randomButton.setVisible(false);
                 imReadyButton.setVisible(false);
                 randomButton.setDisable(true);
@@ -99,6 +107,8 @@ public class MainController {
         }
 
         if (Main.isPlayer1SetShips() && Main.getDifficulty1() > 0) {
+            shipsLabel.setVisible(false);
+            shipsPane.setVisible(false);
             randomButton.setVisible(false);
             imReadyButton.setVisible(false);
             randomButton.setDisable(true);
@@ -255,7 +265,7 @@ public class MainController {
 
     public void initialize() {
         if (!timelineCreated) {
-            updateTimeline = new Timeline(new KeyFrame(Duration.millis(250), e -> {updateLabels();}));
+            updateTimeline = new Timeline(new KeyFrame(Duration.millis(100), e -> {updateLabels();}));
             updateTimeline.setCycleCount(Timeline.INDEFINITE);
             updateTimeline.play();
             timelineCreated = true;
@@ -263,6 +273,8 @@ public class MainController {
 
         //AI vs AI -> blocking buttons "Im ready" and "Random"
         if (Main.getDifficulty2() > 0 && !buttonsBlocked) {
+            shipsLabel.setVisible(false);
+            shipsPane.setVisible(false);
             randomButton.setVisible(false);
             imReadyButton.setVisible(false);
             randomButton.setDisable(true);
