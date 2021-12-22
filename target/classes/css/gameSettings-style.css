@@ -1,0 +1,37 @@
+#anchorPane {
+    -fx-background-image: url("../image/gameBackround.jpg");
+    -fx-background-size: 100% 100%;
+}
+
+.button {
+    -fx-border-radius: 3px;
+    -fx-background-color:
+            radial-gradient(center 50% 50%, radius 100%, #4343ff, #2121ff);
+    -fx-border-color: #5757ff;
+    -fx-text-fill: #c7faf4;
+}
+
+#guestField {
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold
+}
+
+#typeLabel {
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold
+}
+
+#AI1Label {
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold
+}
+
+#AI2Label {
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold
+}
+
+.radio-button {
+    -fx-text-fill: #ffffff;
+}
+
