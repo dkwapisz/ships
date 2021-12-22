@@ -15,9 +15,9 @@ public class ReplayBoard {
         int index;
         for (int row = 0; row < 10; row++) {
             for (int column = 0; column < 10; column++) {
-                index = 10 * row + column;
+                index = row + 10 * column;
                 status = this.boardInString.charAt(index);
-                this.square[row][column] = new ReplaySquare(column, row, status);
+                this.square[row][column] = new ReplaySquare(row, column, status);
             }
         }
     }
@@ -25,8 +25,8 @@ public class ReplayBoard {
     //just for testing sakes
     public void printBoardStatus() {
         String line = "";
-        for (int j = 0; j < 10; j++) {
-            for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
                 if (square[i][j].getSquareStatus() == ReplaySquare.SquareStatus.EMPTY) {
                     line += "O ";
                 } else if (square[i][j].getSquareStatus() == ReplaySquare.SquareStatus.SHIP) {
@@ -53,6 +53,7 @@ public class ReplayBoard {
                 for (int i = 0; i < 10; i++) {
                     for (int j = 0; j < 10; j++) {
                         if (this.square[i][j].getChecked()) {
+                            this.square[i][j].setChecked(false);
                             this.square[i][j].updateSquareStatus('x');
                             if (this.square[i + 1][j].getSquareStatus() == ReplaySquare.SquareStatus.EMPTY) {
                                 this.square[i + 1][j].updateSquareStatus('m');
@@ -128,16 +129,17 @@ public class ReplayBoard {
     }
 
 //    just for testing sakes
-//    public static void main(String[] args) {
-//        ReplayBoard board = new ReplayBoard("eeeeeeeeesesesseseeeeseeeeeeeeeseeeeeeeeeeeesssseesseeeeeeeeeeeeeeesseeeseeeeeeeeeeeseessseeeeeeeeee");
-//        board.updateBoard(4, 4);
-//        board.printBoardStatus();
-//        board.updateBoard(4, 7);
-//        board.printBoardStatus();
-//        board.updateBoard(4, 5);
-//        board.printBoardStatus();
-//        board.updateBoard(4, 6);
-//        board.printBoardStatus();
-//
-//    }
+    public static void main(String[] args) {
+        ReplayBoard board = new ReplayBoard("eeeeeeeeesesesseseeeeseeeeeeeeeseeeeeeeeeeeesssseesseeeeeeeeeeeeeeesseeeseeeeeeeeeeeseessseeeeeeeeee");
+        board.printBoardStatus();
+        board.updateBoard(4, 4);
+        board.printBoardStatus();
+        board.updateBoard(7, 4);
+        board.printBoardStatus();
+        board.updateBoard(5, 4);
+        board.printBoardStatus();
+        board.updateBoard(6, 4);
+        board.printBoardStatus();
+
+    }
 }

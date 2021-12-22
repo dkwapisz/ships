@@ -28,6 +28,12 @@ public class Square extends StackPane {
     private void mouseClick() throws IOException {
         if (Main.isGameStarted() && ((Main.isPlayer1Turn() && Main.getDifficulty1() > 0 && Main.getDifficulty2() == 0 && !Main.isTimer1Started()) || (!(Main.getDifficulty1() > 0) && !(Main.getDifficulty2() > 0)))) {
             if (squareStatus == SquareStatus.EMPTY) {
+                if (Main.isPlayer1Turn()) {
+                    System.out.println(Main.getUser1().getUid());
+                } else {
+                    System.out.println(Main.getUser2().getUid());
+                }
+                System.out.println("x:" + position.getX() + ", y:" + position.getY());
                 squareStatus = SquareStatus.MISS;
                 if (Main.getDifficulty1() == 0 || (Main.getDifficulty1() > 0)) {
                     Main.setPlayer1Turn(!Main.isPlayer1Turn());
@@ -39,6 +45,12 @@ public class Square extends StackPane {
                 }
             }
             if (squareStatus == SquareStatus.SHIP) {
+                if (Main.isPlayer1Turn()) {
+                    System.out.println(Main.getUser1().getUid());
+                } else {
+                    System.out.println(Main.getUser2().getUid());
+                }
+                System.out.println("x:" + position.getX() + ", y:" + position.getY());
                 squareStatus = SquareStatus.DAMAGED;
                 if (Main.isPlayer1Turn()) {
                     hitShip(Main.getEnemy1Board().getShips(), true);

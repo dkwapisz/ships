@@ -142,8 +142,10 @@ public class AI {
 
         if (difficulty == 1) {
             position = getRandomShot();
+            System.out.println("x:" + position.getX() + ", y:" + position.getY());
         } else if (difficulty == 2 || difficulty == 3) {
             position = getSmartShot();
+            System.out.println("x:" + position.getX() + ", y:" + position.getY());
         }
 
         if (position == null) {
