@@ -142,9 +142,19 @@ public class AI {
 
         if (difficulty == 1) {
             position = getRandomShot();
+            if (Main.isPlayer1Turn()) {
+                System.out.println(1);
+            } else {
+                System.out.println(2);
+            }
             System.out.println("x:" + position.getX() + ", y:" + position.getY());
         } else if (difficulty == 2 || difficulty == 3) {
             position = getSmartShot();
+            if (Main.isPlayer1Turn()) {
+                System.out.println(1);
+            } else {
+                System.out.println(2);
+            }
             System.out.println("x:" + position.getX() + ", y:" + position.getY());
         }
 
