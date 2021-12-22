@@ -70,14 +70,16 @@ public class Database {
     }
 
     public boolean createGameHistoryTable() {
-        String createGameHistory = "CREATE TABLE IF NOT EXISTS game_history (\n" +
-                "    gid         INTEGER DEFAULT (0),\n" +
-                "    uid1        INTEGER,\n" +
-                "    uid2        INTEGER DEFAULT (0),\n" +
-                "    move_number INTEGER,\n" +
-                "    board1      STRING,\n" +
-                "    board2      STRING,\n" +
-                "    is_aivsai   INTEGER DEFAULT (0) \n" +
+        String createGameHistory = "CREATE TABLE game_history (\n" +
+                "    gid       INTEGER PRIMARY KEY AUTOINCREMENT\n" +
+                "                      NOT NULL\n" +
+                "                      UNIQUE,\n" +
+                "    uid1      INTEGER,\n" +
+                "    uid2      INTEGER DEFAULT (0),\n" +
+                "    board1    STRING,\n" +
+                "    board2    STRING,\n" +
+                "    game_flow STRING,\n" +
+                "    is_aivsai INTEGER DEFAULT (0) \n" +
                 ");";
         try {
             stat.execute(createGameHistory);
@@ -132,17 +134,16 @@ public class Database {
         return true;
     }
 
-    public boolean insertIntoGameHistory(int gid, int uid1, int uid2, int moveNumber, String board1, String board2, int isAiVsAi) {
+    public boolean insertIntoGameHistory(int uid1, int uid2, String board1, String board2, String gameFlow, int isAiVsAi) {
         try {
             PreparedStatement prepStmt = conn.prepareStatement("INSERT INTO game_history " +
-                    "(gid, uid1, uid2, move_number, board1, board2, is_aivsai) VALUES (?, ?, ?, ?, ?, ?, ?);");
-            prepStmt.setInt(1, gid);
-            prepStmt.setInt(2, uid1);
-            prepStmt.setInt(3, uid2);
-            prepStmt.setInt(4, moveNumber);
-            prepStmt.setString(5, board1);
-            prepStmt.setString(6, board2);
-            prepStmt.setInt(7, isAiVsAi);
+                    "(uid1, uid2, board1, board2, game_flow, is_aivsai) VALUES (?, ?, ?, ?, ?, ?);");
+            prepStmt.setInt(1, uid1);
+            prepStmt.setInt(2, uid2);
+            prepStmt.setString(3, board1);
+            prepStmt.setString(4, board2);
+            prepStmt.setString(5, gameFlow);
+            prepStmt.setInt(6, isAiVsAi);
             prepStmt.execute();
         } catch (SQLException e) {
             System.err.println("insert failed");
@@ -188,32 +189,50 @@ public class Database {
         return users;
     }
 
-//    public ArrayList<GameHistory> selectGames(int uid){
-//        ArrayList<GameHistory> games= new ArrayList<GameHistory>();
-//        try {
-//            PreparedStatement prepStmt = conn.prepareStatement("SELECT * from game_history where uid1=? or uid2=?;");
-//            prepStmt.setInt(1, uid);
-//            prepStmt.setInt(2, uid);
-//            ResultSet result = prepStmt.executeQuery();
-//            int gid, uid1, uid2, moveNumber, isAiVsAi;
-//            String board1, board2;
-//            while (result.next()) {
-//                gid = result.getInt("gid");
-//                uid1 = result.getInt("uid1");
-//                uid2 = result.getInt("uid2");
-//                moveNumber = result.getInt("move_number");
-//                board1 = result.getString("board1");
-//                board2 = result.getString("board2");
-//                isAiVsAi = result.getInt("is_aivsai");
-//                games.add(new GameHistory(gid, uid1, uid2, moveNumber, board1, board2, isAiVsAi));
-//            }
-//        }catch (SQLException e) {
-//            System.err.println("select failed");
-//            e.printStackTrace();
-//            return null;
-//        }
-//        return games;
-//    }
+    public ArrayList<GameBasic> selectGamesBasic(int uid) {
+        ArrayList<GameBasic> games = new ArrayList<GameBasic>();
+        try {
+            PreparedStatement prepStmt = conn.prepareStatement("SELECT gid, uid1, uid2 from games_history where uid1=? or uid2=?");
+            prepStmt.setInt(1, uid);
+            prepStmt.setInt(2, uid);
+            ResultSet result = prepStmt.executeQuery();
+            int gid;
+            int uid1;
+            int uid2;
+            while (result.next()) {
+                gid = result.getInt("gid");
+                uid1 = result.getInt("uid1");
+                uid2 = result.getInt("uid2");
+            }
+        } catch (SQLException e) {
+            System.err.println("select failed");
+            e.printStackTrace();
+            return null;
+        }
+        return games;
+    }
+
+    public GameDetailed selectGamesDetailed(int gid) {
+        GameDetailed game = null;
+        try {
+            PreparedStatement prepStmt = conn.prepareStatement("SELECT * from games_history where gid=?;");
+            prepStmt.setInt(1, gid);
+            ResultSet result = prepStmt.executeQuery();
+            gid = result.getInt("gid");
+            int uid1 = result.getInt("uid1");
+            int uid2 = result.getInt("uid2");
+            String board1 = result.getString("board1");
+            String board2 = result.getString("board2");
+            String gameFlow = result.getString("game_flow");
+            int isAiVsAi = result.getInt("is_aivsai");
+            game = new GameDetailed(gid, uid1, uid2, board1, board2, gameFlow, isAiVsAi);
+        } catch (SQLException e) {
+            System.err.println("select failed");
+            e.printStackTrace();
+            return null;
+        }
+        return game;
+    }
 
     public String[] generateHash(String password, String... salt) {
         Base64.Decoder decoder = Base64.getUrlDecoder();
