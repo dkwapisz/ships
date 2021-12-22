@@ -34,3 +34,51 @@
             linear-gradient(#354f5f 0%, #5c6c7c 20%, #66666c 100%),
             radial-gradient(center 50% 0%, radius 100%, #354f5f, #5c6c7c);
 }
+
+#gameSettingsButton:hover {
+    -fx-background-color:
+            linear-gradient(#47807A 0%, #474E80 20%, #476A80 100%),
+            radial-gradient(center 50% 0%, radius 100%, #47807A, #476A80);
+}
+
+#statisticsButton:hover {
+    -fx-background-color:
+            linear-gradient(#47807A 0%, #474E80 20%, #476A80 100%),
+            radial-gradient(center 50% 0%, radius 100%, #47807A, #476A80);
+}
+
+#replaysButton:hover {
+    -fx-background-color:
+            linear-gradient(#47807A 0%, #474E80 20%, #476A80 100%),
+            radial-gradient(center 50% 0%, radius 100%, #47807A, #476A80);
+}
+
+#quitButton:hover {
+    -fx-background-color:
+            linear-gradient(#47807A 0%, #474E80 20%, #476A80 100%),
+            radial-gradient(center 50% 0%, radius 100%, #47807A, #476A80);
+}
+
+#gameSettingsButton:pressed {
+    -fx-background-color:
+            linear-gradient(#476A80 0%, #355f49 20%, #495e48 100%),
+            radial-gradient(center 50% 0%, radius 100%, #476A80, #495e48);
+}
+
+#statisticsButton:pressed {
+    -fx-background-color:
+            linear-gradient(#476A80 0%, #355f49 20%, #495e48 100%),
+            radial-gradient(center 50% 0%, radius 100%, #476A80, #495e48);
+}
+
+#replaysButton:pressed {
+    -fx-background-color:
+            linear-gradient(#476A80 0%, #355f49 20%, #495e48 100%),
+            radial-gradient(center 50% 0%, radius 100%, #476A80, #495e48);
+}
+
+#quitButton:pressed {
+    -fx-background-color:
+            linear-gradient(#476A80 0%, #355f49 20%, #495e48 100%),
+            radial-gradient(center 50% 0%, radius 100%, #476A80, #495e48);
+}

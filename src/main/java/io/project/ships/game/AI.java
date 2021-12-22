@@ -145,6 +145,12 @@ public class AI {
         } else if (difficulty == 2 || difficulty == 3) {
             position = getSmartShot();
         }
+
+        if (position == null) {
+            System.out.println("Position is NULL");
+            return;
+        }
+
         removePosition(position.getX(), position.getY());
 
         if (board.getSquareBoard()[position.getX()][position.getY()].getSquareStatus() == Square.SquareStatus.EMPTY) {

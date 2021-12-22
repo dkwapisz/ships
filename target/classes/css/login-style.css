@@ -30,6 +30,22 @@
     -fx-text-fill: #ffffff;
 }
 
+#loginButton:hover {
+    -fx-background-color: #0035ab;
+}
+
+#registerButton:hover {
+    -fx-background-color: #0035ab;
+}
+
+#loginButton:pressed {
+    -fx-background-color: #130054;
+}
+
+#registerButton:pressed {
+    -fx-background-color: #130054;
+}
+
 #passwordTextField {
     -fx-background-color: #006b80;
     -fx-prompt-text-fill: #ffffff;
