@@ -11,6 +11,7 @@ module io.project.ships {
     requires eu.hansolo.tilesfx;
     requires java.sql;
     requires com.google.protobuf;
+    requires com.google.gson;
 
     exports io.project.ships;
     exports io.project.ships.controllers;
