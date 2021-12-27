@@ -3,6 +3,7 @@ package io.project.ships;
 import io.project.ships.game.AI;
 import io.project.ships.game.Board;
 import io.project.ships.game.Square;
+import io.project.ships.menu.GameDetailed;
 import io.project.ships.menu.User;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
@@ -16,6 +17,7 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.Objects;
+import com.google.code.gson;
 
 public class Main extends Application {
 
@@ -324,6 +326,8 @@ public class Main extends Application {
             gameEnded = true;
             mainTimeline.stop();
             System.out.println("PLAYER 2 WINS");
+            Gson gson = new Gson();
+
         }
     }
 
