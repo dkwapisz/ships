@@ -9,39 +9,39 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.project.ships.controllers.GameSettingsController">
-   <Button layoutX="272.0" layoutY="42.0" mnemonicParsing="false" onAction="#goToBoard" text="START">
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../css/gameSettings-style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.project.ships.controllers.GameSettingsController">
+   <Button fx:id="startButton" layoutX="236.0" layoutY="296.0" mnemonicParsing="false" onAction="#goToBoard" prefHeight="42.0" prefWidth="128.0" text="START">
       <font>
          <Font size="24.0" />
       </font>
    </Button>
-   <RadioButton fx:id="easy1_RB" disable="true" layoutX="75.0" layoutY="270.0" mnemonicParsing="false" text="Easy">
+   <RadioButton fx:id="easy1_RB" disable="true" layoutX="60.0" layoutY="220.0" mnemonicParsing="false" text="Easy">
       <toggleGroup>
          <ToggleGroup fx:id="difficulty1Group" />
       </toggleGroup>
    </RadioButton>
-   <RadioButton fx:id="medium1_RB" disable="true" layoutX="75.0" layoutY="300.0" mnemonicParsing="false" text="Medium" toggleGroup="$difficulty1Group" />
-   <RadioButton fx:id="hard1_RB" disable="true" layoutX="75.0" layoutY="330.0" mnemonicParsing="false" text="Hard" toggleGroup="$difficulty1Group" />
-   <RadioButton fx:id="player_VS_player_RB" layoutX="75.0" layoutY="120.0" mnemonicParsing="false" selected="true" text="Player vs Player">
+   <RadioButton fx:id="medium1_RB" disable="true" layoutX="60.0" layoutY="250.0" mnemonicParsing="false" text="Medium" toggleGroup="$difficulty1Group" />
+   <RadioButton fx:id="hard1_RB" disable="true" layoutX="60.0" layoutY="280.0" mnemonicParsing="false" text="Hard" toggleGroup="$difficulty1Group" />
+   <RadioButton fx:id="player_VS_player_RB" layoutX="60.0" layoutY="80.0" mnemonicParsing="false" selected="true" text="Player vs Player">
       <toggleGroup>
          <ToggleGroup fx:id="playersGroup" />
       </toggleGroup>
    </RadioButton>
-   <RadioButton fx:id="player_VS_AI_RB" layoutX="75.0" layoutY="150.0" mnemonicParsing="false" text="Player vs AI" toggleGroup="$playersGroup" />
-   <RadioButton fx:id="AI_VS_AI_RB" layoutX="75.0" layoutY="180.0" mnemonicParsing="false" text="AI vs AI" toggleGroup="$playersGroup" />
-   <RadioButton fx:id="easy2_RB" disable="true" layoutX="410.0" layoutY="270.0" mnemonicParsing="false" text="Easy">
+   <RadioButton fx:id="player_VS_AI_RB" layoutX="60.0" layoutY="110.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="128.0" text="Player vs AI" toggleGroup="$playersGroup" />
+   <RadioButton fx:id="AI_VS_AI_RB" layoutX="60.0" layoutY="140.0" mnemonicParsing="false" text="AI vs AI" toggleGroup="$playersGroup" />
+   <RadioButton fx:id="easy2_RB" disable="true" layoutX="420.0" layoutY="220.0" mnemonicParsing="false" text="Easy">
       <toggleGroup>
          <ToggleGroup fx:id="difficulty2Group" />
       </toggleGroup>
    </RadioButton>
-   <RadioButton fx:id="medium2_RB" disable="true" layoutX="410.0" layoutY="300.0" mnemonicParsing="false" text="Medium" toggleGroup="$difficulty2Group" />
-   <RadioButton fx:id="hard2_RB" disable="true" layoutX="410.0" layoutY="330.0" mnemonicParsing="false" text="Hard" toggleGroup="$difficulty2Group" />
-   <Button layoutX="251.0" layoutY="341.0" mnemonicParsing="false" onAction="#backToMenu" text="Back to menu" />
-   <TextField fx:id="usernameField" layoutX="410.0" layoutY="120.0" promptText="username" />
-   <PasswordField fx:id="passwordField" layoutX="410.0" layoutY="150.0" promptText="password" />
-   <Label fx:id="guestField" layoutX="410.0" layoutY="90.0" prefHeight="18.0" prefWidth="152.0" text="Player 2" />
-   <Label layoutX="75.0" layoutY="240.0" prefHeight="26.0" prefWidth="152.0" text="AI 1 Difficulty" />
-   <Label layoutX="410.0" layoutY="240.0" prefHeight="26.0" prefWidth="152.0" text="AI 2 Difficulty" />
-   <Label layoutX="75.0" layoutY="90.0" prefHeight="26.0" prefWidth="152.0" text="Game Type" />
-   <Label fx:id="loginPrompt" layoutX="410.0" layoutY="202.0" prefHeight="18.0" prefWidth="152.0" />
+   <RadioButton fx:id="medium2_RB" disable="true" layoutX="420.0" layoutY="250.0" mnemonicParsing="false" text="Medium" toggleGroup="$difficulty2Group" />
+   <RadioButton fx:id="hard2_RB" disable="true" layoutX="420.0" layoutY="280.0" mnemonicParsing="false" text="Hard" toggleGroup="$difficulty2Group" />
+   <Button fx:id="backToMenuButton" layoutX="240.0" layoutY="360.0" mnemonicParsing="false" onAction="#backToMenu" prefHeight="26.0" prefWidth="121.0" text="Back to menu" />
+   <TextField fx:id="usernameField" layoutX="421.0" layoutY="80.0" prefHeight="24.0" prefWidth="145.0" promptText="username" />
+   <PasswordField fx:id="passwordField" layoutX="420.0" layoutY="110.0" prefHeight="24.0" prefWidth="145.0" promptText="password" />
+   <Label fx:id="guestField" layoutX="420.0" layoutY="50.0" prefHeight="18.0" prefWidth="152.0" text="Player 2" />
+   <Label fx:id="AI1Label" layoutX="60.0" layoutY="190.0" prefHeight="26.0" prefWidth="106.0" text="AI 1 Difficulty" />
+   <Label fx:id="AI2Label" layoutX="420.0" layoutY="187.0" prefHeight="26.0" prefWidth="121.0" text="AI 2 Difficulty" />
+   <Label fx:id="typeLabel" layoutX="60.0" layoutY="50.0" prefHeight="26.0" prefWidth="152.0" text="Game Type" />
+   <Label fx:id="loginPrompt" layoutX="405.0" layoutY="145.0" prefHeight="18.0" prefWidth="152.0" />
 </AnchorPane>
