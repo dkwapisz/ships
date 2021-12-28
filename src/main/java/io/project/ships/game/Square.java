@@ -1,6 +1,7 @@
 package io.project.ships.game;
 
 import io.project.ships.Main;
+import io.project.ships.menu.Move;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 
@@ -28,12 +29,18 @@ public class Square extends StackPane {
     private void mouseClick() throws IOException {
         if (Main.isGameStarted() && ((Main.isPlayer1Turn() && Main.getDifficulty1() > 0 && Main.getDifficulty2() == 0 && !Main.isTimer1Started()) || (!(Main.getDifficulty1() > 0) && !(Main.getDifficulty2() > 0)))) {
             if (squareStatus == SquareStatus.EMPTY) {
+                int whichBoard;
                 if (Main.isPlayer1Turn()) {
+                    whichBoard = 1;
                     System.out.println(Main.getUser1().getUid());
                 } else {
+                    whichBoard = 2;
                     System.out.println(Main.getUser2().getUid());
                 }
                 System.out.println("x:" + position.getX() + ", y:" + position.getY());
+                Move move = new Move(Main.getMoveNumber(), whichBoard, position.getY(), position.getX());
+                Main.getGameFlow().addMove(move);
+                Main.moveNumberIncrement();
                 squareStatus = SquareStatus.MISS;
                 if (Main.getDifficulty1() == 0 || (Main.getDifficulty1() > 0)) {
                     Main.setPlayer1Turn(!Main.isPlayer1Turn());
@@ -45,11 +52,17 @@ public class Square extends StackPane {
                 }
             }
             if (squareStatus == SquareStatus.SHIP) {
+                int whichBoard;
                 if (Main.isPlayer1Turn()) {
+                    whichBoard = 1;
                     System.out.println(Main.getUser1().getUid());
                 } else {
+                    whichBoard = 2;
                     System.out.println(Main.getUser2().getUid());
                 }
+                Move move = new Move(Main.getMoveNumber(), whichBoard, position.getY(), position.getX());
+                Main.getGameFlow().addMove(move);
+                Main.moveNumberIncrement();
                 System.out.println("x:" + position.getX() + ", y:" + position.getY());
                 squareStatus = SquareStatus.DAMAGED;
                 if (Main.isPlayer1Turn()) {

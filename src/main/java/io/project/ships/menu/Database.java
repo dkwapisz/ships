@@ -1,26 +1,15 @@
 package io.project.ships.menu;
-import io.project.ships.controllers.LoginWindowController;
-import org.controlsfx.control.tableview2.filter.filtereditor.SouthFilter;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
-import javax.xml.transform.Source;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.ResourceBundle;
-import java.nio.charset.StandardCharsets;
-
-import java.util.Base64;
-import java.io.ByteArrayInputStream;
-import java.io.File;
 
 
 public class Database {
@@ -136,7 +125,7 @@ public class Database {
 
     public boolean insertIntoGameHistory(int uid1, int uid2, String board1, String board2, String gameFlow, int isAiVsAi) {
         try {
-            PreparedStatement prepStmt = conn.prepareStatement("INSERT INTO game_history " +
+            PreparedStatement prepStmt = conn.prepareStatement("INSERT INTO games_history " +
                     "(uid1, uid2, board1, board2, game_flow, is_aivsai) VALUES (?, ?, ?, ?, ?, ?);");
             prepStmt.setInt(1, uid1);
             prepStmt.setInt(2, uid2);
@@ -292,5 +281,6 @@ public class Database {
 //        ArrayList<GameHistory> games = new ArrayList<GameHistory>();
 //        games=db.selectGames(2);
 //        db.closeConnection();
+//        Gson gson = new Gson();
     }
 }

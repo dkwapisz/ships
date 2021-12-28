@@ -13,7 +13,10 @@ module io.project.ships {
     requires com.google.protobuf;
     requires com.google.gson;
 
+
     exports io.project.ships;
     exports io.project.ships.controllers;
     opens io.project.ships.controllers to javafx.fxml;
+    opens io.project.ships to javafx.graphics;
+    opens io.project.ships.menu to com.google.gson;
 }

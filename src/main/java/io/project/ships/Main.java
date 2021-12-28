@@ -1,9 +1,12 @@
 package io.project.ships;
 
+import com.google.gson.Gson;
 import io.project.ships.game.AI;
 import io.project.ships.game.Board;
 import io.project.ships.game.Square;
-import io.project.ships.menu.GameDetailed;
+import io.project.ships.menu.Database;
+import io.project.ships.menu.GameFlow;
+import io.project.ships.menu.Move;
 import io.project.ships.menu.User;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
@@ -16,8 +19,8 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Objects;
-import com.google.code.gson;
 
 public class Main extends Application {
 
@@ -66,6 +69,8 @@ public class Main extends Application {
 
     private static User user1;
     private static User user2;
+    private static GameFlow gameFlow;
+    private static int moveNumber;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -87,6 +92,8 @@ public class Main extends Application {
         }));
         mainTimeline.setCycleCount(Timeline.INDEFINITE);
         mainTimeline.play();
+        gameFlow = new GameFlow(new ArrayList<Move>());
+        moveNumber = 0;
     }
 
     // humanPlayers: 2 - Player vs Player, 1 - Player vs AI, 0 - AI vs AI
@@ -321,14 +328,41 @@ public class Main extends Application {
             gameEnded = true;
             mainTimeline.stop();
             System.out.println("PLAYER 1 WINS");
+            saveGame();
         } else if (count2 == 20){
             changeStyle();
             gameEnded = true;
             mainTimeline.stop();
             System.out.println("PLAYER 2 WINS");
-            Gson gson = new Gson();
-
+            saveGame();
         }
+
+    }
+
+    private static void saveGame() {
+        int isAivsai;
+        int user2Uid;
+        if (user2 == null) {
+            user2Uid = 0;
+        } else {
+            user2Uid = user2.getUid();
+        }
+        if (difficulty2 > 0) {
+            isAivsai = 1;
+        } else {
+            isAivsai = 0;
+        }
+        Gson gson = new Gson();
+        String gameFlowJSON = gson.toJson(gameFlow);
+        Database db = new Database();
+        db.insertIntoGameHistory(user1.getUid(),
+                user2Uid,
+                player1Board.boardToString(),
+                player2Board.boardToString(),
+                gameFlowJSON,
+                isAivsai
+        );
+        db.closeConnection();
     }
 
     public static void addNodesToRoot(int whichPlayer) {
@@ -399,6 +433,25 @@ public class Main extends Application {
         boardSet = false;
 
         lastPlayer = 0;
+
+        gameFlow = new GameFlow(new ArrayList<Move>());
+        moveNumber = 0;
+    }
+
+    public static void addMove(Move move) {
+        gameFlow.addMove(move);
+    }
+
+    public static void moveNumberIncrement() {
+        moveNumber = moveNumber + 1;
+    }
+
+    public static int getMoveNumber() {
+        return moveNumber;
+    }
+
+    public static GameFlow getGameFlow() {
+        return gameFlow;
     }
 
     public static Timeline getMainTimeline() {

@@ -157,6 +157,10 @@ public class GameSettingsController {
         return false;
     }
 
+    public void addMove() {
+
+    }
+
     public void initialize() {
         player_VS_player_RB.setOnAction(actionEvent -> {
             if (player_VS_player_RB.isSelected()) {
