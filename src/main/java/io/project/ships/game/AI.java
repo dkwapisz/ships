@@ -138,36 +138,28 @@ public class AI {
         return true;
     }
 
+    private void addGamefloatMove(Position position) {
+        int whichBoard;
+        if (Main.isPlayer1Turn()) {
+            whichBoard = 1;
+        } else {
+            whichBoard = 2;
+        }
+        Move move = new Move(Main.getMoveNumber(), whichBoard, position.getY(), position.getX());
+        Main.getGameFlow().addMove(move);
+        Main.moveNumberIncrement();
+    }
+
     public void hitAISquare(int difficulty, Board board, Ship[] ships) {
         Position position = null;
-        int whichBoard;
+
 
         if (difficulty == 1) {
             position = getRandomShot();
-            if (Main.isPlayer1Turn()) {
-                whichBoard = 1;
-                System.out.println(1);
-            } else {
-                whichBoard = 2;
-                System.out.println(2);
-            }
-            Move move = new Move(Main.getMoveNumber(), whichBoard, position.getY(), position.getX());
-            Main.getGameFlow().addMove(move);
-            Main.moveNumberIncrement();
-            System.out.println("x:" + position.getX() + ", y:" + position.getY());
+            addGamefloatMove(position);
         } else if (difficulty == 2 || difficulty == 3) {
             position = getSmartShot();
-            if (Main.isPlayer1Turn()) {
-                whichBoard = 1;
-                System.out.println(1);
-            } else {
-                whichBoard = 2;
-                System.out.println(2);
-            }
-            Move move = new Move(Main.getMoveNumber(), whichBoard, position.getY(), position.getX());
-            Main.getGameFlow().addMove(move);
-            Main.moveNumberIncrement();
-            System.out.println("x:" + position.getX() + ", y:" + position.getY());
+            addGamefloatMove(position);
         }
 
         if (position == null) {
