@@ -80,8 +80,41 @@ public class Database {
         return true;
     }
 
+    public boolean createStatisticsTable() {
+        String createStatistics = "CREATE TABLE statistics (\n" +
+                "    uid       INTEGER PRIMARY KEY\n" +
+                "                      UNIQUE,\n" +
+                "    played    INTEGER DEFAULT (0),\n" +
+                "    victories INTEGER DEFAULT (0),\n" +
+                "    win_rate  DECIMAL DEFAULT (0),\n" +
+                "    shots     INTEGER DEFAULT (0),\n" +
+                "    on_target INTEGER DEFAULT (0),\n" +
+                "    accuracy  DECIMAL DEFAULT (0) \n" +
+                ");\n";
+        try {
+            stat.execute(createStatistics);
+        } catch (SQLException e) {
+            System.err.println("creating table failed");
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
     public boolean dropUsersTable() {
         String drop = "DROP TABLE IF EXISTS users_list;";
+        try {
+            stat.execute(drop);
+        } catch (SQLException e) {
+            System.err.println("drop failed");
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public boolean dropStatisticsTable() {
+        String drop = "DROP TABLE IF EXISTS statistics;";
         try {
             stat.execute(drop);
         } catch (SQLException e) {
@@ -142,6 +175,19 @@ public class Database {
         return true;
     }
 
+    public boolean insertIntoStatistics(int uid) {
+        try {
+            PreparedStatement prepStmt = conn.prepareStatement("INSERT INTO statistics (uid) VALUES (?);");
+            prepStmt.setInt(1, uid);
+            prepStmt.execute();
+        } catch (SQLException e) {
+            System.out.println("insert failed");
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
     public boolean updateImages(int uid, String path) {
         try {
             PreparedStatement prepStmt = conn.prepareStatement("UPDATE users_list SET path=? WHERE uid=?");
@@ -176,6 +222,30 @@ public class Database {
             return null;
         }
         return users;
+    }
+
+    public ArrayList<UserStatistics> selectStatistics() {
+        ArrayList<UserStatistics> statistiscs = new ArrayList<UserStatistics>();
+        try {
+            ResultSet result = stat.executeQuery("SELECT * from statistics");
+            int uid, played, victories, shots, onTarget;
+            float winRate, accuracy;
+            while (result.next()) {
+                uid = result.getInt("uid");
+                played = result.getInt("played");
+                victories = result.getInt("victories");
+                shots = result.getInt("shots");
+                onTarget = result.getInt("on_target");
+                winRate = result.getFloat("win_rate");
+                accuracy = result.getFloat("accuracy");
+                statistiscs.add(new UserStatistics(uid, played, victories, winRate, shots, onTarget, accuracy));
+            }
+        } catch (SQLException e) {
+            System.err.println("select failed");
+            e.printStackTrace();
+            return null;
+        }
+        return statistiscs;
     }
 
     public ArrayList<GameBasic> selectGamesBasic(int uid) {
