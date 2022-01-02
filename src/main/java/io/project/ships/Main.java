@@ -4,10 +4,7 @@ import com.google.gson.Gson;
 import io.project.ships.game.AI;
 import io.project.ships.game.Board;
 import io.project.ships.game.Square;
-import io.project.ships.menu.Database;
-import io.project.ships.menu.GameFlow;
-import io.project.ships.menu.Move;
-import io.project.ships.menu.User;
+import io.project.ships.menu.*;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -72,6 +69,9 @@ public class Main extends Application {
     private static GameFlow gameFlow;
     private static int moveNumber;
 
+
+    private static ArrayList<UserStatistics> statistics;
+
     @Override
     public void start(Stage stage) throws IOException {
         Main.root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/main-view.fxml")));
@@ -115,6 +115,12 @@ public class Main extends Application {
         boardSet = true;
         enemy1Board.setEnemyBoardStatus(player2Board);
         enemy2Board.setEnemyBoardStatus(player1Board);
+    }
+
+    public static void loadStatistics() {
+        Database db = new Database();
+        statistics = db.selectStatistics();
+        db.closeConnection();
     }
 
     private void gameLoop() throws IOException {
@@ -339,6 +345,11 @@ public class Main extends Application {
 
     }
 
+    private static void updateStatistics(User user) {
+        Database db = new Database();
+//        db.updateStatistics(statistics.)
+    }
+
     private static void saveGame() {
         int isAivsai;
         int user2Uid;
@@ -536,6 +547,10 @@ public class Main extends Application {
 
     public static User getUser2() {
         return user2;
+    }
+
+    public static ArrayList<UserStatistics> getStatistics() {
+        return statistics;
     }
 
     public static void setUser1(User user) {

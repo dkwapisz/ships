@@ -195,7 +195,34 @@ public class Database {
             prepStmt.setInt(2, uid);
             prepStmt.execute();
         } catch (SQLException e) {
-            System.err.println("insert failed");
+            System.err.println("update failed");
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public boolean updateStatistics(UserStatistics statistics) {
+        try {
+            PreparedStatement prepStmt = conn.prepareStatement("UPDATE statistics SET " +
+                    "played=?, " +
+                    "victories=?, " +
+                    "win_rate=?, " +
+                    "shots=?, " +
+                    "onTarget=?, " +
+                    "accuracy=? " +
+                    "WHERE uid=?"
+            );
+            prepStmt.setInt(1, statistics.getPlayed());
+            prepStmt.setInt(2, statistics.getVictories());
+            prepStmt.setFloat(3, statistics.getWinRate());
+            prepStmt.setInt(4, statistics.getShots());
+            prepStmt.setInt(5, statistics.getOnTarget());
+            prepStmt.setFloat(6, statistics.getAccuracy());
+            prepStmt.setInt(7, statistics.getUid());
+            prepStmt.execute();
+        } catch (SQLException e) {
+            System.err.println("update failed");
             e.printStackTrace();
             return false;
         }
