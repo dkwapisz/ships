@@ -1,8 +1,8 @@
 package io.project.ships.controllers;
 
+import io.project.ships.Main;
 import io.project.ships.menu.Database;
 import javafx.application.Platform;
-import javafx.beans.property.ObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -10,12 +10,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import io.project.ships.Main;
 
 import java.io.File;
 import java.io.IOException;
@@ -87,7 +85,6 @@ public class MenuController {
 
     @FXML
     void changeImage() {
-        System.out.println("siema");
         String path = new String();
         FileChooser fc = new FileChooser();
         FileChooser.ExtensionFilter images = new FileChooser.ExtensionFilter("Image Files", "*.jpg", "*.png");

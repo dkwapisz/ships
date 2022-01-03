@@ -52,10 +52,10 @@ public class StatisticsController {
         TableColumn usernameColumn = new TableColumn("Username");
         TableColumn playedColumn = new TableColumn("Played");
         TableColumn victoriesColumn = new TableColumn("Victories");
-        TableColumn winRateColumn = new TableColumn("Win Rate");
+        TableColumn winRateColumn = new TableColumn("Win Rate[%]");
         TableColumn shotsColumn = new TableColumn("Shots");
         TableColumn onTargetColumn = new TableColumn("On Target");
-        TableColumn accuracyColumn = new TableColumn("Accuracy");
+        TableColumn accuracyColumn = new TableColumn("Accuracy[%]");
 
         usernameColumn.setCellValueFactory(
                 new PropertyValueFactory<Statistics, Integer>("uid")

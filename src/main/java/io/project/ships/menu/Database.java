@@ -209,7 +209,7 @@ public class Database {
                     "victories=?, " +
                     "win_rate=?, " +
                     "shots=?, " +
-                    "onTarget=?, " +
+                    "on_target=?, " +
                     "accuracy=? " +
                     "WHERE uid=?"
             );

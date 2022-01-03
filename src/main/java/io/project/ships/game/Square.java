@@ -2,6 +2,7 @@ package io.project.ships.game;
 
 import io.project.ships.Main;
 import io.project.ships.menu.Move;
+import io.project.ships.menu.UserStatistics;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 
@@ -31,6 +32,11 @@ public class Square extends StackPane {
             if (squareStatus == SquareStatus.EMPTY) {
                 addGameFloatMove();
                 squareStatus = SquareStatus.MISS;
+                if (Main.isPlayer1Turn()) {
+                    updateStatistics(false, Main.getUser1Statistics());
+                } else {
+                    updateStatistics(false, Main.getUser2Statistics());
+                }
                 if (Main.getDifficulty1() == 0 || (Main.getDifficulty1() > 0)) {
                     Main.setPlayer1Turn(!Main.isPlayer1Turn());
                 }
@@ -44,6 +50,11 @@ public class Square extends StackPane {
                 addGameFloatMove();
                 squareStatus = SquareStatus.DAMAGED;
                 if (Main.isPlayer1Turn()) {
+                    updateStatistics(true, Main.getUser1Statistics());
+                } else {
+                    updateStatistics(true, Main.getUser2Statistics());
+                }
+                if (Main.isPlayer1Turn()) {
                     hitShip(Main.getEnemy1Board().getShips(), true);
                 } else {
                     hitShip(Main.getEnemy2Board().getShips(), false);
@@ -53,11 +64,15 @@ public class Square extends StackPane {
         }
     }
 
-    private void updateStatistics(boolean onTarget) {
-        if (!onTarget) {
-
+    private void updateStatistics(boolean onTarget, UserStatistics stats) {
+        if (onTarget) {
+            stats.updateShots();
+            stats.updateOnTarget();
+            stats.updateAccuracy();
+        } else {
+            stats.updateShots();
+            stats.updateAccuracy();
         }
-
     }
 
     private void addGameFloatMove() {

@@ -68,9 +68,9 @@ public class Main extends Application {
     private static User user2;
     private static GameFlow gameFlow;
     private static int moveNumber;
-
-
     private static ArrayList<UserStatistics> statistics;
+    private static UserStatistics user1Statistics;
+    private static UserStatistics user2Statistics;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -115,12 +115,6 @@ public class Main extends Application {
         boardSet = true;
         enemy1Board.setEnemyBoardStatus(player2Board);
         enemy2Board.setEnemyBoardStatus(player1Board);
-    }
-
-    public static void loadStatistics() {
-        Database db = new Database();
-        statistics = db.selectStatistics();
-        db.closeConnection();
     }
 
     private void gameLoop() throws IOException {
@@ -335,19 +329,51 @@ public class Main extends Application {
             mainTimeline.stop();
             System.out.println("PLAYER 1 WINS");
             saveGame();
+            updateStatistics(1);
+            loadStatistics();
         } else if (count2 == 20){
             changeStyle();
             gameEnded = true;
             mainTimeline.stop();
             System.out.println("PLAYER 2 WINS");
             saveGame();
+            updateStatistics(2);
+            loadStatistics();
         }
 
     }
 
-    private static void updateStatistics(User user) {
+    private static void updateStatistics(int whoWon) {
         Database db = new Database();
-//        db.updateStatistics(statistics.)
+
+        if(difficulty1 == 0) {
+            if (whoWon == 1) {
+                user1Statistics.updatePlayed();
+                user1Statistics.updateVictories();
+                user1Statistics.updateWinRate();
+                user2Statistics.updatePlayed();
+                user2Statistics.updateWinRate();
+            } else {
+                user1Statistics.updatePlayed();
+                user1Statistics.updateWinRate();
+                user2Statistics.updatePlayed();
+                user2Statistics.updateVictories();
+                user2Statistics.updateWinRate();
+            }
+            db.updateStatistics(user1Statistics);
+            db.updateStatistics(user2Statistics);
+        } else if(difficulty1 !=0 && difficulty2 == 0) {
+            if (whoWon == 1) {
+                user1Statistics.updatePlayed();
+                user1Statistics.updateVictories();
+                user1Statistics.updateWinRate();
+            } else {
+                user1Statistics.updatePlayed();
+                user1Statistics.updateWinRate();
+            }
+            db.updateStatistics(user1Statistics);
+        }
+        db.closeConnection();
     }
 
     private static void saveGame() {
@@ -373,6 +399,12 @@ public class Main extends Application {
                 gameFlowJSON,
                 isAivsai
         );
+        db.closeConnection();
+    }
+
+    public static void loadStatistics() {
+        Database db = new Database();
+        statistics = db.selectStatistics();
         db.closeConnection();
     }
 
@@ -517,6 +549,14 @@ public class Main extends Application {
         return scene;
     }
 
+    public static UserStatistics getUser1Statistics() {
+        return user1Statistics;
+    }
+
+    public static UserStatistics getUser2Statistics() {
+        return user2Statistics;
+    }
+
     public static boolean isPlayer1SetShips() {
         return player1SetShips;
     }
@@ -559,5 +599,30 @@ public class Main extends Application {
 
     public static void setUser2(User user) {
         user2 = user;
+    }
+
+    public static void setUser1Statistics() {
+        for(UserStatistics stats : statistics) {
+            if (stats.getUid() == user1.getUid()) {
+                user1Statistics = stats;
+            }
+        }
+        if (user1Statistics == null) {
+            Database db = new Database();
+            db.insertIntoStatistics(user1.getUid());
+            user1Statistics = new UserStatistics(user1.getUid(), 0, 0, 0, 0, 0, 0);
+        }
+    }
+    public static void setUser2Statistics() {
+        for(UserStatistics stats : statistics) {
+            if (stats.getUid() == user2.getUid()) {
+                user2Statistics = stats;
+            }
+        }
+        if (user2Statistics == null) {
+            Database db = new Database();
+            db.insertIntoStatistics(user2.getUid());
+            user2Statistics = new UserStatistics(user2.getUid(), 0, 0, 0, 0, 0, 0);
+        }
     }
 }

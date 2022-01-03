@@ -51,7 +51,6 @@ public class LoginWindowController {
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
-            Main.loadStatistics();
         }
     }
 
@@ -78,7 +77,9 @@ public class LoginWindowController {
             if (user.getUsername().equals(loginTextField.getText())) {
                 if (user.getPasswordHash().equals(db.generateHash(passwordTextField.getText(), user.getSalt())[0])) {
                     System.out.println("Signed in successfully!");
+                    Main.loadStatistics();
                     Main.setUser1(user);
+                    Main.setUser1Statistics();
                     db.closeConnection();
 //                    String bip = "bitwa.mp3";
 //                    Media hit = new Media(new File(bip).toURI().toString());

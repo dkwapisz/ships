@@ -145,6 +145,7 @@ public class GameSettingsController {
                 if (user.getPasswordHash().equals(db.generateHash(passwordField.getText(), user.getSalt())[0])) {
                     System.out.println("Signed in successfully!");
                     Main.setUser2(user);
+                    Main.setUser2Statistics();
                     db.closeConnection();
                     return true;
                 } else {

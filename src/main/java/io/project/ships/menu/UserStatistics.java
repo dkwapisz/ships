@@ -29,7 +29,7 @@ public class UserStatistics {
 
     public void updateWinRate() {
         if (this.played != 0) {
-            this.winRate = this.victories / this.played;
+            this.winRate = ((float) this.victories / this.played) * 100;
         } else {
             this.winRate = 0;
         }
@@ -45,7 +45,9 @@ public class UserStatistics {
 
     public void updateAccuracy() {
         if (this.shots != 0) {
-            this.accuracy = this.onTarget / this.shots;
+            float siema = ((float) this.onTarget / this.shots) * 100;
+            System.out.println(siema);
+            this.accuracy = siema;
         } else {
             this.accuracy = 0;
         }
