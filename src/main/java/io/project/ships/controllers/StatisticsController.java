@@ -1,8 +1,10 @@
 package io.project.ships.controllers;
 
 import io.project.ships.Main;
+import io.project.ships.menu.User;
 import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -58,7 +60,7 @@ public class StatisticsController {
         TableColumn accuracyColumn = new TableColumn("Accuracy[%]");
 
         usernameColumn.setCellValueFactory(
-                new PropertyValueFactory<Statistics, Integer>("uid")
+                new PropertyValueFactory<Statistics, SimpleStringProperty>("username")
         );
         playedColumn.setCellValueFactory(
                 new PropertyValueFactory<Statistics, Integer>("played")
@@ -98,7 +100,7 @@ public class StatisticsController {
     }
     public static class Statistics {
 
-        private final SimpleIntegerProperty uid;
+        private final SimpleStringProperty username;
         private final SimpleIntegerProperty played;
         private final SimpleIntegerProperty victories;
         private final SimpleIntegerProperty shots;
@@ -107,7 +109,14 @@ public class StatisticsController {
         private final SimpleFloatProperty accuracy;
 
         private Statistics(int uid, int played, int victories, int shots, int onTarget, float winRate, float accuracy) {
-            this.uid = new SimpleIntegerProperty(uid);
+            String username = new String();
+            for (User user : Main.getUsers()) {
+                if (user.getUid() == uid) {
+                    username = user.getUsername();
+                    break;
+                }
+            }
+            this.username = new SimpleStringProperty(username);
             this.played = new SimpleIntegerProperty(played);
             this.victories = new SimpleIntegerProperty(victories);
             this.shots = new SimpleIntegerProperty(shots);
@@ -116,12 +125,12 @@ public class StatisticsController {
             this.accuracy = new SimpleFloatProperty(accuracy);
         }
 
-        public int getUid() {
-            return uid.get();
+        public String getUsername() {
+            return username.get();
         }
 
-        public SimpleIntegerProperty uidProperty() {
-            return uid;
+        public SimpleStringProperty usernameProperty() {
+            return username;
         }
 
         public int getPlayed() {

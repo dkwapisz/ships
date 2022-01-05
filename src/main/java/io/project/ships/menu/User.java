@@ -1,8 +1,5 @@
 package io.project.ships.menu;
 
-import java.security.SecureRandom;
-import java.nio.charset.StandardCharsets;
-
 public class User {
 
     private int uid;

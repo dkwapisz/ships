@@ -69,6 +69,7 @@ public class Main extends Application {
     private static GameFlow gameFlow;
     private static int moveNumber;
     private static ArrayList<UserStatistics> statistics;
+    private static ArrayList<User> users;
     private static UserStatistics user1Statistics;
     private static UserStatistics user2Statistics;
 
@@ -599,6 +600,14 @@ public class Main extends Application {
 
     public static void setUser2(User user) {
         user2 = user;
+    }
+
+    public static ArrayList<User> getUsers() {
+        return users;
+    }
+
+    public static void setUsers(ArrayList<User> users) {
+        Main.users = users;
     }
 
     public static void setUser1Statistics() {

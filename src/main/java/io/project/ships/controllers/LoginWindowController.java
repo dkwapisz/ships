@@ -73,6 +73,7 @@ public class LoginWindowController {
         Database db = new Database();
         ArrayList<User> users;
         users = db.selectUsers();
+        Main.setUsers(users);
         for (User user : users) {
             if (user.getUsername().equals(loginTextField.getText())) {
                 if (user.getPasswordHash().equals(db.generateHash(passwordTextField.getText(), user.getSalt())[0])) {

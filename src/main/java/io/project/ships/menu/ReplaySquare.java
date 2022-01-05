@@ -1,7 +1,6 @@
 package io.project.ships.menu;
 
 import io.project.ships.game.Position;
-import io.project.ships.game.Square;
 
 
 public class ReplaySquare {
