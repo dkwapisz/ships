@@ -1,5 +1,6 @@
 package io.project.ships.controllers;
 
+import com.google.gson.Gson;
 import io.project.ships.Main;
 import io.project.ships.menu.*;
 import javafx.event.ActionEvent;
@@ -21,13 +22,14 @@ public class ReplaysController {
 
     private ArrayList<GameBasic> gamesList;
     private GameDetailed game;
-    private ArrayList<Move> moves;
+    private GameFlow gameFlow;
     private ReplayBoard board1;
     private ReplayBoard board2;
     private final int COLUMNS = 10;
     private final int ROWS = 10;
     private final double WIDTH = 400;
     private final double HEIGHT = 400;
+    private int moveCount = 0;
 
 
     @FXML
@@ -84,13 +86,31 @@ public class ReplaysController {
         Database db = new Database();
         game = db.selectGameDetailed(chosen);
         db.closeConnection();
-        board1 = new ReplayBoard(game.getBoard1(), COLUMNS, ROWS, WIDTH, HEIGHT, false);
-        board2 = new ReplayBoard(game.getBoard2(), COLUMNS, ROWS, WIDTH, HEIGHT, true);
+        playerBoard.getChildren().remove(board1);
+        enemyBoard.getChildren().remove(board2);
+        board1 = new ReplayBoard(game.getBoard1(), COLUMNS, ROWS, WIDTH, HEIGHT);
+        board2 = new ReplayBoard(game.getBoard2(), COLUMNS, ROWS, WIDTH, HEIGHT);
+        playerBoard.getChildren().add(board1);
+        enemyBoard.getChildren().add(board2);
+        loadGameFlow();
+        moveCount = 0;
     }
 
     @FXML
-    void nextMove(ActionEvent event) {
-
+    void nextMove() {
+        if (moveCount < gameFlow.getMoves().size()) {
+            Move move = gameFlow.getMoves().get(moveCount);
+            if (move.getWhichboard() == 1) {
+                playerBoard.getChildren().remove(board1);
+                board1.updateBoard(move.getRow(), move.getColumn());
+                playerBoard.getChildren().add(board1);
+            } else {
+                enemyBoard.getChildren().remove(board2);
+                board2.updateBoard(move.getRow(), move.getColumn());
+                enemyBoard.getChildren().add(board2);
+            }
+            moveCount += 1;
+        }
     }
 
     @FXML
@@ -104,9 +124,9 @@ public class ReplaysController {
         db.closeConnection();
     }
 
-    private void refresh() {
-
+    private void loadGameFlow() {
+        Gson gson = new Gson();
+        gameFlow = gson.fromJson(game.getGameFlow(), GameFlow.class);
     }
-
 }
 
