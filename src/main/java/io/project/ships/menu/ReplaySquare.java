@@ -1,9 +1,10 @@
 package io.project.ships.menu;
 
 import io.project.ships.game.Position;
+import javafx.scene.layout.StackPane;
 
 
-public class ReplaySquare {
+public class ReplaySquare extends StackPane {
 
     private Position position;
     private SquareStatus squareStatus;
@@ -13,6 +14,8 @@ public class ReplaySquare {
         this.position = new Position(x, y);
         setSquareStatus(status);
         setChecked(false);
+        getStyleClass().add("cell");
+        setOpacity(1);
     }
 
     public SquareStatus getSquareStatus() {

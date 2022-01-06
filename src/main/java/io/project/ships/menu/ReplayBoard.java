@@ -1,25 +1,55 @@
 package io.project.ships.menu;
 
-import io.project.ships.Main;
-import io.project.ships.game.Position;
-import io.project.ships.game.Square;
+import javafx.scene.layout.Pane;
 
-public class ReplayBoard {
-    private ReplaySquare[][] square;
+public class ReplayBoard extends Pane {
+    private ReplaySquare[][] squareBoard;
     private String boardInString;
+    private final int COLUMNS;
+    private final int ROWS;
+    private final double WIDTH;
+    private final double HEIGHT;
+    private boolean isEnemyBoard;
 
-    public ReplayBoard(String boardInString) {
-        square = new ReplaySquare[10][10];
+    public ReplayBoard(String boardInString, int columns, int rows, double width, double height, boolean isEnemyBoard) {
+        squareBoard = new ReplaySquare[rows][columns];
         this.boardInString = boardInString;
+        this.WIDTH = width;
+        this.HEIGHT = height;
+        this.COLUMNS = columns;
+        this.ROWS = rows;
+        this.isEnemyBoard = isEnemyBoard;
         char status;
         int index;
-        for (int row = 0; row < 10; row++) {
-            for (int column = 0; column < 10; column++) {
-                index = row + 10 * column;
+        for (int row = 0; row < rows; row++) {
+            for (int column = 0; column < columns; column++) {
+                index = row + columns * column;
                 status = this.boardInString.charAt(index);
-                this.square[row][column] = new ReplaySquare(row, column, status);
+                this.squareBoard[row][column] = new ReplaySquare(row, column, status);
+                addSquare(this.squareBoard[row][column], row, column);
             }
         }
+    }
+
+    private void addSquare(ReplaySquare square, int column, int row) {
+        squareBoard[column][row] = square;
+
+        double w = WIDTH / COLUMNS;
+        double h = HEIGHT / ROWS;
+        double x = w * column;
+        double y = h * row;
+        if (!isEnemyBoard) {
+            square.setLayoutX(x + WIDTH/10);
+
+        } else {
+            square.setLayoutX(x + 2*WIDTH - WIDTH/10);
+        }
+
+        square.setLayoutY(y + HEIGHT/10);
+
+        square.setPrefWidth(w);
+        square.setPrefHeight(h);
+        getChildren().add(square);
     }
 
     //just for testing sakes
@@ -27,15 +57,15 @@ public class ReplayBoard {
         String line = "";
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                if (square[i][j].getSquareStatus() == ReplaySquare.SquareStatus.EMPTY) {
+                if (squareBoard[i][j].getSquareStatus() == ReplaySquare.SquareStatus.EMPTY) {
                     line += "O ";
-                } else if (square[i][j].getSquareStatus() == ReplaySquare.SquareStatus.SHIP) {
+                } else if (squareBoard[i][j].getSquareStatus() == ReplaySquare.SquareStatus.SHIP) {
                     line += "S ";
-                } else if (square[i][j].getSquareStatus() == ReplaySquare.SquareStatus.DAMAGED) {
+                } else if (squareBoard[i][j].getSquareStatus() == ReplaySquare.SquareStatus.DAMAGED) {
                     line += "D ";
-                } else if (square[i][j].getSquareStatus() == ReplaySquare.SquareStatus.DESTROYED) {
+                } else if (squareBoard[i][j].getSquareStatus() == ReplaySquare.SquareStatus.DESTROYED) {
                     line += "X ";
-                } else if (square[i][j].getSquareStatus() == ReplaySquare.SquareStatus.MISS) {
+                } else if (squareBoard[i][j].getSquareStatus() == ReplaySquare.SquareStatus.MISS) {
                     line += "M ";
                 }
             }
@@ -45,39 +75,39 @@ public class ReplayBoard {
     }
 
     public void updateBoard(int row, int column) {
-        if (this.square[row][column].getSquareStatus() == ReplaySquare.SquareStatus.EMPTY) {
-            this.square[row][column].updateSquareStatus('m');
+        if (this.squareBoard[row][column].getSquareStatus() == ReplaySquare.SquareStatus.EMPTY) {
+            this.squareBoard[row][column].updateSquareStatus('m');
         } else {
-            this.square[row][column].updateSquareStatus('d');
+            this.squareBoard[row][column].updateSquareStatus('d');
             if (isDestroyed(row, column)) {
                 for (int i = 0; i < 10; i++) {
                     for (int j = 0; j < 10; j++) {
-                        if (this.square[i][j].getChecked()) {
-                            this.square[i][j].setChecked(false);
-                            this.square[i][j].updateSquareStatus('x');
-                            if (this.square[i + 1][j].getSquareStatus() == ReplaySquare.SquareStatus.EMPTY) {
-                                this.square[i + 1][j].updateSquareStatus('m');
+                        if (this.squareBoard[i][j].getChecked()) {
+                            this.squareBoard[i][j].setChecked(false);
+                            this.squareBoard[i][j].updateSquareStatus('x');
+                            if (this.squareBoard[i + 1][j].getSquareStatus() == ReplaySquare.SquareStatus.EMPTY) {
+                                this.squareBoard[i + 1][j].updateSquareStatus('m');
                             }
-                            if (this.square[i - 1][j].getSquareStatus() == ReplaySquare.SquareStatus.EMPTY) {
-                                this.square[i - 1][j].updateSquareStatus('m');
+                            if (this.squareBoard[i - 1][j].getSquareStatus() == ReplaySquare.SquareStatus.EMPTY) {
+                                this.squareBoard[i - 1][j].updateSquareStatus('m');
                             }
-                            if (this.square[i][j + 1].getSquareStatus() == ReplaySquare.SquareStatus.EMPTY) {
-                                this.square[i][j + 1].updateSquareStatus('m');
+                            if (this.squareBoard[i][j + 1].getSquareStatus() == ReplaySquare.SquareStatus.EMPTY) {
+                                this.squareBoard[i][j + 1].updateSquareStatus('m');
                             }
-                            if (this.square[i][j - 1].getSquareStatus() == ReplaySquare.SquareStatus.EMPTY) {
-                                this.square[i][j - 1].updateSquareStatus('m');
+                            if (this.squareBoard[i][j - 1].getSquareStatus() == ReplaySquare.SquareStatus.EMPTY) {
+                                this.squareBoard[i][j - 1].updateSquareStatus('m');
                             }
-                            if (this.square[i + 1][j + 1].getSquareStatus() == ReplaySquare.SquareStatus.EMPTY) {
-                                this.square[i + 1][j + 1].updateSquareStatus('m');
+                            if (this.squareBoard[i + 1][j + 1].getSquareStatus() == ReplaySquare.SquareStatus.EMPTY) {
+                                this.squareBoard[i + 1][j + 1].updateSquareStatus('m');
                             }
-                            if (this.square[i - 1][j - 1].getSquareStatus() == ReplaySquare.SquareStatus.EMPTY) {
-                                this.square[i - 1][j - 1].updateSquareStatus('m');
+                            if (this.squareBoard[i - 1][j - 1].getSquareStatus() == ReplaySquare.SquareStatus.EMPTY) {
+                                this.squareBoard[i - 1][j - 1].updateSquareStatus('m');
                             }
-                            if (this.square[i - 1][j + 1].getSquareStatus() == ReplaySquare.SquareStatus.EMPTY) {
-                                this.square[i - 1][j + 1].updateSquareStatus('m');
+                            if (this.squareBoard[i - 1][j + 1].getSquareStatus() == ReplaySquare.SquareStatus.EMPTY) {
+                                this.squareBoard[i - 1][j + 1].updateSquareStatus('m');
                             }
-                            if (this.square[i + 1][j - 1].getSquareStatus() == ReplaySquare.SquareStatus.EMPTY) {
-                                this.square[i + 1][j - 1].updateSquareStatus('m');
+                            if (this.squareBoard[i + 1][j - 1].getSquareStatus() == ReplaySquare.SquareStatus.EMPTY) {
+                                this.squareBoard[i + 1][j - 1].updateSquareStatus('m');
                             }
                         }
                     }
@@ -87,41 +117,41 @@ public class ReplayBoard {
     }
 
     public boolean isDestroyed(int row, int column) {
-        square[row][column].setChecked(true);
-        if (this.square[row + 1][column].getSquareStatus() == ReplaySquare.SquareStatus.SHIP) {
-            this.square[row + 1][column].setChecked(false);
+        squareBoard[row][column].setChecked(true);
+        if (this.squareBoard[row + 1][column].getSquareStatus() == ReplaySquare.SquareStatus.SHIP) {
+            this.squareBoard[row + 1][column].setChecked(false);
             return false;
-        } else if (this.square[row - 1][column].getSquareStatus() == ReplaySquare.SquareStatus.SHIP) {
-            this.square[row - 1][column].setChecked(false);
+        } else if (this.squareBoard[row - 1][column].getSquareStatus() == ReplaySquare.SquareStatus.SHIP) {
+            this.squareBoard[row - 1][column].setChecked(false);
             return false;
-        } else if (this.square[row][column + 1].getSquareStatus() == ReplaySquare.SquareStatus.SHIP) {
-            this.square[row][column + 1].setChecked(false);
+        } else if (this.squareBoard[row][column + 1].getSquareStatus() == ReplaySquare.SquareStatus.SHIP) {
+            this.squareBoard[row][column + 1].setChecked(false);
             return false;
-        } else if (this.square[row][column - 1].getSquareStatus() == ReplaySquare.SquareStatus.SHIP) {
-            this.square[row][column - 1].setChecked(false);
+        } else if (this.squareBoard[row][column - 1].getSquareStatus() == ReplaySquare.SquareStatus.SHIP) {
+            this.squareBoard[row][column - 1].setChecked(false);
             return false;
         }
-        if (this.square[row + 1][column].getSquareStatus() == ReplaySquare.SquareStatus.DAMAGED && !square[row + 1][column].getChecked()) {
+        if (this.squareBoard[row + 1][column].getSquareStatus() == ReplaySquare.SquareStatus.DAMAGED && !squareBoard[row + 1][column].getChecked()) {
             if (!isDestroyed(row + 1, column)) {
-                this.square[row + 1][column].setChecked(false);
+                this.squareBoard[row + 1][column].setChecked(false);
                 return false;
             }
         }
-        if (this.square[row - 1][column].getSquareStatus() == ReplaySquare.SquareStatus.DAMAGED && !square[row - 1][column].getChecked()) {
+        if (this.squareBoard[row - 1][column].getSquareStatus() == ReplaySquare.SquareStatus.DAMAGED && !squareBoard[row - 1][column].getChecked()) {
             if (!isDestroyed(row - 1, column)) {
-                this.square[row - 1][column].setChecked(false);
+                this.squareBoard[row - 1][column].setChecked(false);
                 return false;
             }
         }
-        if (this.square[row][column + 1].getSquareStatus() == ReplaySquare.SquareStatus.DAMAGED && !square[row][column + 1].getChecked()) {
+        if (this.squareBoard[row][column + 1].getSquareStatus() == ReplaySquare.SquareStatus.DAMAGED && !squareBoard[row][column + 1].getChecked()) {
             if (!isDestroyed(row, column + 1)) {
-                this.square[row][column + 1].setChecked(false);
+                this.squareBoard[row][column + 1].setChecked(false);
                 return false;
             }
         }
-        if (this.square[row][column - 1].getSquareStatus() == ReplaySquare.SquareStatus.DAMAGED && !square[row][column - 1].getChecked()) {
+        if (this.squareBoard[row][column - 1].getSquareStatus() == ReplaySquare.SquareStatus.DAMAGED && !squareBoard[row][column - 1].getChecked()) {
             if (!isDestroyed(row, column - 1)) {
-                this.square[row][column - 1].setChecked(false);
+                this.squareBoard[row][column - 1].setChecked(false);
                 return false;
             }
         }
@@ -130,7 +160,7 @@ public class ReplayBoard {
 
 //    just for testing sakes
     public static void main(String[] args) {
-        ReplayBoard board = new ReplayBoard("eeeeeeeeesesesseseeeeseeeeeeeeeseeeeeeeeeeeesssseesseeeeeeeeeeeeeeesseeeseeeeeeeeeeeseessseeeeeeeeee");
+        ReplayBoard board = new ReplayBoard("eeeeeeeeesesesseseeeeseeeeeeeeeseeeeeeeeeeeesssseesseeeeeeeeeeeeeeesseeeseeeeeeeeeeeseessseeeeeeeeee", 10, 10, 400, 400, true);
         board.printBoardStatus();
         board.updateBoard(4, 4);
         board.printBoardStatus();

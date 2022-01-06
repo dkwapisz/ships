@@ -289,6 +289,7 @@ public class Database {
                 gid = result.getInt("gid");
                 uid1 = result.getInt("uid1");
                 uid2 = result.getInt("uid2");
+                games.add(new GameBasic(gid, uid1, uid2));
             }
         } catch (SQLException e) {
             System.err.println("select failed");
@@ -298,7 +299,7 @@ public class Database {
         return games;
     }
 
-    public GameDetailed selectGamesDetailed(int gid) {
+    public GameDetailed selectGameDetailed(int gid) {
         GameDetailed game = null;
         try {
             PreparedStatement prepStmt = conn.prepareStatement("SELECT * from games_history where gid=?;");
