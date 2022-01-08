@@ -219,7 +219,7 @@
             <Font name="Bodoni MT" size="30.0" />
          </font>
       </Label>
-      <Label fx:id="enemyLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="760.0" layoutY="450.0" prefHeight="40.0" prefWidth="400.0" text="PLAYER 2 BOARD" textAlignment="CENTER" wrapText="true">
+      <Label fx:id="enemyLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="762.0" layoutY="450.0" prefHeight="40.0" prefWidth="400.0" text="PLAYER 2 BOARD" textAlignment="CENTER" wrapText="true">
          <font>
             <Font name="Bodoni MT" size="30.0" />
          </font>

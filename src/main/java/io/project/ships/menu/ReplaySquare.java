@@ -31,16 +31,31 @@ public class ReplaySquare extends StackPane {
         }
     }
 
-    public void updateSquareStatus(char status) {
-        if (status == 'm') {
-            this.squareStatus = SquareStatus.MISS;
-            getStyleClass().add("miss");
-        } else if (status == 'd') {
-            this.squareStatus = SquareStatus.DAMAGED;
-            getStyleClass().add("damaged");
-        } else if (status == 'x') {
-            this.squareStatus = SquareStatus.DESTROYED;
-            getStyleClass().add("destroyed");
+    public void updateSquareStatus(char status, int whichBoard) {
+        if (whichBoard == 2) {
+            if (status == 'm') {
+                this.squareStatus = SquareStatus.MISS;
+                getStyleClass().add("miss");
+            } else if (status == 'd') {
+                this.squareStatus = SquareStatus.DAMAGED;
+                getStyleClass().remove("ship");
+                getStyleClass().add("damaged");
+            } else if (status == 'x') {
+                this.squareStatus = SquareStatus.DESTROYED;
+                getStyleClass().add("destroyed");
+            }
+        } else {
+            if (status == 'm') {
+                this.squareStatus = SquareStatus.MISS;
+                getStyleClass().add("missMyBoard");
+            } else if (status == 'd') {
+                this.squareStatus = SquareStatus.DAMAGED;
+                getStyleClass().remove("ship");
+                getStyleClass().add("damagedMyBoard");
+            } else if (status == 'x') {
+                this.squareStatus = SquareStatus.DESTROYED;
+                getStyleClass().add("destroyedMyBoard");
+            }
         }
     }
 

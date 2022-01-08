@@ -82,7 +82,7 @@ public class ReplaysController {
 
     @FXML
     private void loadGameData() {
-        int chosen = Integer.valueOf(choiceBox.getValue().substring(choiceBox.getValue().indexOf(':') + 1, choiceBox.getValue().indexOf(';')));
+        int chosen = Integer.parseInt(choiceBox.getValue().substring(choiceBox.getValue().indexOf(':') + 1, choiceBox.getValue().indexOf(';')));
         Database db = new Database();
         game = db.selectGameDetailed(chosen);
         db.closeConnection();
@@ -100,14 +100,16 @@ public class ReplaysController {
     void nextMove() {
         if (moveCount < gameFlow.getMoves().size()) {
             Move move = gameFlow.getMoves().get(moveCount);
-            if (move.getWhichboard() == 1) {
+            if (move.getWhichboard() == 2) {
                 playerBoard.getChildren().remove(board1);
-                board1.updateBoard(move.getRow(), move.getColumn());
+                board1.updateBoard(move.getRow(), move.getColumn(), 2);
                 playerBoard.getChildren().add(board1);
+                System.out.println("move: " + moveCount + ", board: 1, row: " + move.getRow() + ", column: " + move.getColumn());
             } else {
                 enemyBoard.getChildren().remove(board2);
-                board2.updateBoard(move.getRow(), move.getColumn());
+                board2.updateBoard(move.getRow(), move.getColumn(), 1);
                 enemyBoard.getChildren().add(board2);
+                System.out.println("move: " + moveCount + ", board: 2, row: " + move.getRow() + ", column: " + move.getColumn());
             }
             moveCount += 1;
         }
