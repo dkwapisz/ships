@@ -278,18 +278,20 @@ public class Database {
     public ArrayList<GameBasic> selectGamesBasic(int uid) {
         ArrayList<GameBasic> games = new ArrayList<GameBasic>();
         try {
-            PreparedStatement prepStmt = conn.prepareStatement("SELECT gid, uid1, uid2 from games_history where uid1=? or uid2=?");
+            PreparedStatement prepStmt = conn.prepareStatement("SELECT gid, uid1, uid2, is_aivsai from games_history where uid1=? or uid2=?");
             prepStmt.setInt(1, uid);
             prepStmt.setInt(2, uid);
             ResultSet result = prepStmt.executeQuery();
             int gid;
             int uid1;
             int uid2;
+            int isAiVsAi;
             while (result.next()) {
                 gid = result.getInt("gid");
                 uid1 = result.getInt("uid1");
                 uid2 = result.getInt("uid2");
-                games.add(new GameBasic(gid, uid1, uid2));
+                isAiVsAi = result.getInt("is_aivsai");
+                games.add(new GameBasic(gid, uid1, uid2, isAiVsAi));
             }
         } catch (SQLException e) {
             System.err.println("select failed");
