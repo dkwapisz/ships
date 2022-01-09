@@ -260,8 +260,6 @@ public class MainController {
             System.out.println(line);
             line = "";
         }
-        String siema = new String(Main.getEnemy1Board().boardToString());
-        System.out.println(siema);
     }
 
     public void initialize() {

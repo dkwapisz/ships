@@ -1,0 +1,12 @@
+#anchorPane {
+    -fx-background-image: url("../image/gameBackround.jpg");
+    -fx-background-size: 100% 100%;
+}
+
+.button {
+    -fx-border-radius: 3px;
+    -fx-background-color:
+            radial-gradient(center 50% 50%, radius 100%, #4343ff, #2121ff);
+    -fx-border-color: #5757ff;
+    -fx-text-fill: #c7faf4;
+}

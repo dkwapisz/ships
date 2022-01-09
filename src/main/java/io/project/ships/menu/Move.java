@@ -12,4 +12,20 @@ public class Move {
         this.row = row;
         this.column = column;
     }
+
+    public int getMoveNumber() {
+        return moveNumber;
+    }
+
+    public int getWhichboard() {
+        return whichboard;
+    }
+
+    public int getRow() {
+        return row;
+    }
+
+    public int getColumn() {
+        return column;
+    }
 }

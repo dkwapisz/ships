@@ -10,7 +10,6 @@ public class GameFlow {
     }
 
     public void addMove(Move move) {
-
         moves.add(move);
     }
 
