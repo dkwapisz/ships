@@ -61,6 +61,9 @@ public class MainController {
     @FXML
     private Label shipsLabel;
 
+    @FXML
+    private Label whichPlayerWonLabel;
+
     private boolean timelineCreated;
     private Timeline updateTimeline;
     private boolean buttonsBlocked;
@@ -118,6 +121,8 @@ public class MainController {
 
     @FXML
     void backToMenu() throws IOException {
+        whichPlayerWonLabel.setText("");
+        Main.setGameEnded(false);
         updateTimeline.stop();
         Main.restartGame();
         Stage stage = (Stage) mainPane.getScene().getWindow();
@@ -162,8 +167,6 @@ public class MainController {
             if (Main.isNotPaused()) {
                 Main.setPause(true);
 
-                //TODO Poprawne wyświetlanie podpisów plansz podczas odtwarzania rozgrywki Step By Step
-                //Chwilowo updateTimeline będzie pauzowany podczas przewijania rozgrywki Step By Step
                 updateTimeline.pause();
                 pauseButton.setText("▶");
             }
@@ -172,95 +175,95 @@ public class MainController {
         }
     }
 
-    // dev function
-    @FXML
-    void printBoardStatus() {
-        String line = "";
-
-        if (Main.isPlayer1Turn()) {
-            System.out.println("- - - - - - - - - -");
-            System.out.println("PLAYER1 BOARD:");
-            for (int j = 0; j < 10; j++) {
-                for (int i = 0; i < 10; i++) {
-                    if (Main.getPlayer1Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.EMPTY) {
-                        line += "0 ";
-                    } else if (Main.getPlayer1Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.SHIP) {
-                        line += "S ";
-                    } else if (Main.getPlayer1Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.DAMAGED) {
-                        line += "X ";
-                    } else if (Main.getPlayer1Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.DESTROYED) {
-                        line += "D ";
-                    } else if (Main.getPlayer1Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.MISS) {
-                        line += "M ";
-                    }
-                }
-                line += "\n";
-            }
-            System.out.println(line);
-            line = "";
-            System.out.println("- - - - - - - - - -");
-            System.out.println("ENEMY1 BOARD:");
-            for (int j = 0; j < 10; j++) {
-                for (int i = 0; i < 10; i++) {
-                    if (Main.getEnemy1Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.EMPTY) {
-                        line += "0 ";
-                    } else if (Main.getEnemy1Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.SHIP) {
-                        line += "S ";
-                    } else if (Main.getEnemy1Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.DAMAGED) {
-                        line += "X ";
-                    }  else if (Main.getEnemy1Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.DESTROYED) {
-                        line += "D ";
-                    } else if (Main.getEnemy1Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.MISS) {
-                        line += "M ";
-                    }
-                }
-                line += "\n";
-            }
-            System.out.println(line);
-            line = "";
-        } else {
-            System.out.println("- - - - - - - - - -");
-            System.out.println("PLAYER2 BOARD:");
-            for (int j = 0; j < 10; j++) {
-                for (int i = 0; i < 10; i++) {
-                    if (Main.getPlayer2Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.EMPTY) {
-                        line += "0 ";
-                    } else if (Main.getPlayer2Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.SHIP) {
-                        line += "S ";
-                    } else if (Main.getPlayer2Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.DAMAGED) {
-                        line += "X ";
-                    } else if (Main.getPlayer2Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.DESTROYED) {
-                        line += "D ";
-                    } else if (Main.getPlayer2Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.MISS) {
-                        line += "M ";
-                    }
-                }
-                line += "\n";
-            }
-            System.out.println(line);
-            line = "";
-            System.out.println("- - - - - - - - - -");
-            System.out.println("ENEMY2 BOARD:");
-            for (int j = 0; j < 10; j++) {
-                for (int i = 0; i < 10; i++) {
-                    if (Main.getEnemy2Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.EMPTY) {
-                        line += "0 ";
-                    } else if (Main.getEnemy2Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.SHIP) {
-                        line += "S ";
-                    } else if (Main.getEnemy2Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.DAMAGED) {
-                        line += "X ";
-                    } else if (Main.getEnemy2Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.DESTROYED) {
-                        line += "D ";
-                    } else if (Main.getEnemy2Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.MISS) {
-                        line += "M ";
-                    }
-                }
-                line += "\n";
-            }
-            System.out.println(line);
-            line = "";
-        }
-    }
+    // DEV FUNCTION
+//    @FXML
+//    void printBoardStatus() {
+//        String line = "";
+//
+//        if (Main.isPlayer1Turn()) {
+//            System.out.println("- - - - - - - - - -");
+//            System.out.println("PLAYER1 BOARD:");
+//            for (int j = 0; j < 10; j++) {
+//                for (int i = 0; i < 10; i++) {
+//                    if (Main.getPlayer1Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.EMPTY) {
+//                        line += "0 ";
+//                    } else if (Main.getPlayer1Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.SHIP) {
+//                        line += "S ";
+//                    } else if (Main.getPlayer1Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.DAMAGED) {
+//                        line += "X ";
+//                    } else if (Main.getPlayer1Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.DESTROYED) {
+//                        line += "D ";
+//                    } else if (Main.getPlayer1Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.MISS) {
+//                        line += "M ";
+//                    }
+//                }
+//                line += "\n";
+//            }
+//            System.out.println(line);
+//            line = "";
+//            System.out.println("- - - - - - - - - -");
+//            System.out.println("ENEMY1 BOARD:");
+//            for (int j = 0; j < 10; j++) {
+//                for (int i = 0; i < 10; i++) {
+//                    if (Main.getEnemy1Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.EMPTY) {
+//                        line += "0 ";
+//                    } else if (Main.getEnemy1Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.SHIP) {
+//                        line += "S ";
+//                    } else if (Main.getEnemy1Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.DAMAGED) {
+//                        line += "X ";
+//                    }  else if (Main.getEnemy1Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.DESTROYED) {
+//                        line += "D ";
+//                    } else if (Main.getEnemy1Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.MISS) {
+//                        line += "M ";
+//                    }
+//                }
+//                line += "\n";
+//            }
+//            System.out.println(line);
+//            line = "";
+//        } else {
+//            System.out.println("- - - - - - - - - -");
+//            System.out.println("PLAYER2 BOARD:");
+//            for (int j = 0; j < 10; j++) {
+//                for (int i = 0; i < 10; i++) {
+//                    if (Main.getPlayer2Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.EMPTY) {
+//                        line += "0 ";
+//                    } else if (Main.getPlayer2Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.SHIP) {
+//                        line += "S ";
+//                    } else if (Main.getPlayer2Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.DAMAGED) {
+//                        line += "X ";
+//                    } else if (Main.getPlayer2Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.DESTROYED) {
+//                        line += "D ";
+//                    } else if (Main.getPlayer2Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.MISS) {
+//                        line += "M ";
+//                    }
+//                }
+//                line += "\n";
+//            }
+//            System.out.println(line);
+//            line = "";
+//            System.out.println("- - - - - - - - - -");
+//            System.out.println("ENEMY2 BOARD:");
+//            for (int j = 0; j < 10; j++) {
+//                for (int i = 0; i < 10; i++) {
+//                    if (Main.getEnemy2Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.EMPTY) {
+//                        line += "0 ";
+//                    } else if (Main.getEnemy2Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.SHIP) {
+//                        line += "S ";
+//                    } else if (Main.getEnemy2Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.DAMAGED) {
+//                        line += "X ";
+//                    } else if (Main.getEnemy2Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.DESTROYED) {
+//                        line += "D ";
+//                    } else if (Main.getEnemy2Board().getSquareBoard()[i][j].getSquareStatus() == Square.SquareStatus.MISS) {
+//                        line += "M ";
+//                    }
+//                }
+//                line += "\n";
+//            }
+//            System.out.println(line);
+//            line = "";
+//        }
+//    }
 
     public void initialize() {
         if (!timelineCreated) {
@@ -328,6 +331,27 @@ public class MainController {
     }
 
     private void updateLabels() {
+        if (Main.isGameEnded()) {
+            if (Main.isPlayer1Win()) {
+                if (Main.getDifficulty1() == 0 || (Main.getDifficulty1() > 0 && Main.getDifficulty2() == 0)) {
+                    whichPlayerWonLabel.setText(Main.getUser1().getUsername() + " wins!");
+                }
+                if (Main.getDifficulty1() > 0 && Main.getDifficulty2() > 0) {
+                    whichPlayerWonLabel.setText("AI 1 wins!");
+                }
+            } else {
+                if (Main.getDifficulty1() == 0) {
+                    whichPlayerWonLabel.setText(Main.getUser2().getUsername() + " wins!");
+                }
+                if (Main.getDifficulty1() > 0 && Main.getDifficulty2() == 0) {
+                    whichPlayerWonLabel.setText("AI wins!");
+                }
+                if (Main.getDifficulty1() > 0 && Main.getDifficulty2() > 0) {
+                    whichPlayerWonLabel.setText("AI 2 wins!");
+                }
+            }
+        }
+
         if (Main.getDifficulty1() == 0) {
             if (Main.isPlayer1Turn()) {
                 playerLabel.setText(Main.getUser1().getUsername());

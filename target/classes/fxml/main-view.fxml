@@ -8,11 +8,10 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" stylesheets="@../css/board-style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.project.ships.controllers.MainController">
+<Pane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" stylesheets="@../css/board-style.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.project.ships.controllers.MainController">
    <Button layoutX="550.0" layoutY="730.0" mnemonicParsing="false" onAction="#backToMenu" prefHeight="30.0" prefWidth="100.0" text="Back to menu" />
    <Pane fx:id="playerBoard" layoutX="40.0" layoutY="40.0" prefHeight="400.0" prefWidth="400.0" />
    <Pane fx:id="enemyBoard" layoutX="760.0" layoutY="40.0" prefHeight="400.0" prefWidth="400.0" />
-   <Button layoutX="1066.0" layoutY="756.0" mnemonicParsing="false" onAction="#printBoardStatus" text="Print board status" />
    <Button fx:id="randomButton" layoutX="550.0" layoutY="680.0" mnemonicParsing="false" onAction="#placeShipsRandom" prefHeight="30.0" prefWidth="100.0" text="Random" />
    <Button fx:id="imReadyButton" layoutX="550.0" layoutY="630.0" mnemonicParsing="false" onAction="#setShip" prefHeight="30.0" prefWidth="100.0" text="Im ready!" />
    <Label alignment="CENTER" layoutX="40.0" prefHeight="40.0" prefWidth="40.0" text="A" textOverrun="CENTER_ELLIPSIS">
@@ -263,4 +262,9 @@
          </Label>
       </children>
    </Pane>
+   <Label fx:id="whichPlayerWonLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="475.0" layoutY="130.0" prefHeight="50.0" prefWidth="250.0" textAlignment="CENTER" textFill="#2121ff" wrapText="true">
+      <font>
+         <Font name="System Bold" size="19.0" />
+      </font>
+   </Label>
 </Pane>

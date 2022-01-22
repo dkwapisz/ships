@@ -61,6 +61,7 @@ public class Main extends Application {
     private static boolean timer2Started;
     private static boolean pause;
     private static boolean gameEnded;
+    private static boolean player1Win;
 
     private static int lastPlayer;
 
@@ -83,6 +84,7 @@ public class Main extends Application {
         stage.setTitle("Ships!");
         stage.setScene(scene);
         stage.show();
+        stage.setResizable(false);
 
         mainTimeline = new Timeline(new KeyFrame(Duration.millis(25), e -> {
             try {
@@ -128,6 +130,7 @@ public class Main extends Application {
                 else if (player1SetShips && player2SetShips) {
                     player1Turn = true;
                     gameStarted = true;
+                    hideBoard();
                 }
             } else {
                 if (!boardSet) {
@@ -325,18 +328,18 @@ public class Main extends Application {
             }
         }
         if (count1 == 20) {
+            player1Win = true;
             changeStyle();
             gameEnded = true;
             mainTimeline.stop();
-            System.out.println("PLAYER 1 WINS");
             saveGame();
             updateStatistics(1);
             loadStatistics();
-        } else if (count2 == 20){
+        } else if (count2 == 20) {
+            player1Win = false;
             changeStyle();
             gameEnded = true;
             mainTimeline.stop();
-            System.out.println("PLAYER 2 WINS");
             saveGame();
             updateStatistics(2);
             loadStatistics();
@@ -608,6 +611,18 @@ public class Main extends Application {
 
     public static void setUsers(ArrayList<User> users) {
         Main.users = users;
+    }
+
+    public static boolean isGameEnded() {
+        return gameEnded;
+    }
+
+    public static void setGameEnded(boolean gameEnded) {
+        Main.gameEnded = gameEnded;
+    }
+
+    public static boolean isPlayer1Win() {
+        return player1Win;
     }
 
     public static void setUser1Statistics() {
